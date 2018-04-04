@@ -123,17 +123,15 @@ public abstract class Character : MonoBehaviour
 
     protected virtual void ApplyMovement()
     {
-        if (!Collision())
-        {
             if (sprinting)
             {
-                transform.Translate(movementDirection.normalized * sprintSpeed * Time.deltaTime); 
+            transform.Translate(Collision() *sprintSpeed * Time.deltaTime); 
             }
             else
             {
-                transform.Translate(movementDirection.normalized * movementSpeed* Time.deltaTime);
+                transform.Translate(Collision()  * movementSpeed* Time.deltaTime);
             }
-        }
+        
     }
 
     protected abstract void GetInput();
@@ -163,25 +161,29 @@ public abstract class Character : MonoBehaviour
             }
         }
     }
-    protected virtual bool Collision()
+    protected virtual Vector2 Collision()
     {
 
-        Vector2 origin = new Vector2(GetComponent<Collider2D>().bounds.min.x + 0.015f, GetComponent<Collider2D>().bounds.min.y);
+            Vector2 origin = new Vector2(GetComponent<Collider2D>().bounds.center.x + 0.015f, GetComponent<Collider2D>().bounds.center.y + 0.015f);
+        
         Ray2D ray;
 
-        float distanceBetweenRays = (GetComponent<Collider2D>().bounds.size.x - 2 * 0.015f) / (NoOfRays - 1);
-
+        float distanceBetweenRaysX = (GetComponent<Collider2D>().bounds.size.x - 2 * 0.015f) / (NoOfRays - 1);
+        float distanceBetweenRaysY = ((GetComponent<Collider2D>().bounds.size.y) - 2 * 0.015f) / (NoOfRays - 1);
         for (int i = 0; i < NoOfRays; i++)
         {
-
+            bool draw;
+            draw = NoOfRays % 2 == 0 ? true : false;
+            
             ray = new Ray2D(origin, (movementDirection));
 
-            Debug.DrawRay(origin, (movementDirection), Color.blue);
+            //Debug.DrawRay(origin, (movementDirection), Color.blue);
             RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction, lengthOfRay, raycastMask);
+            Debug.DrawRay(origin, Vector2.Reflect(ray.direction, hit.normal));
             if (hit)
             {
-                transform.Translate((movementDirection.normalized + hit.normal) * Time.deltaTime);
-                return true;
+                // transform.Translate((movementDirection.normalized + hit.normal) * Time.deltaTime);
+                return (movementDirection - ray.direction) + hit.normal;
             }
 
             /*if (hit.collider != null)
@@ -195,10 +197,12 @@ public abstract class Character : MonoBehaviour
 
                 }
             }*/
-
-            origin += new Vector2(distanceBetweenRays, 0);
+            if (draw)
+                origin += new Vector2(origin.x + distanceBetweenRaysX, origin.y + distanceBetweenRaysY);
+            else
+                origin -= new Vector2(origin.x + distanceBetweenRaysX, origin.y + distanceBetweenRaysY);
         }
-        return false;
+        return movementDirection;
     }
 
     protected virtual void Exhausted()
