@@ -105,7 +105,21 @@ public abstract class Character : MonoBehaviour
     }
 
     protected abstract void GetInput();
+
     protected abstract void Death();
+    protected abstract void Attack();
+    protected abstract void ConsumeItem();
+    protected abstract void Gather();
+    protected abstract void Beg();
+
+    public void TakeHealthDamage(int amount)
+    {
+        Health -= amount;
+    }
+    public void TakeSanityDamage(int amount)
+    {
+        Sanity -= amount;
+    }
 
     protected virtual void RecoverStamina()
     {
@@ -123,8 +137,6 @@ public abstract class Character : MonoBehaviour
         if (exhausted == false)
         {
             exhausted = true;
-            //Start co-routine to disable exhaustion
-            
         }
     }
     protected void ExhaustTimer()
