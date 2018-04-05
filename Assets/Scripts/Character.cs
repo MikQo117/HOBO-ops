@@ -5,23 +5,23 @@ using UnityEngine;
 public abstract class Character : MonoBehaviour
 {
     //Character stats
-    protected int     health;
-    protected int     sanity;
-    protected float   stamina;
-    protected float   staminaRecoveryRate;
+    protected int health;
+    protected int sanity;
+    protected float stamina;
+    protected float staminaRecoveryRate;
 
     //Max stats
-    protected int     maxHealth;
-    protected int     maxSanity;
-    protected int     maxStamina;
+    protected int maxHealth;
+    protected int maxSanity;
+    protected int maxStamina;
 
     //Character movement
     [SerializeField]
-    protected float   movementSpeed;
+    protected float movementSpeed;
     [SerializeField]
-    protected float   sprintSpeed;
+    protected float sprintSpeed;
     protected Vector2 movementDirection;
-    protected bool    sprinting;
+    protected bool sprinting;
 
     //Collision variables
     [SerializeField]
@@ -39,9 +39,9 @@ public abstract class Character : MonoBehaviour
     private SpriteRenderer Sr;
 
     //Exhaust variables
-    protected bool    exhausted; //Must disable sprinting
-    private float     exhaustTimer;
-    protected float   exhaustDuration;
+    protected bool exhausted; //Must disable sprinting
+    private float exhaustTimer;
+    protected float exhaustDuration;
 
     //Get & Set
     protected int Health
@@ -59,7 +59,7 @@ public abstract class Character : MonoBehaviour
             }
             else
             {
-                health = Mathf.Clamp(value, 0, maxHealth); 
+                health = Mathf.Clamp(value, 0, maxHealth);
             }
         }
     }
@@ -107,7 +107,7 @@ public abstract class Character : MonoBehaviour
         exhaustTimer = exhaustDuration;
         lengthOfRay = GetComponent<Collider2D>().bounds.extents.magnitude;
         Sr = GetComponent<SpriteRenderer>();
-        
+
         animator = GetComponent<Animator>();
     }
 
@@ -118,20 +118,21 @@ public abstract class Character : MonoBehaviour
         RecoverStamina();
         ExhaustTimer();
         AnimationChanger();
+        Collision();
         ApplyMovement();
     }
 
     protected virtual void ApplyMovement()
     {
-            if (sprinting)
-            {
-            transform.Translate(Collision() *sprintSpeed * Time.deltaTime); 
-            }
-            else
-            {
-                transform.Translate(Collision()  * movementSpeed* Time.deltaTime);
-            }
-        
+        if (sprinting)
+        {
+            transform.Translate(movementDirection * sprintSpeed * Time.deltaTime);
+        }
+        else
+        {
+            transform.Translate(movementDirection * movementSpeed * Time.deltaTime);
+        }
+
     }
 
     protected abstract void GetInput();
@@ -157,52 +158,46 @@ public abstract class Character : MonoBehaviour
         {
             if (Stamina < maxStamina)
             {
-                Stamina += staminaRecoveryRate * Time.deltaTime;  
+                Stamina += staminaRecoveryRate * Time.deltaTime;
             }
         }
     }
-    protected virtual Vector2 Collision()
+    protected virtual void Collision()
     {
-
-            Vector2 origin = new Vector2(GetComponent<Collider2D>().bounds.center.x + 0.015f, GetComponent<Collider2D>().bounds.center.y + 0.015f);
-        
         Ray2D ray;
+        Vector2 origin;
+        //Startingpoint determination from characters collider whenever the character is moving horizontally or vertically
+        if (movementDirection.y != 0)
+        {
+            origin = new Vector2(GetComponent<Collider2D>().bounds.min.x + 0.015f, GetComponent<Collider2D>().bounds.center.y + 0.015f);
+        }
+        else
+        {
+            origin = new Vector2(GetComponent<Collider2D>().bounds.center.x + 0.015f, GetComponent<Collider2D>().bounds.min.y + 0.015f);
+        }
 
+        //Distance between rays determined by direction
         float distanceBetweenRaysX = (GetComponent<Collider2D>().bounds.size.x - 2 * 0.015f) / (NoOfRays - 1);
-        float distanceBetweenRaysY = ((GetComponent<Collider2D>().bounds.size.y) - 2 * 0.015f) / (NoOfRays - 1);
+        float distanceBetweenRaysY = (GetComponent<Collider2D>().bounds.size.y - 2 * 0.015f) / (NoOfRays - 1);
+
+        //loop for raycasting
         for (int i = 0; i < NoOfRays; i++)
         {
-            bool draw;
-            draw = NoOfRays % 2 == 0 ? true : false;
-            
             ray = new Ray2D(origin, (movementDirection));
 
-            //Debug.DrawRay(origin, (movementDirection), Color.blue);
             RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction, lengthOfRay, raycastMask);
-            Debug.DrawRay(origin, Vector2.Reflect(ray.direction, hit.normal));
+
             if (hit)
             {
-                // transform.Translate((movementDirection.normalized + hit.normal) * Time.deltaTime);
-                return (movementDirection - ray.direction) + hit.normal;
+                movementDirection = movementDirection + hit.normal;
             }
 
-            /*if (hit.collider != null)
-            {
-                if (GameManager.manager.PickUps.Contains(hit.collider.gameObject))
-                {
-                    Debug.Log("äksdee");
-                    health += 10;
-                    GameManager.manager.PickUps.Remove(hit.collider.gameObject);
-                    return true;
-
-                }
-            }*/
-            if (draw)
-                origin += new Vector2(origin.x + distanceBetweenRaysX, origin.y + distanceBetweenRaysY);
+            //origin change for next raycast based on character movement
+            if (movementDirection.x != 0 && movementDirection.y == 0)
+                origin += new Vector2(0, distanceBetweenRaysY);
             else
-                origin -= new Vector2(origin.x + distanceBetweenRaysX, origin.y + distanceBetweenRaysY);
+                origin += new Vector2(distanceBetweenRaysX, 0);
         }
-        return movementDirection;
     }
 
     protected virtual void Exhausted()
@@ -220,7 +215,7 @@ public abstract class Character : MonoBehaviour
             //Still exhausted
             if (exhaustTimer > 0f)
             {
-                exhaustTimer -= Time.deltaTime; 
+                exhaustTimer -= Time.deltaTime;
             }
             //Not exhausted
             else
