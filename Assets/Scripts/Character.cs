@@ -20,7 +20,7 @@ public abstract class Character : MonoBehaviour
     protected float movementSpeed;
     [SerializeField]
     protected float sprintSpeed;
-    protected Vector2 movementDirection;
+    protected Vector3 movementDirection;
     protected bool sprinting;
 
     //Collision variables
@@ -105,7 +105,7 @@ public abstract class Character : MonoBehaviour
     protected virtual void Start()
     {
         exhaustTimer = exhaustDuration;
-        lengthOfRay = GetComponent<Collider2D>().bounds.extents.magnitude;
+        lengthOfRay = GetComponent<Collider2D>().bounds.extents.magnitude / 2;
         Sr = GetComponent<SpriteRenderer>();
 
         animator = GetComponent<Animator>();
@@ -126,11 +126,11 @@ public abstract class Character : MonoBehaviour
     {
         if (sprinting)
         {
-            transform.Translate(movementDirection * sprintSpeed * Time.deltaTime);
+            transform.Translate(movementDirection  * sprintSpeed * Time.deltaTime);
         }
         else
         {
-            transform.Translate(movementDirection * movementSpeed * Time.deltaTime);
+            transform.Translate(movementDirection  * movementSpeed * Time.deltaTime);
         }
 
     }
@@ -166,37 +166,40 @@ public abstract class Character : MonoBehaviour
     {
         Ray2D ray;
         Vector2 origin;
+
         //Startingpoint determination from characters collider whenever the character is moving horizontally or vertically
         if (movementDirection.y != 0)
         {
-            origin = new Vector2(GetComponent<Collider2D>().bounds.min.x + 0.015f, GetComponent<Collider2D>().bounds.center.y + 0.015f);
+            origin = new Vector2(GetComponent<Collider2D>().bounds.min.x, GetComponent<Collider2D>().bounds.center.y);
         }
         else
         {
-            origin = new Vector2(GetComponent<Collider2D>().bounds.center.x + 0.015f, GetComponent<Collider2D>().bounds.min.y + 0.015f);
+            origin = new Vector2(GetComponent<Collider2D>().bounds.center.x, (GetComponent<Collider2D>().bounds.min.y));
         }
 
+
         //Distance between rays determined by direction
-        float distanceBetweenRaysX = (GetComponent<Collider2D>().bounds.size.x - 2 * 0.015f) / (NoOfRays - 1);
-        float distanceBetweenRaysY = (GetComponent<Collider2D>().bounds.size.y - 2 * 0.015f) / (NoOfRays - 1);
+        float distanceBetweenRaysX = (GetComponent<Collider2D>().bounds.size.x) / (NoOfRays - 1);
+        float distanceBetweenRaysY = (GetComponent<Collider2D>().bounds.size.y) / (NoOfRays - 1);
 
         //loop for raycasting
         for (int i = 0; i < NoOfRays; i++)
         {
-            ray = new Ray2D(origin, (movementDirection));
+            ray = new Ray2D(origin, (movementDirection).normalized);
+            Debug.DrawRay(ray.origin, ray.direction, Color.blue);
 
             RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction, lengthOfRay, raycastMask);
-
             if (hit)
             {
-                movementDirection = movementDirection + hit.normal;
+                movementDirection = movementDirection - Vector3.Project(movementDirection, hit.normal.normalized);
+                return;
             }
-
-            //origin change for next raycast based on character movement
+                //origin change for next raycast based on character movement
             if (movementDirection.x != 0 && movementDirection.y == 0)
                 origin += new Vector2(0, distanceBetweenRaysY);
             else
                 origin += new Vector2(distanceBetweenRaysX, 0);
+
         }
     }
 

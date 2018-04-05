@@ -469,7 +469,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementSpeed: 5
   sprintSpeed: 8
-  NoOfRays: 3
+  NoOfRays: 20
   raycastMask:
     serializedVersion: 2
     m_Bits: 4294967291
