@@ -188,13 +188,23 @@ public abstract class Character : MonoBehaviour
             ray = new Ray2D(origin, (movementDirection).normalized);
             Debug.DrawRay(ray.origin, ray.direction, Color.blue);
 
-            RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction, lengthOfRay, raycastMask);
-            if (hit)
+            RaycastHit2D BuildingHit = Physics2D.Raycast(ray.origin, ray.direction, lengthOfRay, raycastMask);
+            RaycastHit2D LitterHit = Physics2D.Raycast(ray.origin, ray.direction, lengthOfRay, 1 << 8);
+            
+            if (BuildingHit)
             {
-                movementDirection = movementDirection - Vector3.Project(movementDirection, hit.normal.normalized);
+                movementDirection = movementDirection - Vector3.Project(movementDirection, BuildingHit.normal.normalized);
                 return;
             }
-                //origin change for next raycast based on character movement
+
+            if(LitterHit)
+            {
+                Destroy(LitterHit.collider.gameObject);
+                LitterPickUp.pickup.PickUps.Remove(LitterHit.collider.gameObject);
+                Debug.Log("Bottle hit");
+            }
+                
+            //origin change for next raycast based on character movement
             if (movementDirection.x != 0 && movementDirection.y == 0)
                 origin += new Vector2(0, distanceBetweenRaysY);
             else
