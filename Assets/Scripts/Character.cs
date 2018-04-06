@@ -7,6 +7,7 @@ public abstract class Character : MonoBehaviour
     //Character stats
     protected int health;
     protected int sanity;
+    private int drunkAmount;
     protected float stamina;
     protected float staminaRecoveryRate;
 
@@ -99,6 +100,22 @@ public abstract class Character : MonoBehaviour
             }
         }
     }
+    protected int DrunkAmount
+    {
+        get
+        {
+            return drunkAmount;
+        }
+
+        set
+        {
+            drunkAmount = value;
+        }
+    }
+
+    //Inventory Variables
+    [SerializeField]
+     List<Consumable> Inventory;
 
 
     // Use this for initialization
@@ -126,11 +143,11 @@ public abstract class Character : MonoBehaviour
     {
         if (sprinting)
         {
-            transform.Translate(movementDirection  * sprintSpeed * Time.deltaTime);
+            transform.Translate(movementDirection * sprintSpeed * Time.deltaTime);
         }
         else
         {
-            transform.Translate(movementDirection  * movementSpeed * Time.deltaTime);
+            transform.Translate(movementDirection * movementSpeed * Time.deltaTime);
         }
 
     }
@@ -139,7 +156,7 @@ public abstract class Character : MonoBehaviour
 
     protected abstract void Death();
     protected abstract void Attack();
-    protected abstract void ConsumeItem();
+    protected abstract void ConsumeItem(Consumable item);
     protected abstract void Gather();
     protected abstract void Beg();
 
@@ -167,7 +184,7 @@ public abstract class Character : MonoBehaviour
         Ray2D ray;
         Vector2 origin;
 
-        //Startingpoint determination from characters collider whenever the character is moving horizontally or vertically
+        //Origin starting determination from characters collider whenever the character is moving horizontally or vertically
         if (movementDirection.y != 0)
         {
             origin = new Vector2(GetComponent<Collider2D>().bounds.min.x, GetComponent<Collider2D>().bounds.center.y);
@@ -189,29 +206,34 @@ public abstract class Character : MonoBehaviour
             Debug.DrawRay(ray.origin, ray.direction, Color.blue);
 
             RaycastHit2D BuildingHit = Physics2D.Raycast(ray.origin, ray.direction, lengthOfRay, raycastMask);
+
             RaycastHit2D LitterHit = Physics2D.Raycast(ray.origin, ray.direction, lengthOfRay, 1 << 8);
-            
+
             if (BuildingHit)
             {
                 movementDirection = movementDirection - Vector3.Project(movementDirection, BuildingHit.normal.normalized);
                 return;
             }
-
-            if(LitterHit)
+            //Checking the litter we hit and adding it to inventory
+            if (LitterHit)
             {
-                Destroy(LitterHit.collider.gameObject);
+                //Inventory.Add(LitterHit.collider.gameObject);
                 LitterPickUp.pickup.PickUps.Remove(LitterHit.collider.gameObject);
+                LitterHit.collider.gameObject.SetActive(false);
                 Debug.Log("Bottle hit");
+
             }
-                
-            //origin change for next raycast based on character movement
+
+            //Adding new raycast to next point
             if (movementDirection.x != 0 && movementDirection.y == 0)
                 origin += new Vector2(0, distanceBetweenRaysY);
             else
                 origin += new Vector2(distanceBetweenRaysX, 0);
 
+
         }
     }
+
 
     protected virtual void Exhausted()
     {

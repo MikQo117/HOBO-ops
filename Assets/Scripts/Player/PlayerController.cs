@@ -24,8 +24,9 @@ public class PlayerController : Character
     {
     }
 
-    protected override void ConsumeItem()
+    protected override void ConsumeItem(Consumable item)
     {
+
     }
 
     protected override void Death()
@@ -46,5 +47,6 @@ public class PlayerController : Character
             sprinting = true;
         else
             sprinting = false;
+
     }
 }

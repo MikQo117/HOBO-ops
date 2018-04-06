@@ -6,9 +6,9 @@ public class LitterPickUp : MonoBehaviour
 {
     public static LitterPickUp pickup;
     [SerializeField]
-   public List<GameObject> PickUps = new List<GameObject>();
-
+    public List<GameObject> PickUps = new List<GameObject>();
     public GameObject TempPickUp;
+    public List<BaseItem> Items;
     public Transform[] Spawnlocations;
     bool Spawnbottler;
     IEnumerator spawner;
@@ -38,7 +38,21 @@ public class LitterPickUp : MonoBehaviour
     }
     public void SpawnBottle()
     {
-        GameObject clone = Instantiate(TempPickUp, Spawnlocations[Random.Range(0, 2)].position, Quaternion.identity);
+         GameObject clone = Instantiate(TempPickUp, Spawnlocations[Random.Range(0, 2)].position, Quaternion.identity);
+
+        
+         
+    }
+
+    public void SpawnSandwich()
+    {
+        GameObject clone = Instantiate(TempPickUp, Spawnlocations[Random.Range(0, 1)].position, Quaternion.identity);
+        clone.name = PickUpNameList.SandWich.ToString();
         PickUps.Add(clone);
+    }
+    enum PickUpNameList
+    {
+        SandWich,
+        Bottle
     }
 }
