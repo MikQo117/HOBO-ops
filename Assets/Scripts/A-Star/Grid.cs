@@ -4,23 +4,21 @@ using UnityEngine;
 
 public class Grid : MonoBehaviour
 {
-    public LayerMask UnwalkableMask;
-    public Vector2   GridWorldSize;
-    public float     NodeRadius;
-    private Node[,]  grid;
+    public bool       displayGridGizmos;
+    public LayerMask  UnwalkableMask;
+    public Vector2    GridWorldSize;
+    public float      NodeRadius;
+    public List<Node> Path;
+    private Node[,]   grid;
 
     private float nodeDiameter;
     private int gridSizeX, gridSizeY;
 
-    private void Start()
-    {
-        nodeDiameter = NodeRadius * 2;
-        //Convert world size to grid size
-        gridSizeX = Mathf.RoundToInt(GridWorldSize.x / nodeDiameter);
-        gridSizeY = Mathf.RoundToInt(GridWorldSize.y / nodeDiameter);
-        CreateGrid();
-    }
 
+
+    /// <summary>
+    /// Creates a grid for the pathfinding algorithm.
+    /// </summary>
     private void CreateGrid()
     {
         //Make new grid and calculate bottom left
@@ -44,6 +42,15 @@ public class Grid : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Returns a node corresponding to the given world position.
+    /// </summary>
+    /// <param name="worldPosition">
+    /// Point in world space.
+    /// </param>
+    /// <returns>
+    /// Corresponding node.
+    /// </returns>
     public Node NodeFromWorldPoint(Vector2 worldPosition)
     {
         float percentX = (worldPosition.x + GridWorldSize.x / 2) / GridWorldSize.x;
@@ -59,10 +66,16 @@ public class Grid : MonoBehaviour
         return grid[x,y];
     }
 
+    /// <summary>
+    /// Gets the neighbour of the given node.
+    /// </summary>
+    /// <param name="node">Node to evaluate.</param>
+    /// <returns>List of neighbour nodes.</returns>
     public List<Node> GetNeighbours(Node node)
     {
         List<Node> neigbhbours = new List<Node>();
 
+        //Go through the neighboring nodes
         for (int x = -1; x <= 1; x++)
         {
             for (int y = -1; y <= 1; y++)
@@ -73,11 +86,12 @@ public class Grid : MonoBehaviour
                     continue;
                 }
 
-                int checkX = node.gridX + x;
-                int checkY = node.gridY + y;
+                //Get the nodes grid position
+                int checkX = node.GridX + x;
+                int checkY = node.GridY + y;
 
                 //If the node is next to target and within bounds
-                if (checkX >= 0 && checkX < gridSizeX && checkY >= 0 && checkY < gridSizeY)
+                if ((checkX >= 0 && checkX < gridSizeX) && (checkY >= 0 && checkY < gridSizeY))
                 {
                     neigbhbours.Add(grid[checkX, checkY]);
                 }
@@ -86,29 +100,46 @@ public class Grid : MonoBehaviour
         return neigbhbours;
     }
 
-    public List<Node> path;
+    /// <summary>
+    /// Returns the grids maximum possible size.
+    /// </summary>
+    public int MaxSize
+    {
+        get
+        {
+            return gridSizeX * gridSizeY;
+        }
+    }
+
+    /// <summary>
+    /// Calculates grid size and creates it.
+    /// </summary>
+    private void Awake()
+    {
+        nodeDiameter = NodeRadius * 2;
+        //Convert world size to grid size
+        gridSizeX = Mathf.RoundToInt(GridWorldSize.x / nodeDiameter);
+        gridSizeY = Mathf.RoundToInt(GridWorldSize.y / nodeDiameter);
+        CreateGrid();
+    }
+
 #if UNITY_EDITOR
     private void OnDrawGizmos()
     {
         Gizmos.DrawWireCube(transform.position, new Vector3(GridWorldSize.x, GridWorldSize.y, 1f));
-        if (grid != null)
+
+        if (grid != null && displayGridGizmos)
         {
             foreach (Node n in grid)
             {
-                if (n.walkable)
+                if (n.Walkable)
                     Gizmos.color = Color.green;
                 else
                     Gizmos.color = Color.red;
-                if (path != null)
-                {
-                    if (path.Contains(n))
-                    {
-                        Gizmos.color = Color.black;
-                    }
-                }
-                Gizmos.DrawCube(n.worldPosition, Vector3.one * (nodeDiameter - 0.1f));
+
+                Gizmos.DrawCube(n.WorldPosition, Vector3.one * (nodeDiameter - 0.1f));
             }
-        }
+        } 
     }
 #endif
 }
