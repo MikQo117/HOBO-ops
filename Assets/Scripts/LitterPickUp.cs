@@ -39,7 +39,7 @@ public class LitterPickUp : MonoBehaviour
     public void SpawnBottle()
     {
          GameObject clone = Instantiate(TempPickUp, Spawnlocations[Random.Range(0, 2)].position, Quaternion.identity);
-
+        clone.name = PickUpNameList.SandWich.ToString();
         
          
     }

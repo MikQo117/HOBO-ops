@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4070804650861302}
   - component: {fileID: 212943490656850724}
   - component: {fileID: 61735813455829262}
+  - component: {fileID: 114200910263625518}
   m_Layer: 8
   m_Name: Consumable
   m_TagString: Untagged
@@ -66,6 +67,23 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 2}
   m_EdgeRadius: 0
+--- !u!114 &114200910263625518
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1593403091950036}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aea8d49569570494d9b8e078f9d26c25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ItemBase:
+  - {fileID: 11400000, guid: b36c5a67a7ab63744ba4c32e9dfcd37a, type: 2}
+  - {fileID: 11400000, guid: c336fb3fbb8f6cf42a12b41f7ba59bbe, type: 2}
+  HealthAmount: 0
+  SanityAmount: 0
+  DrunkAmount: 0
 --- !u!212 &212943490656850724
 SpriteRenderer:
   m_ObjectHideFlags: 1

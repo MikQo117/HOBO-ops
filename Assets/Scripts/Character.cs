@@ -115,7 +115,7 @@ public abstract class Character : MonoBehaviour
 
     //Inventory Variables
     [SerializeField]
-     List<Consumable> Inventory;
+    protected List<BaseItem> inventory;
 
 
     // Use this for initialization
@@ -156,7 +156,7 @@ public abstract class Character : MonoBehaviour
 
     protected abstract void Death();
     protected abstract void Attack();
-    protected abstract void ConsumeItem(Consumable item);
+    protected abstract void ConsumeItem();
     protected abstract void Gather();
     protected abstract void Beg();
 
@@ -219,7 +219,9 @@ public abstract class Character : MonoBehaviour
             {
                 //Inventory.Add(LitterHit.collider.gameObject);
                 LitterPickUp.pickup.PickUps.Remove(LitterHit.collider.gameObject);
-                LitterHit.collider.gameObject.SetActive(false);
+                inventory.Add(LitterHit.collider.gameObject.GetComponent<Consumable>().ItemBase[0]);
+                inventory.Insert(1,LitterHit.collider.gameObject.GetComponent<Consumable>().ItemBase[0]);
+                Destroy(LitterHit.collider.gameObject);
                 Debug.Log("Bottle hit");
 
             }

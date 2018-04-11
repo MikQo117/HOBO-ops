@@ -1,10 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class PlayerController : Character
 {
-
+    public Consumable Item;
     // Use this for initialization
     protected override void Start()
     {
@@ -24,13 +25,17 @@ public class PlayerController : Character
     {
     }
 
-    protected override void ConsumeItem(Consumable item)
+    protected override void ConsumeItem()
     {
 
+
+        health += inventory[0].HealthAmount;
+        inventory.RemoveAt(0);
     }
 
     protected override void Death()
     {
+        
     }
 
     protected override void Gather()
@@ -47,6 +52,9 @@ public class PlayerController : Character
             sprinting = true;
         else
             sprinting = false;
-
+        if (Input.GetKey(KeyCode.E))
+            if(inventory.Count != 0)
+            ConsumeItem();
+           
     }
 }

@@ -555,7 +555,8 @@ MonoBehaviour:
   - {fileID: 21300010, guid: 0103009280c8d1a4e9bce299ca86efd4, type: 3}
   - {fileID: 21300006, guid: 0103009280c8d1a4e9bce299ca86efd4, type: 3}
   - {fileID: 21300004, guid: 0103009280c8d1a4e9bce299ca86efd4, type: 3}
-  Inventory: []
+  inventory: []
+  Item: {fileID: 114200910263625518, guid: bb619302e1106d745946964a6a9cf0c5, type: 2}
 --- !u!95 &1767126788
 Animator:
   serializedVersion: 3
