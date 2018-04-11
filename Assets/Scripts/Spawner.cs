@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LitterPickUp : MonoBehaviour
+public class Spawner : MonoBehaviour
 {
-    public static LitterPickUp pickup;
+    public static Spawner pickup;
     [SerializeField]
     public List<GameObject> PickUps = new List<GameObject>();
     public GameObject TempPickUp;
@@ -25,12 +25,12 @@ public class LitterPickUp : MonoBehaviour
         if (Spawnbottler)
         {
             SpawnBottle();
-            spawner = Spawner(2.0f);
+            spawner = _Spawner(2.0f);
             StartCoroutine(spawner);
         }
     }
 
-    IEnumerator Spawner(float timer)
+    IEnumerator _Spawner(float timer)
     {
         Spawnbottler = false;
         yield return new WaitForSeconds(timer);

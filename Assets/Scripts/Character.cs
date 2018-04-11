@@ -113,9 +113,8 @@ public abstract class Character : MonoBehaviour
         }
     }
 
-    //Inventory Variables
-    [SerializeField]
-    protected List<BaseItem> inventory;
+
+
 
 
     // Use this for initialization
@@ -134,9 +133,9 @@ public abstract class Character : MonoBehaviour
         GetInput();
         RecoverStamina();
         ExhaustTimer();
-        AnimationChanger();
         Collision();
         ApplyMovement();
+        AnimationChanger();
     }
 
     protected virtual void ApplyMovement()
@@ -156,7 +155,7 @@ public abstract class Character : MonoBehaviour
 
     protected abstract void Death();
     protected abstract void Attack();
-    protected abstract void ConsumeItem();
+    public abstract void ConsumeItem(int index);
     protected abstract void Gather();
     protected abstract void Beg();
 
@@ -215,12 +214,10 @@ public abstract class Character : MonoBehaviour
                 return;
             }
             //Checking the litter we hit and adding it to inventory
-            if (LitterHit)
+            if (LitterHit && Inventory.Inv.InventoryList.Count <= 4)
             {
-                //Inventory.Add(LitterHit.collider.gameObject);
-                LitterPickUp.pickup.PickUps.Remove(LitterHit.collider.gameObject);
-                inventory.Add(LitterHit.collider.gameObject.GetComponent<Consumable>().ItemBase[0]);
-                inventory.Insert(1,LitterHit.collider.gameObject.GetComponent<Consumable>().ItemBase[0]);
+                Spawner.pickup.PickUps.Remove(LitterHit.collider.gameObject);
+                Inventory.Inv.InventoryList.Add(LitterHit.collider.gameObject.GetComponent<Consumable>().ItemBase[0]);
                 Destroy(LitterHit.collider.gameObject);
                 Debug.Log("Bottle hit");
 
