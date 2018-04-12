@@ -1,19 +1,18 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Linq;
 using UnityEngine;
 
 public abstract class Character : MonoBehaviour
 {
     //Character stats
-    protected int health;
-    protected int sanity;
+    protected int health = 10;
+    protected int sanity = 10;
     private int drunkAmount;
     protected float stamina;
     protected float staminaRecoveryRate;
 
     //Max stats
-    protected int maxHealth;
-    protected int maxSanity;
+    protected int maxHealth = 100;
+    protected int maxSanity = 100;
     protected int maxStamina;
 
     //Character movement
@@ -216,11 +215,13 @@ public abstract class Character : MonoBehaviour
             //Checking the litter we hit and adding it to inventory
             if (LitterHit && Inventory.Inv.InventoryList.Count <= 4)
             {
-                Spawner.pickup.PickUps.Remove(LitterHit.collider.gameObject);
-                Inventory.Inv.InventoryList.Add(LitterHit.collider.gameObject.GetComponent<Consumable>().ItemBase[0]);
+                var result = from a in LitterHit.collider.gameObject.GetComponent<Consumable>().ItemBase
+                             where a.ID.ToString() == LitterHit.collider.gameObject.name
+                             select a;
+                Inventory.Inv.InventoryList.Add(result.SingleOrDefault());
+                Inventory.Inv.AddButtonSprite();
+                Debug.Log(result);
                 Destroy(LitterHit.collider.gameObject);
-                Debug.Log("Bottle hit");
-
             }
 
             //Adding new raycast to next point
@@ -241,6 +242,7 @@ public abstract class Character : MonoBehaviour
             exhausted = true;
         }
     }
+
     protected void ExhaustTimer()
     {
         //Only tick when exhausted

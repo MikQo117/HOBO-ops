@@ -4,12 +4,15 @@ using UnityEngine;
 
 public class PlayerController : Character
 {
-    public Consumable Item;
+    public Consumable              Item;
+
     public static PlayerController pl;
+
     // Use this for initialization
     protected override void Start()
     {
         base.Start();
+        pl = this;
     }
 
     // Update is called once per frame
@@ -25,10 +28,10 @@ public class PlayerController : Character
     {
     }
 
-    public override void ConsumeItem(int index)
+    public  override  void ConsumeItem(int index)
     {
-        Health += Inventory.Inv.InventoryList[index].HealthAmount;
-        Sanity += Inventory.Inv.InventoryList[index].SanityAmount;
+        Health      += Inventory.Inv.InventoryList[index].HealthAmount;
+        Sanity      += Inventory.Inv.InventoryList[index].SanityAmount;
         DrunkAmount += Inventory.Inv.InventoryList[index].DrunkAmount;
     }
 
@@ -52,6 +55,5 @@ public class PlayerController : Character
         else
             sprinting = false;
 
-     
     }
 }

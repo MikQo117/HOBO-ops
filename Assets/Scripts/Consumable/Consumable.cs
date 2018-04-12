@@ -3,27 +3,25 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public  class Consumable : MonoBehaviour
+public class Consumable : MonoBehaviour
 {
-    public BaseItem[] ItemBase;
+    public List<BaseItem> ItemBase;
     public int HealthAmount;
     public int SanityAmount;
     public int DrunkAmount;
-    
-    void GiveItemInfo()
-    {
+    public string name;
 
-    }
 
     // Use this for initialization
     void Start()
     {
-        int r = Random.Range(0, 1);
-            HealthAmount = ItemBase[r].HealthAmount;
-            SanityAmount = ItemBase[r].SanityAmount;
-            DrunkAmount = ItemBase[r].DrunkAmount;
-            GetComponent<SpriteRenderer>().sprite = ItemBase[r].sprite;
-        
+        int r = Random.Range(0, 2);
+        name = ItemBase[r].name;
+        gameObject.name = name;
+        HealthAmount = ItemBase[r].HealthAmount;
+        SanityAmount = ItemBase[r].SanityAmount;
+        DrunkAmount = ItemBase[r].DrunkAmount;
+        GetComponent<SpriteRenderer>().sprite = ItemBase[r].sprite;
 
     }
 

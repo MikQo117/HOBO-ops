@@ -9,19 +9,47 @@ public class Inventory : MonoBehaviour
     //Inventory Variables
     public static Inventory Inv;
     public List<BaseItem> InventoryList;
-    public List<Transform> Locations = new List<Transform>();
+    public Texture[] Locations;
     //UI Variables
     [SerializeField]
-    protected List<GameObject> inventoryButtons;
+    protected List<Transform> childObjects = new List<Transform>();
 
     //Player Variables
     public int Health;
     public int Sanity;
     public int Drunk;
-    public int i;
+    public int i = 0;
 
-    //inventorylist on suurempi kuin napit 
+    public void Click(int index)
+    {
+        if (InventoryList.ElementAtOrDefault(index) == null) return;
 
+        PlayerController.pl.ConsumeItem(index);
+
+        childObjects[index].GetComponent<Image>().sprite = null;
+
+        InventoryList.RemoveAt(index);
+        /*   childObjects[index].transform.position = Locations[i - 1]; // indexin valitsema palikka oikeaan paikkaan
+
+           IEnumerable<Transform> kk = childObjects.Where(x => x != childObjects[index]); // valitaan kaikki muut paitsi se, jonka indexi on valinnut
+
+              aa = kk.ToArray();
+
+           for (int a = 0; a < childObjects.Count - 1; a++)
+           {
+               aa[a].gameObject.transform.position = Locations[a];
+           }
+           */
+
+    }
+
+
+
+    public void AddButtonSprite()
+    {
+        for (int a = 0; a < InventoryList.Count; a++) 
+        childObjects[a].GetComponent<Image>().sprite = InventoryList[a].sprite;
+    }
     void Awake()
     {
         Inv = this;
@@ -29,34 +57,20 @@ public class Inventory : MonoBehaviour
 
     void Start()
     {
-
         for (i = 0; i < transform.childCount; i++)
         {
-            inventoryButtons.Add(gameObject.transform.GetChild(i).gameObject);
-            Locations.Add(gameObject.transform.GetChild(i).transform);
-        }   
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        for (int a = 0; a < InventoryList.Count; a++)
-        {
-            inventoryButtons[a].GetComponent<Button>().image.sprite = InventoryList[a].sprite;
+            childObjects.Add(gameObject.transform.GetChild(i).transform);
+            //Locations.Add(gameObject.transform.GetChild(i).transform.position);
         }
     }
 
-   public void Click(int index)
-    {
-        if (!InventoryList.Any()) return;
 
-        InventoryList.RemoveAt(index);
-        inventoryButtons[index].transform.position = Locations[i-1].transform.position; // indexin valitsema palikka oikeaan paikkaan
 
-       IEnumerable<GameObject> kk = inventoryButtons.Where(x => x != inventoryButtons[index]); // valitaan kaikki muut paitsi se, jonka indexi on valinnut
-          GameObject[] aa =  kk.ToArray();
-        for (int a = 0; a < inventoryButtons.Count -1; a++)
-            aa[a].transform.position = Locations[a].transform.position;
-    }
+
+
+
+
+
 
 }
