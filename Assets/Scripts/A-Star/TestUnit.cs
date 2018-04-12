@@ -9,9 +9,13 @@ public class TestUnit : MonoBehaviour
     private Vector2[] path;
     private int targetIndex;
 
-    private void Start()
+    private void Update()
     {
-        PathRequestManager.RequestPath(transform.position, Target.position, OnPathFound);
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            StopCoroutine(FollowPath());
+            PathRequestManager.RequestPath(transform.position, Target.position, OnPathFound); 
+        }
     }
 
     public void OnPathFound(Vector2[] newPath, bool pathSuccess)

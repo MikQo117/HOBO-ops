@@ -101,6 +101,7 @@ public class Pathfinding : MonoBehaviour
         if (pathSuccess)
         {
             waypoints = RetracePath(startNode, targetNode);
+            pathSuccess = waypoints.Length > 0;
         }
         requestManager.FinishedProcessingPath(waypoints, pathSuccess);
 
@@ -137,7 +138,7 @@ public class Pathfinding : MonoBehaviour
 
         for (int i = 1; i < path.Count; i++)
         {
-            Vector2 directionNew = new Vector2(path[i - 1].GridX - path[i].GridX, path[i - 1].GridX - path[i].GridY).normalized;
+            Vector2 directionNew = new Vector2(path[i - 1].GridX - path[i].GridX, path[i - 1].GridY - path[i].GridY).normalized;
             if (directionNew != directionOld)
             {
                 waypoints.Add(path[i-1].WorldPosition);
@@ -164,9 +165,8 @@ public class Pathfinding : MonoBehaviour
         }
         else
         {
-            return 14 * xDist + 10 * (xDist - xDist);
+            return 14 * xDist + 10 * (yDist - xDist);
         }
-
     }
 
     public void StartFindPath(Vector2 startPos, Vector2 targetPos)
