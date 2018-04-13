@@ -5,10 +5,13 @@ using System.Linq;
 using System;
 using UnityEngine;
 
+/// <summary>
+/// Class that finds paths in a grid based environment.
+/// </summary>
 public class Pathfinding : MonoBehaviour
 {
     private PathRequestManager requestManager;
-    private Grid grid;
+    private Grid               grid;
 
     /// <summary>
     /// Finds a path between A and B using the A* algorithm.
@@ -100,11 +103,13 @@ public class Pathfinding : MonoBehaviour
         yield return null;
         if (pathSuccess)
         {
+            //Finalize the waypoint array
             waypoints = RetracePath(startNode, targetNode);
+            //Pathfind is only successful when there's a node to go to
             pathSuccess = waypoints.Length > 0;
         }
+        //Return to request manager
         requestManager.FinishedProcessingPath(waypoints, pathSuccess);
-
     }
 
     /// <summary>
@@ -131,6 +136,11 @@ public class Pathfinding : MonoBehaviour
         return waypoints;
     }
 
+    /// <summary>
+    /// Simplifies the path to the necessary nodes only.
+    /// </summary>
+    /// <param name="path">Path to simplify.</param>
+    /// <returns>Simplified path.</returns>
     private Vector2[] SimplifyPath(List<Node> path)
     {
         List<Vector2> waypoints = new List<Vector2>();
@@ -138,7 +148,7 @@ public class Pathfinding : MonoBehaviour
 
         for (int i = 1; i < path.Count; i++)
         {
-            Vector2 directionNew = new Vector2(path[i - 1].GridX - path[i].GridX, path[i - 1].GridY - path[i].GridY).normalized;
+            Vector2 directionNew = new Vector2(path[i - 1].GridX - path[i].GridX, path[i - 1].GridY - path[i].GridY);
             if (directionNew != directionOld)
             {
                 waypoints.Add(path[i-1].WorldPosition);
@@ -169,6 +179,11 @@ public class Pathfinding : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Public function to start pathfinding.
+    /// </summary>
+    /// <param name="startPos"></param>
+    /// <param name="targetPos"></param>
     public void StartFindPath(Vector2 startPos, Vector2 targetPos)
     {
         StartCoroutine(FindPath(startPos, targetPos));

@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Handles pathfinding grid
+/// </summary>
 public class Grid : MonoBehaviour
 {
     public bool       displayGridGizmos;
@@ -11,10 +14,8 @@ public class Grid : MonoBehaviour
     public List<Node> Path;
     private Node[,]   grid;
 
-    private float nodeDiameter;
-    private int gridSizeX, gridSizeY;
-
-
+    private float     nodeDiameter;
+    private int       gridSizeX, gridSizeY;
 
     /// <summary>
     /// Creates a grid for the pathfinding algorithm.
@@ -45,12 +46,8 @@ public class Grid : MonoBehaviour
     /// <summary>
     /// Returns a node corresponding to the given world position.
     /// </summary>
-    /// <param name="worldPosition">
-    /// Point in world space.
-    /// </param>
-    /// <returns>
-    /// Corresponding node.
-    /// </returns>
+    /// <param name="worldPosition">Point in world space.</param>
+    /// <returns>Corresponding node.</returns>
     public Node NodeFromWorldPoint(Vector2 worldPosition)
     {
         float percentX = (worldPosition.x + GridWorldSize.x / 2) / GridWorldSize.x;

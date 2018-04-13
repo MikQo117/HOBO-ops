@@ -4,30 +4,31 @@ using UnityEngine;
 
 public class TestUnit : MonoBehaviour
 {
-    public Transform Target;
-    public float Speed = 5f;
-    private Vector2[] path;
-    private int targetIndex;
+    public Transform    Target;
+    public float        Speed = 5f;
+    private Vector2[]   path;
+    private int         targetIndex;
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            StopCoroutine(FollowPath());
-            PathRequestManager.RequestPath(transform.position, Target.position, OnPathFound); 
-        }
-    }
-
+    /// <summary>
+    /// Called when callback occurs from PathRequestManager.RequestPath().
+    /// </summary>
+    /// <param name="newPath">The new calulated path.</param>
+    /// <param name="pathSuccess">Was the pathfind successful?</param>
     public void OnPathFound(Vector2[] newPath, bool pathSuccess)
     {
         if (pathSuccess)
         {
             path = newPath;
-            StopCoroutine(FollowPath());
-            StartCoroutine(FollowPath());
+            targetIndex = 0;
+            StopCoroutine("FollowPath");
+            StartCoroutine("FollowPath");
+            pathSuccess = false;
         }
     }
 
+    /// <summary>
+    /// Co-routine to move along the found path.
+    /// </summary>
     private IEnumerator FollowPath()
     {
         Vector2 currentWaypoint = path[0];
@@ -49,6 +50,17 @@ public class TestUnit : MonoBehaviour
             transform.position = Vector3.MoveTowards(transform.position, currentWaypoint, Speed * Time.deltaTime);
             yield return null;
         }
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            StopCoroutine("FollowPath");
+            PathRequestManager.RequestPath(transform.position, Target.position, OnPathFound); 
+        }
+        if (Input.GetKeyDown(KeyCode.RightShift))
+            StopCoroutine("FollowPath");
     }
 
     public void OnDrawGizmos()

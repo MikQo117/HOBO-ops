@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// A heap data structure to reorder arrays more efficiently
+/// </summary>
+/// <typeparam name="T">Item type to store in the heap, must inherit IHeapItem<T></typeparam>
 public class Heap<T> where T : IHeapItem<T>
 {
     T[] items;

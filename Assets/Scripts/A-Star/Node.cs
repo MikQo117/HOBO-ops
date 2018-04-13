@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// A single node of a grid. See Grid.cs.
+/// </summary>
 public class Node : IHeapItem<Node>
 {
     public Vector2 WorldPosition;
