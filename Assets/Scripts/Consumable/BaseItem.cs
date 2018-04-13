@@ -5,25 +5,29 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "TempAsset", menuName = "BaseItem", order = 1)]
 public class BaseItem : ScriptableObject
 {
-
-    public string name;
-
-    public Sprite sprite;
-
     //Consumable variables
+    private string Objectname;
+    [SerializeField]
+    private int    healthAmount;
+    [SerializeField]
+    private int    sanityAmount;
+    [SerializeField]
+    private int    drunkAmount;
+    [SerializeField]
+    private int    moneyAmount;
+    [SerializeField]
+    private int    baseItemID;
+    [SerializeField]
+    private bool   consumable;
 
-    public int healthAmount;
-
-    public int sanityAmount;
-
-    public int drunkAmount;
-
+    public Sprite  ObjectSprite;
 
     //Get & Set
     public int HealthAmount
     {
         get
-        {
+        { 
+        
             return healthAmount;
         }
 
@@ -50,7 +54,7 @@ public class BaseItem : ScriptableObject
     {
         get
         {
-            return drunkAmount;
+                return drunkAmount;
         }
 
         private set
@@ -59,5 +63,24 @@ public class BaseItem : ScriptableObject
         }
     }
 
-    public string ID { get { return name; } set { value = name; } }
+    public int MoneyAmount
+    {
+        get
+        {
+            if (!Consumable)
+                return moneyAmount;
+            else
+                return 0;
+        }
+
+        set
+        {
+            moneyAmount = value;
+        }
+
+    }
+
+    public int BaseItemID { get { return baseItemID; } set { value = baseItemID; } }
+
+    public bool Consumable { get { return consumable; } set { consumable = value; } }
 }

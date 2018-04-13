@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
+    //Remove When Pedestrians are throwing trash
+
     public static Spawner pickup;
     [SerializeField]
     public GameObject TempPickUp;
@@ -35,7 +37,6 @@ public class Spawner : MonoBehaviour
     }
     public void SpawnBottle()
     {
-        int randomNumber = Random.Range(1, 1);
         GameObject clone = Instantiate(TempPickUp, Spawnlocations[Random.Range(0, 2)].position, Quaternion.identity);
     }
 

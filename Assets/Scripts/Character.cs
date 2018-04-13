@@ -4,47 +4,48 @@ using UnityEngine;
 public abstract class Character : MonoBehaviour
 {
     //Character stats
-    protected int health = 10;
-    protected int sanity = 10;
-    private int drunkAmount;
-    protected float stamina;
-    protected float staminaRecoveryRate;
+    protected int          health = 10;
+    protected int          sanity = 10;
+    private int            drunkAmount;
+    protected float        stamina;
+    protected float        staminaRecoveryRate;
 
     //Max stats
-    protected int maxHealth = 100;
-    protected int maxSanity = 100;
-    protected int maxStamina;
+    protected int          maxHealth = 100;
+    protected int          maxSanity = 100;
+    protected int          maxStamina;
 
     //Character movement
     [SerializeField]
-    protected float movementSpeed;
+    protected float        movementSpeed;
     [SerializeField]
-    protected float sprintSpeed;
-    protected Vector3 movementDirection;
-    protected bool sprinting;
+    protected float        sprintSpeed;
+    protected Vector3      movementDirection;
+    protected bool         sprinting;
 
     //Collision variables
     [SerializeField]
-    protected int NoOfRays;
+    protected int          NoOfRays;
     [SerializeField]
-    private LayerMask raycastMask;
-    private float lengthOfRay;
+    private LayerMask      raycastMask;
+    private float          lengthOfRay;
 
     //Animation variables
-    protected Animator animator;
+    protected Animator     animator;
+    private Sprite         currentIdleSprite = null;
     [SerializeField]
-    private Sprite currentIdleSprite = null;
-    [SerializeField]
-    private Sprite[] idleSprites;
+    private Sprite[]       idleSprites;
     private SpriteRenderer Sr;
 
     //Exhaust variables
-    protected bool exhausted; //Must disable sprinting
-    private float exhaustTimer;
-    protected float exhaustDuration;
+    protected bool         exhausted; //Must disable sprinting
+    private float          exhaustTimer;
+    protected float        exhaustDuration;
 
+    //Inventory variable
+    protected Inventory characterInventory;
     //Get & Set
-    protected int Health
+    protected int   Health
     {
         get
         {
@@ -63,7 +64,7 @@ public abstract class Character : MonoBehaviour
             }
         }
     }
-    protected int Sanity
+    protected int   Sanity
     {
         get
         {
@@ -99,7 +100,7 @@ public abstract class Character : MonoBehaviour
             }
         }
     }
-    protected int DrunkAmount
+    protected int   DrunkAmount
     {
         get
         {
@@ -111,10 +112,8 @@ public abstract class Character : MonoBehaviour
             drunkAmount = value;
         }
     }
-
-
-
-
+    [SerializeField]
+    public BaseItem[] ass;
 
     // Use this for initialization
     protected virtual void Start()
@@ -122,7 +121,7 @@ public abstract class Character : MonoBehaviour
         exhaustTimer = exhaustDuration;
         lengthOfRay = GetComponent<Collider2D>().bounds.extents.magnitude / 2;
         Sr = GetComponent<SpriteRenderer>();
-
+        characterInventory = gameObject.AddComponent<Inventory>();
         animator = GetComponent<Animator>();
     }
 
@@ -133,8 +132,8 @@ public abstract class Character : MonoBehaviour
         RecoverStamina();
         ExhaustTimer();
         Collision();
-        ApplyMovement();
         AnimationChanger();
+        ApplyMovement();
     }
 
     protected virtual void ApplyMovement()
@@ -213,14 +212,15 @@ public abstract class Character : MonoBehaviour
                 return;
             }
             //Checking the litter we hit and adding it to inventory
-            if (LitterHit && Inventory.Inv.InventoryList.Count <= 4)
+            if (LitterHit)
             {
-                var result = from a in LitterHit.collider.gameObject.GetComponent<Consumable>().ItemBase
-                             where a.ID.ToString() == LitterHit.collider.gameObject.name
+                characterInventory.AddItemToInventory(LitterHit.collider.GetComponent<Consumable>());
+                /*var result = from a in LitterHit.collider.gameObject.GetComponent<Consumable>().ItemBase
+                             where a.BaseItemID == LitterHit.collider.GetComponent<Consumable>().ConsumableID
                              select a;
-                Inventory.Inv.InventoryList.Add(result.SingleOrDefault());
-                Inventory.Inv.AddButtonSprite();
-                Debug.Log(result);
+                ass = result.ToArray();
+                characterInventory.InventoryList.Add(result.SingleOrDefault());*/
+
                 Destroy(LitterHit.collider.gameObject);
             }
 
@@ -280,7 +280,7 @@ public abstract class Character : MonoBehaviour
         if (movementDirection.x != 0 && movementDirection.y < 0) { animator.Play(AnimationClips.WalkstrafeDown.ToString()); currentIdleSprite = idleSprites[2]; SpriteFlip(); }
 
         //Idle
-        if (movementDirection.x == 0 && movementDirection.y == 0) { animator.Play(AnimationClips.Idle.ToString()); Sr.sprite = idleSprites[2]; }
+        if (movementDirection.x == 0 && movementDirection.y == 0) { animator.Play(AnimationClips.Idle.ToString()); Sr.sprite = currentIdleSprite; }
 
     }
 

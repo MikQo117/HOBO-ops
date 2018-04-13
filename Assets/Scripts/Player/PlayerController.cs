@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Linq;
 using UnityEngine;
 
 public class PlayerController : Character
@@ -28,11 +27,12 @@ public class PlayerController : Character
     {
     }
 
-    public  override  void ConsumeItem(int index)
+    public override void ConsumeItem(int index)
     {
-        Health      += Inventory.Inv.InventoryList[index].HealthAmount;
-        Sanity      += Inventory.Inv.InventoryList[index].SanityAmount;
-        DrunkAmount += Inventory.Inv.InventoryList[index].DrunkAmount;
+       Health      += characterInventory.InventoryList[index].HealthAmount;
+       Sanity      += characterInventory.InventoryList[index].SanityAmount;
+       DrunkAmount += characterInventory.InventoryList[index].DrunkAmount;
+       characterInventory.InventoryList.Remove(characterInventory.InventoryList.Where(x => x.BaseItemID == index).First());
     }
 
     protected override void Death()
