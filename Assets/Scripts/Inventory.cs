@@ -5,9 +5,8 @@ using System.Linq;
 
 public class Inventory : MonoBehaviour
 {
-    //Inventory Variables Which can be called by other scripts
-    public List<BaseItem>     InventoryList;
-
+    //Inventory variable which is used by character class
+    public List<BaseItem> InventoryList = new List<BaseItem>();
 
     public void AddItemToInventory(Consumable item)
     {
@@ -15,8 +14,11 @@ public class Inventory : MonoBehaviour
         InventoryList.Add(itemOfInterest.First());
     }  
 
-    public void RemoveItemFromInventory(BaseItem item)
+    public void RemoveItemFromInventory(int ItemID)
     {
-        InventoryList.Remove(item);
+        if (InventoryList.Count(x => x.BaseItemID == ItemID) != 0)
+        {
+            InventoryList.Remove(InventoryList.Where(x => x != null && x.BaseItemID == ItemID).FirstOrDefault());
+        }
     }
 }

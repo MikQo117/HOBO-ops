@@ -7,29 +7,73 @@ public class Consumable : MonoBehaviour
 {
 
     //Consumable variables
-    public List<BaseItem> ItemBase;  
-    public int HealthAmount;
-    public int SanityAmount;
-    public int DrunkAmount;
-    public string Objectname;
-    public int ConsumableID;
+    [SerializeField]
+    private List<BaseItem> itemBase;
+    private int            healthAmount;
+    private int            sanityAmount;
+    private int            drunkAmount;
+    private string         objectname;
+    private int            consumableID;
 
+    //Consumable Getters
+    public int HealthAmount
+    {
+        get
+        {
+            return healthAmount;
+        }
+    }
 
-    //Assign Scriptableobjects data to Gameobject
-    void InfromationAssignToGameobject()
+    public int SanityAmount
+    {
+        get
+        {
+            return sanityAmount;
+        }
+
+    }
+
+    public int DrunkAmount
+    {
+        get
+        {
+            return drunkAmount;
+        }
+
+    }
+
+    public int ConsumableID
+    {
+        get
+        {
+            return consumableID;
+        }
+
+    }
+
+    public List<BaseItem> ItemBase
+    {
+        get
+        {
+            return itemBase;
+        }
+    }
+
+    //Assign Scriptableobjects data to monobehaviour script
+    private void InfromationAssignToGameobject()
     {
         int r = Random.Range(0, 2);
         name = ItemBase[r].name;
         gameObject.name = ItemBase[r].name;
-        HealthAmount = ItemBase[r].HealthAmount;
-        SanityAmount = ItemBase[r].SanityAmount;
-        DrunkAmount = ItemBase[r].DrunkAmount;
-        ConsumableID = ItemBase[r].BaseItemID;
+        healthAmount = ItemBase[r].HealthAmount;
+        sanityAmount = ItemBase[r].SanityAmount;
+        drunkAmount = ItemBase[r].DrunkAmount;
+        consumableID = ItemBase[r].BaseItemID;
         GetComponent<SpriteRenderer>().sprite = ItemBase[r].ObjectSprite;
     }
 
     // Use this for initialization
-    void Start()
+    private void Start()
     {
         InfromationAssignToGameobject();
     }

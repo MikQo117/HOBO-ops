@@ -19,8 +19,8 @@ public class BaseItem : ScriptableObject
     private int    baseItemID;
     [SerializeField]
     private bool   consumable;
-
-    public Sprite  ObjectSprite;
+    [SerializeField]
+    private Sprite  objectSprite;
 
     //Get & Set
     public int HealthAmount
@@ -83,4 +83,13 @@ public class BaseItem : ScriptableObject
     public int BaseItemID { get { return baseItemID; } set { value = baseItemID; } }
 
     public bool Consumable { get { return consumable; } set { consumable = value; } }
+
+    public Sprite ObjectSprite
+    {
+        get
+        {
+            return objectSprite;
+        }
+
+    }
 }

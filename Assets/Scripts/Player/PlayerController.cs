@@ -3,22 +3,11 @@ using UnityEngine;
 
 public class PlayerController : Character
 {
+    //Player Variables
     public Consumable              Item;
-
     public static PlayerController pl;
+    protected Inventory            PlayerInventory;
 
-    // Use this for initialization
-    protected override void Start()
-    {
-        base.Start();
-        pl = this;
-    }
-
-    // Update is called once per frame
-    protected override void Update()
-    {
-        base.Update();
-    }
     protected override void Attack()
     {
     }
@@ -27,17 +16,25 @@ public class PlayerController : Character
     {
     }
 
-    public override void ConsumeItem(int index)
+    public override void ConsumeItem(int itemID)
     {
-       Health      += characterInventory.InventoryList[index].HealthAmount;
-       Sanity      += characterInventory.InventoryList[index].SanityAmount;
-       DrunkAmount += characterInventory.InventoryList[index].DrunkAmount;
-       characterInventory.InventoryList.Remove(characterInventory.InventoryList.Where(x => x.BaseItemID == index).First());
+        if (characterInventory.InventoryList.Exists(x => x.BaseItemID == itemID)) 
+        {
+            if (characterInventory.InventoryList.Find(x => x.BaseItemID == itemID).Consumable) 
+            {
+                var ConsumableItem = characterInventory.InventoryList.Find(x => x.BaseItemID == itemID);
+
+                Health += ConsumableItem.HealthAmount;
+                Sanity += ConsumableItem.SanityAmount;
+                DrunkAmount += ConsumableItem.DrunkAmount;
+                characterInventory.RemoveItemFromInventory(itemID);
+            }
+        }
     }
 
     protected override void Death()
     {
-        
+
     }
 
     protected override void Gather()
@@ -55,5 +52,23 @@ public class PlayerController : Character
         else
             sprinting = false;
 
+    }
+
+    public Inventory InventoryGetter()
+    {
+        return characterInventory;
+    }
+
+    // Use this for initialization
+    protected override void Start()
+    {
+        base.Start();
+        pl = this;
+    }
+
+    // Update is called once per frame
+    protected override void Update()
+    {
+        base.Update();
     }
 }

@@ -43,7 +43,7 @@ public abstract class Character : MonoBehaviour
     protected float        exhaustDuration;
 
     //Inventory variable
-    protected Inventory characterInventory;
+    protected Inventory    characterInventory;
     //Get & Set
     protected int   Health
     {
@@ -112,8 +112,7 @@ public abstract class Character : MonoBehaviour
             drunkAmount = value;
         }
     }
-    [SerializeField]
-    public BaseItem[] ass;
+
 
     // Use this for initialization
     protected virtual void Start()
@@ -153,7 +152,7 @@ public abstract class Character : MonoBehaviour
 
     protected abstract void Death();
     protected abstract void Attack();
-    public abstract void ConsumeItem(int index);
+    public abstract void ConsumeItem(int itemID);
     protected abstract void Gather();
     protected abstract void Beg();
 
@@ -214,13 +213,7 @@ public abstract class Character : MonoBehaviour
             //Checking the litter we hit and adding it to inventory
             if (LitterHit)
             {
-                characterInventory.AddItemToInventory(LitterHit.collider.GetComponent<Consumable>());
-                /*var result = from a in LitterHit.collider.gameObject.GetComponent<Consumable>().ItemBase
-                             where a.BaseItemID == LitterHit.collider.GetComponent<Consumable>().ConsumableID
-                             select a;
-                ass = result.ToArray();
-                characterInventory.InventoryList.Add(result.SingleOrDefault());*/
-
+                characterInventory.AddItemToInventory(LitterHit.collider.gameObject.GetComponent<Consumable>());
                 Destroy(LitterHit.collider.gameObject);
             }
 
@@ -229,8 +222,6 @@ public abstract class Character : MonoBehaviour
                 origin += new Vector2(0, distanceBetweenRaysY);
             else
                 origin += new Vector2(distanceBetweenRaysX, 0);
-
-
         }
     }
 
