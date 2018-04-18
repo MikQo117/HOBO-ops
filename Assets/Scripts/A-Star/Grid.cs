@@ -7,7 +7,7 @@ using UnityEngine;
 /// </summary>
 public class Grid : MonoBehaviour
 {
-    public bool       displayGridGizmos;
+    public bool       DisplayGridGizmos;
     public LayerMask  UnwalkableMask;
     public Vector2    GridWorldSize;
     public float      NodeRadius;
@@ -125,7 +125,7 @@ public class Grid : MonoBehaviour
     {
         Gizmos.DrawWireCube(transform.position, new Vector3(GridWorldSize.x, GridWorldSize.y, 1f));
 
-        if (grid != null && displayGridGizmos)
+        if (grid != null && DisplayGridGizmos)
         {
             foreach (Node n in grid)
             {

@@ -6,41 +6,49 @@ using UnityEngine;
 public class PainterScript : MonoBehaviour
 {
 
-    private List<SpriteRenderer> rend;
     private List<GameObject>     objects;
-    private List<Vector3>        positions;
-    public bool                  sorting;
+    private List<SortObject>     sortList;
+    public bool                  Sorting;
 
     // Use this for initialization
     void Start()
     {
         objects = GameObject.FindGameObjectsWithTag("Sortable").ToList();
-        /*for (int i = 0; i < objects.Count; i++)
+        sortList = new List<SortObject>();
+        foreach (GameObject item in objects)
         {
-            positions.Add(objects[i].transform.position);
+            sortList.Add(new SortObject(item.transform, item.GetComponent<SpriteRenderer>()));
         }
-
-        for (int i = 0; i < objects.Count; i++)
-        {
-            rend.Add(objects[i].GetComponent<SpriteRenderer>());
-        }*/
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (sorting)
+        if (Sorting)
         {
             //Sort positions list
-            objects = objects.OrderByDescending(v => v.transform.position.y).ThenByDescending(v => v.transform.position.x).ToList();
+            sortList = sortList.OrderByDescending(v => v.Transform.position.y).ThenByDescending(v => v.Transform.position.x).ToList();
 
             //for through and set order in layer
-            for (int i = 0; i < objects.Count; i++)
+            for (int i = 0; i < sortList.Count; i++)
             {
-                objects[i].GetComponent<SpriteRenderer>().sortingOrder = i;
+                sortList[i].SpriteRenderer.sortingOrder = i;
             }
         }
+    }
 
-        //Simple, right?
+    /// <summary>
+    /// Struct to hold necessary data to sort objects in Unity.
+    /// </summary>
+    private struct SortObject
+    {
+        public Transform      Transform;
+        public SpriteRenderer SpriteRenderer;
+
+        public SortObject(Transform transform, SpriteRenderer spriteRenderer)
+        {
+            Transform = transform;
+            SpriteRenderer = spriteRenderer;
+        }
     }
 }

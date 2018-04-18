@@ -4,7 +4,6 @@ using System;
 using UnityEngine;
 
 /// <summary>
-/// A Manager to handle pathfinding requests.
 /// </summary>
 public class PathRequestManager : MonoBehaviour
 {
