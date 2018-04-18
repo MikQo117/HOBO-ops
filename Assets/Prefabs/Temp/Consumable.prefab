@@ -53,9 +53,20 @@ BoxCollider2D:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_UsedByEffector: 0
+  m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0.5}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 2}
+  m_EdgeRadius: 0
 --- !u!114 &114200910263625518
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -67,14 +78,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aea8d49569570494d9b8e078f9d26c25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ItemBase:
+  itemBase:
   - {fileID: 11400000, guid: 6f6f50788749866428ababe06b3a8ad3, type: 2}
   - {fileID: 11400000, guid: feb49319b31285f4d9fdc4c14051f899, type: 2}
-  HealthAmount: 0
-  SanityAmount: 0
-  DrunkAmount: 0
-  Objectname: 
-  ConsumableID: 0
 --- !u!212 &212943490656850724
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -105,8 +111,14 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 0

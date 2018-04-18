@@ -62,13 +62,13 @@ public class Consumable : MonoBehaviour
     //Assign Scriptableobjects data to monobehaviour script
     private void InfromationAssignToGameobject()
     {
-        int r = Random.Range(0, 2);
-        name = ItemBase[r].name;
-        gameObject.name = ItemBase[r].name;
-        healthAmount = ItemBase[r].HealthAmount;
-        sanityAmount = ItemBase[r].SanityAmount;
-        drunkAmount = ItemBase[r].DrunkAmount;
-        consumableID = ItemBase[r].BaseItemID;
+        int r                                 = Random.Range(0, 2);
+        name                                  = ItemBase[r].Objectname;
+        gameObject.name                       = ItemBase[r].Objectname;
+        healthAmount                          = ItemBase[r].HealthAmount;
+        sanityAmount                          = ItemBase[r].SanityAmount;
+        drunkAmount                           = ItemBase[r].DrunkAmount;
+        consumableID                          = ItemBase[r].BaseItemID;
         GetComponent<SpriteRenderer>().sprite = ItemBase[r].ObjectSprite;
     }
 

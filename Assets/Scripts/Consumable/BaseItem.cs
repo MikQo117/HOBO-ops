@@ -6,7 +6,8 @@ using UnityEngine;
 public class BaseItem : ScriptableObject
 {
     //Consumable variables
-    private string Objectname;
+    [SerializeField]
+    private string objectname;
     [SerializeField]
     private int    healthAmount;
     [SerializeField]
@@ -91,5 +92,13 @@ public class BaseItem : ScriptableObject
             return objectSprite;
         }
 
+    }
+
+    public string Objectname
+    {
+        get
+        {
+            return objectname;
+        }
     }
 }
