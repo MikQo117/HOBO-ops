@@ -4,9 +4,9 @@ using UnityEngine;
 public abstract class Character : MonoBehaviour
 {
     //Character stats
-    protected int          health = 10;
-    protected int          sanity = 10;
-    private int            drunkAmount;
+    protected float        health = 10;
+    protected float        sanity = 10;
+    protected float        drunkAmount;
     protected float        stamina;
     protected float        staminaRecoveryRate;
 
@@ -14,6 +14,11 @@ public abstract class Character : MonoBehaviour
     protected int          maxHealth = 100;
     protected int          maxSanity = 100;
     protected int          maxStamina;
+
+    //stat decay variables
+    public float HealthDecay;
+    public float SanityDecay;
+    public float DrunkDecay;
 
     //Character movement
     [SerializeField]
@@ -45,7 +50,7 @@ public abstract class Character : MonoBehaviour
     //Inventory variable
     protected Inventory    characterInventory;
     //Get & Set
-    protected int   Health
+    public float   Health
     {
         get
         {
@@ -64,7 +69,7 @@ public abstract class Character : MonoBehaviour
             }
         }
     }
-    protected int   Sanity
+    public float   Sanity
     {
         get
         {
@@ -80,7 +85,7 @@ public abstract class Character : MonoBehaviour
             sanity = Mathf.Clamp(value, 0, maxSanity);
         }
     }
-    protected float Stamina
+    public float   Stamina
     {
         get
         {
@@ -100,7 +105,7 @@ public abstract class Character : MonoBehaviour
             }
         }
     }
-    protected int   DrunkAmount
+    public float   DrunkAmount
     {
         get
         {
@@ -113,7 +118,10 @@ public abstract class Character : MonoBehaviour
         }
     }
 
+    protected virtual void Awake()
+    {
 
+    }
     // Use this for initialization
     protected virtual void Start()
     {
@@ -128,6 +136,7 @@ public abstract class Character : MonoBehaviour
     protected virtual void Update()
     {
         GetInput();
+        StatsDecay();
         RecoverStamina();
         ExhaustTimer();
         Collision();
@@ -280,6 +289,13 @@ public abstract class Character : MonoBehaviour
         bool flip;
         flip = movementDirection.x > 0 ? true : false;
         Sr.flipX = flip;
+    }
+
+    protected void StatsDecay()
+    {
+        Health      -= HealthDecay * Time.deltaTime;
+        Sanity      -= SanityDecay * Time.deltaTime;
+        DrunkAmount -= DrunkDecay * Time.deltaTime;
     }
 
     enum AnimationClips

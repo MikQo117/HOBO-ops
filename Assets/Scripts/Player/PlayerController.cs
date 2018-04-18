@@ -63,12 +63,16 @@ public class PlayerController : Character
     protected override void Start()
     {
         base.Start();
-        pl = this;
     }
 
     // Update is called once per frame
     protected override void Update()
     {
         base.Update();
+    }
+
+    protected override void Awake()
+    {
+        pl = this;
     }
 }
