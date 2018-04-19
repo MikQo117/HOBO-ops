@@ -7,18 +7,19 @@ public abstract class Character : MonoBehaviour
     protected float        health = 10;
     protected float        sanity = 10;
     protected float        drunkAmount;
-    protected float        stamina;
-    protected float        staminaRecoveryRate;
+    protected float        stamina = 100;
+    protected float        staminaRecoveryRate = 2;
 
     //Max stats
     protected int          maxHealth = 100;
     protected int          maxSanity = 100;
-    protected int          maxStamina;
+    protected int          maxStamina= 100;
 
     //stat decay variables
-    public float HealthDecay;
-    public float SanityDecay;
-    public float DrunkDecay;
+    protected float healthDecay    = 1/4;
+    protected float sanityDecay    = 1/10;
+    protected float drunkDecay     = 1/10;
+    protected float staminaDecay   = 10;
 
     //Character movement
     [SerializeField]
@@ -43,12 +44,14 @@ public abstract class Character : MonoBehaviour
     private SpriteRenderer Sr;
 
     //Exhaust variables
+    [SerializeField]
     protected bool         exhausted; //Must disable sprinting
     private float          exhaustTimer;
-    protected float        exhaustDuration;
+    protected float        exhaustDuration = 5;
 
     //Inventory variable
     protected Inventory    characterInventory;
+
     //Get & Set
     public float   Health
     {
@@ -118,36 +121,12 @@ public abstract class Character : MonoBehaviour
         }
     }
 
-    protected virtual void Awake()
-    {
-
-    }
-    // Use this for initialization
-    protected virtual void Start()
-    {
-        exhaustTimer = exhaustDuration;
-        lengthOfRay = GetComponent<Collider2D>().bounds.extents.magnitude / 2;
-        Sr = GetComponent<SpriteRenderer>();
-        characterInventory = gameObject.AddComponent<Inventory>();
-        animator = GetComponent<Animator>();
-    }
-
-    // Update is called once per frame
-    protected virtual void Update()
-    {
-        GetInput();
-        StatsDecay();
-        RecoverStamina();
-        ExhaustTimer();
-        Collision();
-        AnimationChanger();
-        ApplyMovement();
-    }
 
     protected virtual void ApplyMovement()
     {
-        if (sprinting)
+        if (sprinting && !exhausted)
         {
+            Stamina -= staminaDecay * Time.deltaTime;
             transform.Translate(movementDirection * sprintSpeed * Time.deltaTime);
         }
         else
@@ -181,6 +160,14 @@ public abstract class Character : MonoBehaviour
             if (Stamina < maxStamina)
             {
                 Stamina += staminaRecoveryRate * Time.deltaTime;
+            }
+        }
+        if(sprinting)
+        {
+            if(Stamina <= 0)
+            {
+                Exhausted();
+                ExhaustTimer();
             }
         }
     }
@@ -293,9 +280,9 @@ public abstract class Character : MonoBehaviour
 
     protected void StatsDecay()
     {
-        Health      -= HealthDecay * Time.deltaTime;
-        Sanity      -= SanityDecay * Time.deltaTime;
-        DrunkAmount -= DrunkDecay * Time.deltaTime;
+        Health      -= healthDecay * Time.deltaTime;
+        Sanity      -= sanityDecay * Time.deltaTime;
+        DrunkAmount -= drunkDecay * Time.deltaTime;
     }
 
     enum AnimationClips
@@ -306,5 +293,30 @@ public abstract class Character : MonoBehaviour
         WalkStrafeUp,
         WalkstrafeDown,
         WalkUp
+    }
+    protected virtual void Awake()
+    {
+
+    }
+    // Use this for initialization
+    protected virtual void Start()
+    {
+        exhaustTimer = exhaustDuration;
+        lengthOfRay = GetComponent<Collider2D>().bounds.extents.magnitude / 2;
+        Sr = GetComponent<SpriteRenderer>();
+        characterInventory = gameObject.AddComponent<Inventory>();
+        animator = GetComponent<Animator>();
+    }
+
+    // Update is called once per frame
+    protected virtual void Update()
+    {
+        GetInput();
+        StatsDecay();
+        RecoverStamina();
+        ExhaustTimer();
+        Collision();
+        AnimationChanger();
+        ApplyMovement();
     }
 }
