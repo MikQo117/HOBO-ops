@@ -1,50 +1,51 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Linq;
 using UnityEngine;
 
 public abstract class Character : MonoBehaviour
 {
     //Character stats
-    protected int health;
-    protected int sanity;
-    protected float stamina;
-    protected float staminaRecoveryRate;
+    protected int          health = 10;
+    protected int          sanity = 10;
+    private int            drunkAmount;
+    protected float        stamina;
+    protected float        staminaRecoveryRate;
 
     //Max stats
-    protected int maxHealth;
-    protected int maxSanity;
-    protected int maxStamina;
+    protected int          maxHealth = 100;
+    protected int          maxSanity = 100;
+    protected int          maxStamina;
 
     //Character movement
     [SerializeField]
-    protected float movementSpeed;
+    protected float        movementSpeed;
     [SerializeField]
-    protected float sprintSpeed;
-    protected Vector3 movementDirection;
-    protected bool sprinting;
+    protected float        sprintSpeed;
+    protected Vector3      movementDirection;
+    protected bool         sprinting;
 
     //Collision variables
     [SerializeField]
-    protected int NoOfRays;
+    protected int          NoOfRays;
     [SerializeField]
-    private LayerMask raycastMask;
-    private float lengthOfRay;
+    private LayerMask      raycastMask;
+    private float          lengthOfRay;
 
     //Animation variables
-    protected Animator animator;
+    protected Animator     animator;
+    private Sprite         currentIdleSprite = null;
     [SerializeField]
-    private Sprite currentIdleSprite = null;
-    [SerializeField]
-    private Sprite[] idleSprites;
+    private Sprite[]       idleSprites;
     private SpriteRenderer Sr;
 
     //Exhaust variables
-    protected bool exhausted; //Must disable sprinting
-    private float exhaustTimer;
-    protected float exhaustDuration;
+    protected bool         exhausted; //Must disable sprinting
+    private float          exhaustTimer;
+    protected float        exhaustDuration;
 
+    //Inventory variable
+    protected Inventory    characterInventory;
     //Get & Set
-    protected int Health
+    protected int   Health
     {
         get
         {
@@ -63,7 +64,7 @@ public abstract class Character : MonoBehaviour
             }
         }
     }
-    protected int Sanity
+    protected int   Sanity
     {
         get
         {
@@ -99,6 +100,18 @@ public abstract class Character : MonoBehaviour
             }
         }
     }
+    protected int   DrunkAmount
+    {
+        get
+        {
+            return drunkAmount;
+        }
+
+        set
+        {
+            drunkAmount = value;
+        }
+    }
 
 
     // Use this for initialization
@@ -107,7 +120,7 @@ public abstract class Character : MonoBehaviour
         exhaustTimer = exhaustDuration;
         lengthOfRay = GetComponent<Collider2D>().bounds.extents.magnitude / 2;
         Sr = GetComponent<SpriteRenderer>();
-
+        characterInventory = gameObject.AddComponent<Inventory>();
         animator = GetComponent<Animator>();
     }
 
@@ -117,8 +130,8 @@ public abstract class Character : MonoBehaviour
         GetInput();
         RecoverStamina();
         ExhaustTimer();
-        AnimationChanger();
         Collision();
+        AnimationChanger();
         ApplyMovement();
     }
 
@@ -126,11 +139,11 @@ public abstract class Character : MonoBehaviour
     {
         if (sprinting)
         {
-            transform.Translate(movementDirection  * sprintSpeed * Time.deltaTime);
+            transform.Translate(movementDirection * sprintSpeed * Time.deltaTime);
         }
         else
         {
-            transform.Translate(movementDirection  * movementSpeed * Time.deltaTime);
+            transform.Translate(movementDirection * movementSpeed * Time.deltaTime);
         }
 
     }
@@ -139,7 +152,7 @@ public abstract class Character : MonoBehaviour
 
     protected abstract void Death();
     protected abstract void Attack();
-    protected abstract void ConsumeItem();
+    public abstract void ConsumeItem(int itemID);
     protected abstract void Gather();
     protected abstract void Beg();
 
@@ -167,7 +180,7 @@ public abstract class Character : MonoBehaviour
         Ray2D ray;
         Vector2 origin;
 
-        //Startingpoint determination from characters collider whenever the character is moving horizontally or vertically
+        //Origin starting determination from characters collider whenever the character is moving horizontally or vertically
         if (movementDirection.y != 0)
         {
             origin = new Vector2(GetComponent<Collider2D>().bounds.min.x, GetComponent<Collider2D>().bounds.center.y);
@@ -188,20 +201,30 @@ public abstract class Character : MonoBehaviour
             ray = new Ray2D(origin, (movementDirection).normalized);
             Debug.DrawRay(ray.origin, ray.direction, Color.blue);
 
-            RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction, lengthOfRay, raycastMask);
-            if (hit)
+            RaycastHit2D BuildingHit = Physics2D.Raycast(ray.origin, ray.direction, lengthOfRay, raycastMask);
+
+            RaycastHit2D LitterHit = Physics2D.Raycast(ray.origin, ray.direction, lengthOfRay, 1 << 8);
+
+            if (BuildingHit)
             {
-                movementDirection = movementDirection - Vector3.Project(movementDirection, hit.normal.normalized);
+                movementDirection = movementDirection - Vector3.Project(movementDirection, BuildingHit.normal.normalized);
                 return;
             }
-                //origin change for next raycast based on character movement
+            //Checking the litter we hit and adding it to inventory
+            if (LitterHit)
+            {
+                characterInventory.AddItemToInventory(LitterHit.collider.gameObject.GetComponent<Consumable>());
+                Destroy(LitterHit.collider.gameObject);
+            }
+
+            //Adding new raycast to next point
             if (movementDirection.x != 0 && movementDirection.y == 0)
                 origin += new Vector2(0, distanceBetweenRaysY);
             else
                 origin += new Vector2(distanceBetweenRaysX, 0);
-
         }
     }
+
 
     protected virtual void Exhausted()
     {
@@ -210,6 +233,7 @@ public abstract class Character : MonoBehaviour
             exhausted = true;
         }
     }
+
     protected void ExhaustTimer()
     {
         //Only tick when exhausted
@@ -247,7 +271,7 @@ public abstract class Character : MonoBehaviour
         if (movementDirection.x != 0 && movementDirection.y < 0) { animator.Play(AnimationClips.WalkstrafeDown.ToString()); currentIdleSprite = idleSprites[2]; SpriteFlip(); }
 
         //Idle
-        if (movementDirection.x == 0 && movementDirection.y == 0) { animator.Play(AnimationClips.Idle.ToString()); Sr.sprite = idleSprites[2]; }
+        if (movementDirection.x == 0 && movementDirection.y == 0) { animator.Play(AnimationClips.Idle.ToString()); Sr.sprite = currentIdleSprite; }
 
     }
 

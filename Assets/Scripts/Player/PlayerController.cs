@@ -1,21 +1,13 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Linq;
 using UnityEngine;
 
 public class PlayerController : Character
 {
+    //Player Variables
+    public Consumable              Item;
+    public static PlayerController pl;
+    protected Inventory            PlayerInventory;
 
-    // Use this for initialization
-    protected override void Start()
-    {
-        base.Start();
-    }
-
-    // Update is called once per frame
-    protected override void Update()
-    {
-        base.Update();
-    }
     protected override void Attack()
     {
     }
@@ -24,12 +16,25 @@ public class PlayerController : Character
     {
     }
 
-    protected override void ConsumeItem()
+    public override void ConsumeItem(int itemID)
     {
+        if (characterInventory.InventoryList.Exists(x => x.BaseItemID == itemID)) 
+        {
+            if (characterInventory.InventoryList.Find(x => x.BaseItemID == itemID).Consumable) 
+            {
+                var ConsumableItem = characterInventory.InventoryList.Find(x => x.BaseItemID == itemID);
+
+                Health += ConsumableItem.HealthAmount;
+                Sanity += ConsumableItem.SanityAmount;
+                DrunkAmount += ConsumableItem.DrunkAmount;
+                characterInventory.RemoveItemFromInventory(itemID);
+            }
+        }
     }
 
     protected override void Death()
     {
+
     }
 
     protected override void Gather()
@@ -46,5 +51,24 @@ public class PlayerController : Character
             sprinting = true;
         else
             sprinting = false;
+
+    }
+
+    public Inventory InventoryGetter()
+    {
+        return characterInventory;
+    }
+
+    // Use this for initialization
+    protected override void Start()
+    {
+        base.Start();
+        pl = this;
+    }
+
+    // Update is called once per frame
+    protected override void Update()
+    {
+        base.Update();
     }
 }
