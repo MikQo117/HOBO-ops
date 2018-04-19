@@ -26,7 +26,7 @@ public abstract class Character : MonoBehaviour
     protected float        movementSpeed;
     [SerializeField]
     protected float        sprintSpeed;
-    protected Vector3      movementDirection;
+    public Vector3         movementDirection;
     protected bool         sprinting;
 
     //Collision variables
@@ -118,6 +118,13 @@ public abstract class Character : MonoBehaviour
         set
         {
             drunkAmount = value;
+        }
+    }
+    public bool Sprinting
+    {
+        get
+        {
+            return sprinting;
         }
     }
 
