@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class Character : MonoBehaviour
@@ -44,6 +45,11 @@ public abstract class Character : MonoBehaviour
 
     //Inventory variable
     protected Inventory    characterInventory;
+
+    //Interaction variables
+    [SerializeField]
+    protected new Collider2D collider;
+
     //Get & Set
     protected virtual int   Health
     {
@@ -122,12 +128,14 @@ public abstract class Character : MonoBehaviour
         Sr = GetComponent<SpriteRenderer>();
         characterInventory = gameObject.AddComponent<Inventory>();
         animator = GetComponent<Animator>();
+        collider = GetComponent<Collider2D>();
     }
 
     // Update is called once per frame
     protected virtual void Update()
     {
         GetInput();
+        CheckForInteraction();
         RecoverStamina();
         ExhaustTimer();
         Collision();
@@ -153,8 +161,24 @@ public abstract class Character : MonoBehaviour
     protected abstract void Death();
     protected abstract void Attack();
     public abstract void ConsumeItem(int itemID);
-    protected abstract void Gather();
+    public abstract void Gather(List<BaseItem> items);
     protected abstract void Beg();
+
+    private void CheckForInteraction()
+    {
+        //For through all interactable colliders, and see if Cointains()
+        foreach (Collider2D item in GameManager.Instance.interactablesColliders)
+        {
+            //Debug.Log("Closest point from player: " + item.bounds.ClosestPoint(transform.position));
+            //If contains, get component from collider, typeof IInteractable
+            if (collider.bounds.Intersects(item.GetComponent<Collider2D>().bounds))
+            {
+                Debug.Log("Hit interactable");
+                //Call Interact and pass this as parameter
+                item.GetComponent<IInteractable>().Interact(this);
+            }
+        }
+    }
 
     public void TakeHealthDamage(int amount)
     {

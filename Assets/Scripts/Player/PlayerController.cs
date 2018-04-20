@@ -1,12 +1,11 @@
 ﻿using System.Linq;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : Character
 {
     //Player Variables
-    public Consumable              Item;
     public static PlayerController pl;
-    protected Inventory            PlayerInventory;
 
     protected override void Attack()
     {
@@ -37,8 +36,17 @@ public class PlayerController : Character
 
     }
 
-    protected override void Gather()
+    public override void Gather(List<BaseItem> items)
     {
+        if (items != null)
+        {
+            //Some ui thing to show what we gathered
+            pl.characterInventory.AddItemToInventory(items);
+        }
+        else
+        {
+            //No items found
+        }
     }
 
     protected override void GetInput()

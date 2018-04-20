@@ -12,7 +12,12 @@ public class Inventory : MonoBehaviour
     {
         var itemOfInterest = item.ItemBase.Where(x => x != null && x.BaseItemID == item.ConsumableID);
         InventoryList.Add(itemOfInterest.First());
-    }  
+    }
+
+    public void AddItemToInventory(List<BaseItem> items)
+    {
+        InventoryList.AddRange(items);
+    }
 
     public void RemoveItemFromInventory(int ItemID)
     {
