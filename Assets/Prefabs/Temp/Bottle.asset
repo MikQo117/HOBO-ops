@@ -18,4 +18,4 @@ MonoBehaviour:
   moneyAmount: 5
   baseItemID: 0
   consumable: 0
-  objectSprite: {fileID: 21300000, guid: d2f89df532bb48740a4cb10cd1f9ba8b, type: 3}
+  objectSprite: {fileID: 21300000, guid: 25aeb82de735f4e4fb822b34bbf66a12, type: 3}

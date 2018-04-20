@@ -25,7 +25,7 @@ public abstract class Character : MonoBehaviour
     [SerializeField]
     protected float        movementSpeed;
     [SerializeField]
-    protected float        sprintSpeed;
+    public float        sprintSpeed;
     public Vector3         movementDirection;
     protected bool         sprinting;
 
