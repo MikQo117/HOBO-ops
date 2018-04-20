@@ -15,8 +15,9 @@ public class StatsUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        HealthBar.fillAmount  = Mathf.Clamp01( PlayerController.pl.Health / maxValue);
-        SanityBar.fillAmount  = Mathf.Clamp01( PlayerController.pl.Sanity / maxValue);
-        StaminaBar.fillAmount = Mathf.Clamp01( PlayerController.pl.Stamina / maxValue);
+        HealthBar.fillAmount  = Mathf.Clamp01( PlayerController.pl.HealthGetter() / maxValue);
+        SanityBar.fillAmount  = Mathf.Clamp01( PlayerController.pl.SanityGetter() / maxValue);
+        StaminaBar.fillAmount = Mathf.Clamp01( PlayerController.pl.StaminaGetter() / maxValue);
+        //PlayerController.pl.collider2D.GetComponent<PlayerController>().items
     }    
 }

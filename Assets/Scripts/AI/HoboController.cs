@@ -13,7 +13,7 @@ public class HoboController : Character
     private ThresholdState hpState;
     private ThresholdState spState;
 
-    protected override int Health
+    protected override float Health
     {
         get
         {
@@ -39,7 +39,7 @@ public class HoboController : Character
         }
     }
 
-    protected override int Sanity
+    protected override float Sanity
     {
         get
         {

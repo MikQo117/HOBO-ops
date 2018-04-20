@@ -6,7 +6,7 @@ public class PlayerController : Character
     //Player Variables
     public Consumable              Item;
     public static PlayerController pl;
-    protected Inventory            PlayerInventory;
+
 
     //Camera Variables
     private Camera                 mainCamera;
@@ -14,6 +14,30 @@ public class PlayerController : Character
     private Vector3                SprintVelocity;
     private Vector3                CameraZoffset = new Vector3(0, 0, -5);
     private float                  smoothTime = 0.3f;
+
+    public Bounds bound;
+    //Getters 
+    public Inventory InventoryGetter()
+    {
+        return characterInventory;
+    }
+
+    public float HealthGetter()
+    {
+        return Health;
+    }
+
+    public float SanityGetter()
+    {
+        return Sanity;
+    }
+
+    public float StaminaGetter()
+    {
+        return stamina;
+    }
+
+    //Methdos
 
     protected override void Attack()
     {
@@ -61,10 +85,6 @@ public class PlayerController : Character
 
     }
 
-    public Inventory InventoryGetter()
-    {
-        return characterInventory;
-    }
 
     protected void CameraMovement()
     {
@@ -80,7 +100,7 @@ public class PlayerController : Character
         }
     }
 
-    // Use this for initialization
+    //Unity Methods
     protected override void Start()
     {
         base.Start();
