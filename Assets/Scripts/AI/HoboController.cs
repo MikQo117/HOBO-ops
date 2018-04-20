@@ -70,17 +70,17 @@ public class HoboController : Character
         if (hpState == ThresholdState.Well && spState == ThresholdState.Well)
         {
             //Idle actions
-            Debug.Log("Hobo AI idle");
+            //Debug.Log("Hobo AI idle");
         }
         else if (hpState == ThresholdState.Low)
         {
             //Scavenge
-            Debug.Log("Hobo AI scavenging");
+            //Debug.Log("Hobo AI scavenging");
         }
         else
         {
             //Beg?!?
-            Debug.Log("Hobo AI critical action");
+            //Debug.Log("Hobo AI critical action");
         }
     }
 
@@ -167,7 +167,7 @@ public class HoboController : Character
     {
     }
 
-    protected override void Gather()
+    public override void Gather(List<BaseItem> items)
     {
     }
 

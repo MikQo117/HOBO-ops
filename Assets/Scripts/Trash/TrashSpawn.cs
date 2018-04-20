@@ -2,22 +2,45 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Collider2D))]
 public class TrashSpawn : MonoBehaviour, IInteractable
 {
-    public void Interact()
-    {
+    [SerializeField]
+    private List<BaseItem> items;
+    [SerializeField]
+    private new Collider2D collider;
 
+    public Collider2D GetCollider()
+    {
+        return collider;
     }
 
-    // Use this for initialization
-    void Start()
+    public void Interact(Character source)
     {
-
+        //Implementation is the same for player and ai
+        source.Gather(GiveShite());
+        items.Clear();
     }
 
-    // Update is called once per frame
-    void Update()
+    private List<BaseItem> GiveShite()
     {
+        if (items.Count > 0)
+        {
+            return items;
+        }
+        else
+        {
+            return null;
+        }
+    }
 
+    public void SpawnItems()
+    {
+        //Populates items list
+    }
+    private void Awake()
+    {
+        collider = GetComponent<Collider2D>();
+        GameManager.Instance.interactables.Add(this);
     }
 }
