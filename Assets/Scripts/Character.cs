@@ -175,7 +175,7 @@ public abstract class Character : MonoBehaviour
             {
                 Debug.Log("Hit interactable");
                 //Call Interact and pass this as parameter
-                item.GetComponent<IInteractable>().Interact(this);
+                item.GetComponent<TrashSpawn>().Interact(this);
             }
         }
     }
