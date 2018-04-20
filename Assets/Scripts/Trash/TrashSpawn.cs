@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+public class TrashSpawn : MonoBehaviour, IInteractable
 {
-    //Trash management variables
+    public void Interact()
+    {
 
+    }
 
     // Use this for initialization
     void Start()

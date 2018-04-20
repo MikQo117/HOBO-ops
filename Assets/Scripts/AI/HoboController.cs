@@ -70,14 +70,17 @@ public class HoboController : Character
         if (hpState == ThresholdState.Well && spState == ThresholdState.Well)
         {
             //Idle actions
+            Debug.Log("Hobo AI idle");
         }
         else if (hpState == ThresholdState.Low)
         {
             //Scavenge
+            Debug.Log("Hobo AI scavenging");
         }
         else
         {
             //Beg?!?
+            Debug.Log("Hobo AI critical action");
         }
     }
 
