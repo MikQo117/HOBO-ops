@@ -4,5 +4,6 @@ using UnityEngine;
 
 public interface IInteractable
 {
-    void Interact();
+    void Interact(Character source);
+    Collider2D GetCollider();
 }

@@ -1,10 +1,10 @@
 ﻿using System.Linq;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : Character
 {
     //Player Variables
-    public Consumable              Item;
     public static PlayerController pl;
 
 
@@ -49,7 +49,7 @@ public class PlayerController : Character
 
     public override void ConsumeItem(int itemID)
     {
-        if (characterInventory.InventoryList.Exists(x => x.BaseItemID == itemID))
+        if (characterInventory.InventoryList.Exists(x => x.BaseItemID == itemID)) 
         {
             if (characterInventory.InventoryList.Find(x => x.BaseItemID == itemID).Consumable)
             {
@@ -67,9 +67,17 @@ public class PlayerController : Character
     {
 
     }
-
-    protected override void Gather()
+    public override void Gather(List<BaseItem> items)
     {
+        if (items != null)
+        {
+            //Some ui thing to show what we gathered
+            pl.characterInventory.AddItemToInventory(items);
+        }
+        else
+        {
+            //No items found
+        }
     }
 
     protected override void GetInput()
@@ -85,9 +93,13 @@ public class PlayerController : Character
 
     }
 
+{
+        return characterInventory;
+}
 
     protected void CameraMovement()
     {
+
         Vector3 temp = Vector3.SmoothDamp(mainCamera.transform.position, transform.TransformPoint(movementDirection * 5), ref SprintVelocity, smoothTime);
 
         if (Sprinting)
