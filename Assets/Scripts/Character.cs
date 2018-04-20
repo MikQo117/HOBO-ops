@@ -51,11 +51,13 @@ public abstract class Character : MonoBehaviour
     protected float        exhaustDuration = 5;
 
     //Inventory variable
-    protected Inventory    characterInventory;
+    private Inventory characterInventory;
     //Interaction variables
     [SerializeField]
-    protected new Collider2D collider;    //Get & Set
-    protected virtual float Health    {
+    protected new Collider2D collider;    
+    
+    //Get & Set
+    protected virtual float Health{
         get
         {
             return health;
@@ -127,10 +129,19 @@ public abstract class Character : MonoBehaviour
         {
             return sprinting;
         }
-        collider = GetComponent<Collider2D>();
+        
     }
-
-		CheckForInteraction();
+    public Inventory CharacterInventory
+    {
+        get
+        {
+            return characterInventory;
+        }
+        set
+        {
+            characterInventory = value;
+        }
+    }
 
     protected virtual void ApplyMovement()
     {
@@ -152,6 +163,7 @@ public abstract class Character : MonoBehaviour
     protected abstract void Attack();
     public abstract void ConsumeItem(int itemID);
     public abstract void Gather(List<BaseItem> items);
+    public abstract void Return(List<BaseItem> items);
     protected abstract void Beg();
 
     private void CheckForInteraction()
@@ -159,13 +171,12 @@ public abstract class Character : MonoBehaviour
         //For through all interactable colliders, and see if Cointains()
         foreach (Collider2D item in GameManager.Instance.interactablesColliders)
         {
-            //Debug.Log("Closest point from player: " + item.bounds.ClosestPoint(transform.position));
             //If contains, get component from collider, typeof IInteractable
             if (collider.bounds.Intersects(item.GetComponent<Collider2D>().bounds))
             {
                 Debug.Log("Hit interactable");
                 //Call Interact and pass this as parameter
-                item.GetComponent<TrashSpawn>().Interact(this);
+                item.GetComponent<IInteractable>().Interact(this);
             }
         }
     }
@@ -235,7 +246,7 @@ public abstract class Character : MonoBehaviour
             //Checking the litter we hit and adding it to inventory
             if (LitterHit)
             {
-                characterInventory.AddItemToInventory(LitterHit.collider.gameObject.GetComponent<Consumable>());
+                CharacterInventory.AddItemToInventory(LitterHit.collider.gameObject.GetComponent<Consumable>());
                 Destroy(LitterHit.collider.gameObject);
             }
 
@@ -330,14 +341,16 @@ public abstract class Character : MonoBehaviour
         exhaustTimer = exhaustDuration;
         lengthOfRay = GetComponent<Collider2D>().bounds.extents.magnitude / 2;
         Sr = GetComponent<SpriteRenderer>();
-        characterInventory = gameObject.AddComponent<Inventory>();
+        CharacterInventory = gameObject.AddComponent<Inventory>();
         animator = GetComponent<Animator>();
+        collider = GetComponent<Collider2D>();
     }
 
     // Update is called once per frame
     protected virtual void Update()
     {
         GetInput();
+        CheckForInteraction();
         StatsDecay();
         RecoverStamina();
         ExhaustTimer();

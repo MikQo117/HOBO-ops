@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -171,6 +172,9 @@ public class HoboController : Character
     {
     }
 
+    public override void Return(List<BaseItem> items)
+    {
+    }
     protected override void GetInput()
     {
         //Test

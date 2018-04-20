@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class PlayerController : Character
 {
@@ -19,7 +20,7 @@ public class PlayerController : Character
     //Getters 
     public Inventory InventoryGetter()
     {
-        return characterInventory;
+        return CharacterInventory;
     }
 
     public float HealthGetter()
@@ -49,30 +50,35 @@ public class PlayerController : Character
 
     public override void ConsumeItem(int itemID)
     {
-        if (characterInventory.InventoryList.Exists(x => x.BaseItemID == itemID)) 
+        if (CharacterInventory.InventoryList.Exists(x => x.BaseItemID == itemID)) 
         {
-            if (characterInventory.InventoryList.Find(x => x.BaseItemID == itemID).Consumable)
+            if (CharacterInventory.InventoryList.Find(x => x.BaseItemID == itemID).Consumable)
             {
-                var ConsumableItem = characterInventory.InventoryList.Find(x => x.BaseItemID == itemID);
+                var ConsumableItem = CharacterInventory.InventoryList.Find(x => x.BaseItemID == itemID);
 
                 Health += ConsumableItem.HealthAmount;
                 Sanity += ConsumableItem.SanityAmount;
                 DrunkAmount += ConsumableItem.DrunkAmount;
-                characterInventory.RemoveItemFromInventory(itemID);
+                CharacterInventory.RemoveItemFromInventory(itemID);
             }
         }
+    }
+
+    public override void Return(List<BaseItem> items)
+    { 
     }
 
     protected override void Death()
     {
 
     }
+
     public override void Gather(List<BaseItem> items)
     {
         if (items != null)
         {
             //Some ui thing to show what we gathered
-            pl.characterInventory.AddItemToInventory(items);
+            pl.CharacterInventory.AddItemToInventory(items);
         }
         else
         {
@@ -93,9 +99,6 @@ public class PlayerController : Character
 
     }
 
-{
-        return characterInventory;
-}
 
     protected void CameraMovement()
     {
