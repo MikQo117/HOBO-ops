@@ -53,8 +53,7 @@ public abstract class Character : MonoBehaviour
     protected Inventory    characterInventory;
 
     //Get & Set
-    public float   Health
-    {
+    protected virtual float Health    {
         get
         {
             return health;
@@ -72,7 +71,7 @@ public abstract class Character : MonoBehaviour
             }
         }
     }
-    public float   Sanity
+    protected virtual float Sanity
     {
         get
         {
@@ -88,7 +87,7 @@ public abstract class Character : MonoBehaviour
             sanity = Mathf.Clamp(value, 0, maxSanity);
         }
     }
-    public float   Stamina
+    protected virtual float Stamina
     {
         get
         {
@@ -108,7 +107,7 @@ public abstract class Character : MonoBehaviour
             }
         }
     }
-    public float   DrunkAmount
+    protected virtual float DrunkAmount
     {
         get
         {
