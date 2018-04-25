@@ -11,12 +11,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61c303a2014fd9140a69d919f39075a4, type: 3}
   m_Name: Whiskey
   m_EditorClassIdentifier: 
-  objectname: Whiskey
+  objectname: Pain Killer
   healthAmount: 0
   sanityAmount: 35
   drunkAmount: 0
   moneyAmount: 6
-  baseItemID: 3
+  baseItemID: 9
   consumable: 1
-  objectSprite: {fileID: 21300000, guid: ee7078059d43c1046bf38270d6c7cae2, type: 3}
+  objectSprite: {fileID: 21300000, guid: f012e98d8b2edd642a87294b893be847, type: 3}
   itemCost: 6

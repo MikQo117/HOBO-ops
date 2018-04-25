@@ -11,12 +11,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61c303a2014fd9140a69d919f39075a4, type: 3}
   m_Name: BeefJerky
   m_EditorClassIdentifier: 
-  objectname: 
-  healthAmount: 0
-  sanityAmount: 0
+  objectname: Beefy Jerk
+  healthAmount: 30
+  sanityAmount: 10
   drunkAmount: 0
   moneyAmount: 0
-  baseItemID: 0
-  consumable: 0
+  baseItemID: 5
+  consumable: 1
   objectSprite: {fileID: 0}
-  itemCost: 0
+  itemCost: 2.5
