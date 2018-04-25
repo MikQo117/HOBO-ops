@@ -6,27 +6,60 @@ using UnityEngine;
 public class TrashSpawn : MonoBehaviour, IInteractable
 {
     [SerializeField]
-    private List<BaseItem> items;
+    private List<BaseItem> spawnableItems;
+    [SerializeField]
+    private List<BaseItem> trashCanInventory;
     [SerializeField]
     private new Collider2D collider;
+
+    //GET & SET
+    public List<BaseItem> Spawnableitems
+    {
+        get
+        {
+            return spawnableItems;
+        }
+
+        set
+        {
+            spawnableItems = value;
+        }
+    }
+
+    public List<BaseItem> TrashCanInventory
+    {
+        get
+        {
+            return trashCanInventory;
+        }
+
+        set
+        {
+            trashCanInventory = value;
+        }
+    }
 
     public Collider2D GetCollider()
     {
         return collider;
     }
 
+    public static TrashSpawn Instance;
+
+    //Methods
+
     public void Interact(Character source)
     {
         //Implementation is the same for player and ai
         source.Gather(GiveShite());
-        items.Clear();
+        TrashCanInventory.Clear();
     }
 
     private List<BaseItem> GiveShite()
     {
-        if (items.Count > 0)
+        if (TrashCanInventory.Count > 0)
         {
-            return items;
+            return TrashCanInventory;
         }
         else
         {
@@ -40,6 +73,7 @@ public class TrashSpawn : MonoBehaviour, IInteractable
     }
     private void Awake()
     {
+        Instance = this;
         collider = GetComponent<Collider2D>();
         GameManager.Instance.interactables.Add(this);
     }

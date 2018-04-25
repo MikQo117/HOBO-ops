@@ -184,7 +184,7 @@ public class HoboController : Character
         }
     }
 
-    public override void Buy(List<BaseItem> items)
+    public override void Buy(BaseItem item)
     {
         
     }

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 [RequireComponent(typeof(Collider2D))]
 public class LiqourStore : MonoBehaviour, IInteractable
 {
@@ -18,9 +19,13 @@ public class LiqourStore : MonoBehaviour, IInteractable
 
     public void Interact(Character source)
     {
-        if (shopInventory.Exists(x => x.ItemCost < source.MoneyAmount))
+        if (shopInventory.ElementAt(0).ItemCost < source.MoneyAmount && Input.GetKeyDown(KeyCode.F))
         {
-            source.Buy(shopInventory);
+            source.Buy(shopInventory.ElementAt(0));
+        }
+        else if(shopInventory.ElementAt(1).ItemCost < source.MoneyAmount && Input.GetKeyDown(KeyCode.R))
+        {
+            source.Buy(shopInventory.ElementAt(1));
         }
     }
 

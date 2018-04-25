@@ -10,7 +10,7 @@ public abstract class Character : MonoBehaviour
     protected float        drunkAmount;
     protected float        stamina = 100;
     protected float        staminaRecoveryRate = 2;
-    protected float        moneyAmount = 100;
+    protected float        moneyAmount = 0;
 
     //Max stats
     protected int          maxHealth = 100;
@@ -178,7 +178,7 @@ public abstract class Character : MonoBehaviour
     public abstract void ConsumeItem(int itemID);
     public abstract void Gather(List<BaseItem> items);
     public abstract void ReturnBottle();
-    public abstract void Buy(List<BaseItem> items);
+    public abstract void Buy(BaseItem item);
     
    
 
@@ -190,7 +190,6 @@ public abstract class Character : MonoBehaviour
             //If contains, get component from collider, typeof IInteractable
             if (collider.bounds.Intersects(item.GetComponent<Collider2D>().bounds))
             {
-                Debug.Log("Hit interactable");
                 //Call Interact and pass this as parameter
                 item.GetComponent<IInteractable>().Interact(this);
             }

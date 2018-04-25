@@ -8,7 +8,8 @@ public class InventoryUI : MonoBehaviour
 {
     // UI variables
     private List<Transform> childObjects = new List<Transform>();
-
+    [SerializeField]
+    private List<BaseItem> AllItems;
     // Use this for initialization
     void Start()
     {
@@ -21,9 +22,23 @@ public class InventoryUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        for(int i = 0; i< childObjects.Count; i++)
+        for(int i = 0; i < childObjects.Count; i++)
         {
-            childObjects[i].GetComponentInChildren<Text>().text = PlayerController.pl.InventoryGetter().InventoryList.Where(x => x.BaseItemID == i).Count().ToString();
+            childObjects[i].GetComponent<Image>().sprite = AllItems[i].ObjectSprite;
+            childObjects[i].GetComponentInChildren<Text>().text = PlayerController.pl.CharacterInventory.InventoryList.Count(x => x.BaseItemID == i).ToString();
         }
+    }
+    enum SpawnableitemList
+    {
+        Bottle,
+        Half_ChocolateBar,
+        Black_Banana,
+        Old_SandWich,
+        Banana,
+        BeefJerky,
+        Beer,
+        ChocolateBar,
+        Sandwich,
+        Whiskey
     }
 }

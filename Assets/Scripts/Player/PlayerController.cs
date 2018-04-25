@@ -18,10 +18,6 @@ public class PlayerController : Character
 
     public Bounds bound;
     //Getters 
-    public Inventory InventoryGetter()
-    {
-        return CharacterInventory;
-    }
 
     public float HealthGetter()
     {
@@ -55,7 +51,7 @@ public class PlayerController : Character
         {
             if (CharacterInventory.InventoryList.Find(x => x.BaseItemID == itemID).Consumable)
             {
-                var ConsumableItem = CharacterInventory.InventoryList.Find(x => x.BaseItemID == itemID);
+                BaseItem ConsumableItem = CharacterInventory.InventoryList.Find(x => x.BaseItemID == itemID);
 
                 Health += ConsumableItem.HealthAmount;
                 Sanity += ConsumableItem.SanityAmount;
@@ -84,19 +80,10 @@ public class PlayerController : Character
         }
     }
 
-    public override void Buy(List<BaseItem> items)
+    public override void Buy(BaseItem item)
     {
-        if(Input.GetKeyDown(KeyCode.T))
-        {
-            moneyAmount -= items.ElementAt(0).ItemCost;
-            CharacterInventory.AddItemToInventory(items.ElementAt(0));
-        }
-        if(Input.GetKeyDown(KeyCode.R))
-        {
-            moneyAmount -= items.ElementAt(1).ItemCost;
-            CharacterInventory.AddItemToInventory(items.ElementAt(1));
-        }
-        
+        CharacterInventory.AddItemToInventory(item);
+        moneyAmount -= item.ItemCost;
     }
 
     protected override void Death()
