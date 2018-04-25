@@ -45,7 +45,7 @@ public class SettingsManager : MonoBehaviour
         Settings = ab.LoadAsset<Settings>("Settings.asset");
     }
 
-    private void Awake()
+    private void Start()
     {
         if(Settings == null)
         {

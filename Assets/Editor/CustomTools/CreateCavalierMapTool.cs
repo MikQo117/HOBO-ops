@@ -10,12 +10,10 @@ public class CreateCavalierMapTool : EditorWindow
     private SerializedObject so;
 
     private Sprite pixelMap;
-    // Store every pixel data
-    private UnityEngine.Color[,]pixelColors;
-    // Store all color variations
-    private List<UnityEngine.Color> colorVariations;
+    // Store all pixel data
+    private PixelData[] pixelDatas;
     [SerializeField]
-    private Texture2D[] colorVariationsTextures;
+    private List<PixelData> pixelVariations;
 
     [MenuItem("Custom Tools/Create Cavalier Map")]
     private static void ShowWindow()
@@ -35,9 +33,8 @@ public class CreateCavalierMapTool : EditorWindow
     {
         Utilitys.PrintHeader("Map Creation Tool");
 
-        //Input field
+        // Enable GUI if there is pixelmap
         pixelMap = (Sprite)EditorGUILayout.ObjectField("Pixel Map:", pixelMap, typeof(Sprite), false);
-
         if(pixelMap == null)
         {
             GUI.enabled = false;
@@ -47,9 +44,9 @@ public class CreateCavalierMapTool : EditorWindow
             GUI.enabled = true;
 
             EditorGUILayout.LabelField("Dimensions (W x H): " + pixelMap.texture.width.ToString() + "px " + "x " + pixelMap.texture.height.ToString() + "px");
-
         }
 
+        // Read pixels button
         GUILayout.BeginHorizontal();
         GUILayout.FlexibleSpace();
         if (GUILayout.Button("Read Pixels", GUILayout.MaxWidth(100)))
@@ -59,14 +56,15 @@ public class CreateCavalierMapTool : EditorWindow
         GUILayout.FlexibleSpace();
         GUILayout.EndHorizontal();
 
-        if (colorVariationsTextures != null && pixelMap != null)
+        // Show pixel properties
+        if (pixelDatas != null && pixelMap != null)
         {
-            SerializedProperty pixelPreview = so.FindProperty("colorVariationsTextures");
             so.Update();
-            EditorGUILayout.PropertyField(pixelPreview, true);
+            EditorList.Show(so.FindProperty("pixelVariations"), false);
             so.ApplyModifiedProperties();
         }
 
+        // Create Map
         GUI.enabled = false;
         GUILayout.BeginHorizontal();
         GUILayout.FlexibleSpace();
@@ -88,42 +86,39 @@ public class CreateCavalierMapTool : EditorWindow
     //Read pixelmap
     private void ReadPixels()
     {
-        pixelColors = new UnityEngine.Color[pixelMap.texture.height, pixelMap.texture.width];
-        colorVariations = new List<UnityEngine.Color>();
+        pixelDatas = new PixelData[pixelMap.texture.height * pixelMap.texture.width];
 
+        List<UnityEngine.Color> tempColorVariation = new List<UnityEngine.Color>();
+
+        pixelVariations = new List<PixelData>();
+
+        // Read through Every pixel in the Pixel Map
         for (int y = 0; y < pixelMap.texture.height; y++)
         {
             for (int x = 0; x < pixelMap.texture.width; x++)
             {
-                pixelColors[y, x] = pixelMap.texture.GetPixel(x, y);
+                Vector2 position = new Vector2(x, y);
+                UnityEngine.Color color = pixelMap.texture.GetPixel(x, y);
 
-                if (!colorVariations.Contains(pixelColors[y, x]))
+                // Add new pixel
+                pixelDatas[(y + 1) * x] = new PixelData();
+                pixelDatas[(y + 1) * x].Position = position;
+                pixelDatas[(y + 1) * x].PixelColor = color;
+
+                // Make list of pixel color variations
+                if(!tempColorVariation.Contains(pixelDatas[(y + 1) * x].PixelColor))
                 {
-                    colorVariations.Add(pixelColors[y, x]);
+                    tempColorVariation.Add(pixelDatas[(y + 1) * x].PixelColor);
+
+                    PixelData pd = new PixelData();
+                    pd.PixelColor = pixelDatas[(y + 1) * x].PixelColor;
+
+                    pixelVariations.Add(pd);
                 }
             }
         }
-
-        colorVariationsTextures = new Texture2D[colorVariations.Count];
-
-        for (int i = 0; i < colorVariations.Count; i++)
-        {
-            // Color preview image
-            colorVariationsTextures[i] = new Texture2D(64, 64);
-            // Set images color
-            for (int y = 0; y < colorVariationsTextures[i].height; y++)
-            {
-                for (int x = 0; x < colorVariationsTextures[i].width; x++)
-                {
-                    colorVariationsTextures[i].SetPixel(x, y, colorVariations[i]);
-                }
-            }
-            colorVariationsTextures[i].Apply();
-        }
-
     }
 
-    //Define pixel colors to corresponding tile
 
     //Get tiles
 

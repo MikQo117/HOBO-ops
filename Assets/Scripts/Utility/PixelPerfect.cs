@@ -15,10 +15,13 @@ public class PixelPerfect : MonoBehaviour
         c.orthographicSize = Screen.height * 0.5f / pixelsPerUnit;
     }
 
-    private void Start()
+    private void LateUpdate()
     {
-        c = GetComponent<Camera>();
-        pixelsPerUnit = SettingsManager.Instance.Settings.PixelsPerUnit;
-        SetCameraSize(pixelsPerUnit);
+        if (SettingsManager.Instance)
+        {
+            c = GetComponent<Camera>();
+            pixelsPerUnit = SettingsManager.Instance.Settings.PixelsPerUnit;
+            SetCameraSize(pixelsPerUnit);
+        }
     }
 }

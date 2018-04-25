@@ -244,7 +244,7 @@ public abstract class Character : MonoBehaviour
         if (movementDirection.x != 0 && movementDirection.y > 0) { animator.Play(AnimationClips.WalkStrafeUp.ToString()); currentIdleSprite = idleSprites[1]; SpriteFlip(); }
 
         //strafing downwards animation changer
-        if (movementDirection.x != 0 && movementDirection.y < 0) { animator.Play(AnimationClips.WalkstrafeDown.ToString()); currentIdleSprite = idleSprites[2]; SpriteFlip(); }
+        if (movementDirection.x != 0 && movementDirection.y < 0) { animator.Play(AnimationClips.WalkStrafeDown.ToString()); currentIdleSprite = idleSprites[2]; SpriteFlip(); }
 
         //Idle
         if (movementDirection.x == 0 && movementDirection.y == 0) { animator.Play(AnimationClips.Idle.ToString()); Sr.sprite = idleSprites[2]; }
@@ -264,7 +264,7 @@ public abstract class Character : MonoBehaviour
         WalkSideways,
         WalkDown,
         WalkStrafeUp,
-        WalkstrafeDown,
+        WalkStrafeDown,
         WalkUp
     }
 }
