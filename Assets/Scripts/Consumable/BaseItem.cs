@@ -7,24 +7,25 @@ public class BaseItem : ScriptableObject
 {
     //Consumable variables
     [SerializeField]
-    private string objectname;
+    private string   objectname;
     [SerializeField]
-    private int    healthAmount;
+    private float    healthAmount;
     [SerializeField]
-    private int    sanityAmount;
+    private float    sanityAmount;
     [SerializeField]
-    private int    drunkAmount;
+    private float    drunkAmount;
     [SerializeField]
-    private int    moneyAmount;
+    private float    moneyAmount;
     [SerializeField]
-    private int    baseItemID;
+    private int      baseItemID;
     [SerializeField]
-    private bool   consumable;
+    private bool     consumable;
     [SerializeField]
-    private Sprite  objectSprite;
-
+    private Sprite   objectSprite;
+    [SerializeField]
+    private float    itemCost;
     //Get & Set
-    public int HealthAmount
+    public float HealthAmount
     {
         get
         { 
@@ -38,7 +39,7 @@ public class BaseItem : ScriptableObject
         }
     }
 
-    public int SanityAmount
+    public float SanityAmount
     {
         get
         {
@@ -51,7 +52,7 @@ public class BaseItem : ScriptableObject
         }
     }
 
-    public int DrunkAmount
+    public float DrunkAmount
     {
         get
         {
@@ -64,7 +65,7 @@ public class BaseItem : ScriptableObject
         }
     }
 
-    public int MoneyAmount
+    public float MoneyAmount
     {
         get
         {
@@ -80,6 +81,8 @@ public class BaseItem : ScriptableObject
         }
 
     }
+
+    public float ItemCost {get { return itemCost; }}
 
     public int BaseItemID { get { return baseItemID; } set { value = baseItemID; } }
 

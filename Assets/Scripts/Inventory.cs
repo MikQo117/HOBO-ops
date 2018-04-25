@@ -18,6 +18,10 @@ public class Inventory : MonoBehaviour
     {
         InventoryList.AddRange(items);
     }
+    public void AddItemToInventory(BaseItem item)
+    {
+        InventoryList.Add(item);
+    }
 
     public void RemoveItemFromInventory(int ItemID)
     {

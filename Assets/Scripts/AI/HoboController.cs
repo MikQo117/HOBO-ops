@@ -184,6 +184,11 @@ public class HoboController : Character
         }
     }
 
+    public override void Buy(List<BaseItem> items)
+    {
+        
+    }
+
     // Use this for initialization
     protected override void Start()
     {

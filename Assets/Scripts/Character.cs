@@ -10,7 +10,7 @@ public abstract class Character : MonoBehaviour
     protected float        drunkAmount;
     protected float        stamina = 100;
     protected float        staminaRecoveryRate = 2;
-    protected float        moneyAmount = 0;
+    protected float        moneyAmount = 100;
 
     //Max stats
     protected int          maxHealth = 100;
@@ -56,8 +56,10 @@ public abstract class Character : MonoBehaviour
     //Interaction variables
     [SerializeField]
     protected new Collider2D collider;
-    protected bool returningBottles;    
-    
+    protected bool returningBottles;
+    //temporary Booleans For interactions
+     
+
     //Get & Set
     protected virtual float Health{
         get
@@ -125,6 +127,13 @@ public abstract class Character : MonoBehaviour
             drunkAmount = value;
         }
     }
+    public virtual float MoneyAmount
+    {
+        get
+        {
+            return moneyAmount;
+        }        
+    }
     public bool Sprinting
     {
         get
@@ -162,11 +171,16 @@ public abstract class Character : MonoBehaviour
     protected abstract void GetInput();
 
     protected abstract void Death();
+    //Minigame Methods
     protected abstract void Attack();
+    protected abstract void Beg();
+    //Interactable Methods
     public abstract void ConsumeItem(int itemID);
     public abstract void Gather(List<BaseItem> items);
     public abstract void ReturnBottle();
-    protected abstract void Beg();
+    public abstract void Buy(List<BaseItem> items);
+    
+   
 
     private void CheckForInteraction()
     {

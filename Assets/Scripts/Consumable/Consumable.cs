@@ -8,15 +8,15 @@ public class Consumable : MonoBehaviour
 
     //Consumable variables
     [SerializeField]
-    private List<BaseItem> itemBase;
-    private int            healthAmount;
-    private int            sanityAmount;
-    private int            drunkAmount;
-    private string         objectname;
-    private int            consumableID;
+    private List<BaseItem>   itemBase;
+    private float            healthAmount;
+    private float            sanityAmount;
+    private float            drunkAmount;
+    private string           objectname;
+    private int              consumableID;
 
     //Consumable Getters
-    public int HealthAmount
+    public float HealthAmount
     {
         get
         {
@@ -24,7 +24,7 @@ public class Consumable : MonoBehaviour
         }
     }
 
-    public int SanityAmount
+    public float SanityAmount
     {
         get
         {
@@ -33,7 +33,7 @@ public class Consumable : MonoBehaviour
 
     }
 
-    public int DrunkAmount
+    public float DrunkAmount
     {
         get
         {

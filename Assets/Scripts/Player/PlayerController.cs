@@ -38,8 +38,8 @@ public class PlayerController : Character
         return stamina;
     }
 
-    //Methdos
 
+    //Minigame methods
     protected override void Attack()
     {
     }
@@ -48,6 +48,7 @@ public class PlayerController : Character
     {
     }
 
+    //Interaction Methods
     public override void ConsumeItem(int itemID)
     {
         if (CharacterInventory.InventoryList.Exists(x => x.BaseItemID == itemID))
@@ -81,6 +82,21 @@ public class PlayerController : Character
             //Display UI stuff that inventory is empty of bottles
             return;
         }
+    }
+
+    public override void Buy(List<BaseItem> items)
+    {
+        if(Input.GetKeyDown(KeyCode.T))
+        {
+            moneyAmount -= items.ElementAt(0).ItemCost;
+            CharacterInventory.AddItemToInventory(items.ElementAt(0));
+        }
+        if(Input.GetKeyDown(KeyCode.R))
+        {
+            moneyAmount -= items.ElementAt(1).ItemCost;
+            CharacterInventory.AddItemToInventory(items.ElementAt(1));
+        }
+        
     }
 
     protected override void Death()
