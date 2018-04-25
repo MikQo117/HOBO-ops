@@ -166,16 +166,16 @@ public abstract class Character : MonoBehaviour
 
     private void CheckForInteraction()
     {
-        //For through all interactable colliders, and see if Cointains()
+        //For through all interactable colliders, and see if intersects
         foreach (Collider2D item in GameManager.Instance.interactablesColliders)
         {
             //Debug.Log("Closest point from player: " + item.bounds.ClosestPoint(transform.position));
             //If contains, get component from collider, typeof IInteractable
-            if (collider.bounds.Intersects(item.GetComponent<Collider2D>().bounds))
+            if (collider.bounds.Intersects(item.bounds))
             {
                 Debug.Log("Hit interactable");
                 //Call Interact and pass this as parameter
-                item.GetComponent<TrashSpawn>().Interact(this);
+                item.GetComponent<IInteractable>().Interact(this);
             }
         }
     }

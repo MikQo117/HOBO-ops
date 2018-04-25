@@ -19,7 +19,7 @@ public class PathRequestManager : MonoBehaviour
     /// <param name="pathStart">Start point of the path.</param>
     /// <param name="pathEnd">End point of the path.</param>
     /// <param name="callback">Callback to the original function, see OnPathFound in TestUnit.cs.</param>
-    public static void RequestPath(Vector2 pathStart, Vector2 pathEnd, Action<Vector2[], bool> callback)
+    public static void RequestPath(Vector2 pathStart, Vector2 pathEnd, Action<Vector2[], bool, int> callback)
     {
         PathRequest newRequest = new PathRequest(pathStart, pathEnd, callback);
         instance.pathRequestQueue.Enqueue(newRequest);
@@ -44,9 +44,9 @@ public class PathRequestManager : MonoBehaviour
     /// </summary>
     /// <param name="path">The found path.</param>
     /// <param name="success">Was the pathfind succesful?</param>
-    public void FinishedProcessingPath(Vector2[] path, bool success)
+    public void FinishedProcessingPath(Vector2[] path, bool success, int pathLength)
     {
-        currentPathRequest.Callback(path, success);
+        currentPathRequest.Callback(path, success, pathLength);
         isProcessingPath = false;
         TryProcessNext();
     }
@@ -64,9 +64,9 @@ public class PathRequestManager : MonoBehaviour
     {
         public Vector2 PathStart;
         public Vector2 PathEnd;
-        public Action<Vector2[], bool> Callback;
+        public Action<Vector2[], bool, int> Callback;
 
-        public PathRequest(Vector2 pathStart, Vector2 pathEnd, Action<Vector2[], bool> callback)
+        public PathRequest(Vector2 pathStart, Vector2 pathEnd, Action<Vector2[], bool, int> callback)
         {
             PathStart = pathStart;
             PathEnd = pathEnd;

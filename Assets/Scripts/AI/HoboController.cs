@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class HoboController : Character
@@ -12,6 +13,7 @@ public class HoboController : Character
     //State machine variables
     private ThresholdState hpState;
     private ThresholdState spState;
+    private bool scavenging = false;
 
     protected override int Health
     {
@@ -26,15 +28,18 @@ public class HoboController : Character
 
             if (value >= 80 && value < 100)
             {
-                hpState = ThresholdState.Well;
+                hpState = ThresholdState.Satisfied;
+                AnalyzeStates();
             }
             else if (value >= 40 && value < 20)
             {
                 hpState = ThresholdState.Low;
+                AnalyzeStates();
             }
             else
             {
                 hpState = ThresholdState.Critical;
+                AnalyzeStates();
             }
         }
     }
@@ -52,22 +57,25 @@ public class HoboController : Character
 
             if (value >= 70 && value < 100)
             {
-                spState = ThresholdState.Well;
+                spState = ThresholdState.Satisfied;
+                AnalyzeStates();
             }
             else if (value >= 30 && value < 15)
             {
                 spState = ThresholdState.Low;
+                AnalyzeStates();
             }
             else
             {
                 spState = ThresholdState.Critical;
+                AnalyzeStates();
             }
         }
     }
 
     private void AnalyzeStates()
     {
-        if (hpState == ThresholdState.Well && spState == ThresholdState.Well)
+        if (hpState == ThresholdState.Satisfied && spState == ThresholdState.Satisfied)
         {
             //Idle actions
             //Debug.Log("Hobo AI idle");
@@ -75,6 +83,7 @@ public class HoboController : Character
         else if (hpState == ThresholdState.Low)
         {
             //Scavenge
+            Scavenge();
             //Debug.Log("Hobo AI scavenging");
         }
         else
@@ -84,14 +93,50 @@ public class HoboController : Character
         }
     }
 
+    private Vector2[] shortestPath;
+    private TrashSpawn nearestSpawn = new TrashSpawn();
+    private Dictionary<Vector2[], int> paths;
+    private int requestsSent = 0;
+    private bool movingToTarget = false;
+
     private void Scavenge()
     {
+        scavenging = true;
         //Get nearest trashcan
-        //Move to it
+        if (paths == null)
+        {
+            foreach (TrashSpawn item in GameManager.Instance.GetTrashcans)
+            {
+                PathRequestManager.RequestPath(transform.position, item.transform.position, OnPathStuff);
+                requestsSent++;
+            } 
+        }
+
+        //Move to it when all the paths have been found and compared
+        if (paths.Count >= requestsSent)
+        {
+            shortestPath = paths.OrderBy(kvp => kvp.Value).First().Key; //Vittumikäsäätö
+            StartMovement(shortestPath);
+            movingToTarget = true;
+        }
+
         //when reached, search it
-        //If food found, eat it
-        //bottle do nothing special
+        if (!movingToTarget)
+        {
+            //Reached the end of the path, remove target from search pool
+            paths.Remove(shortestPath);
+            //paths = paths.OrderBy(x => x.Value).ToDictionary(pair => pair.Key, pair => pair.Value);
+        }
+        //Interact happens on moving over, but should it tho? ¯\_(ツ)_/¯ 
         //repeat
+    }
+
+    public void OnPathStuff(Vector2[] newPath, bool pathSuccess, int pathLength)
+    {
+        if (pathSuccess)
+        {
+            paths.Add(newPath, pathLength);
+        }
     }
 
     /// <summary>
@@ -99,16 +144,20 @@ public class HoboController : Character
     /// </summary>
     /// <param name="newPath">The new calulated path.</param>
     /// <param name="pathSuccess">Was the pathfind successful?</param>
-    public void OnPathFound(Vector2[] newPath, bool pathSuccess)
+    public void OnPathFound(Vector2[] newPath, bool pathSuccess, int pathLength)
     {
         if (pathSuccess)
         {
-            path = newPath;
-            targetIndex = 0;
-            StopCoroutine("FollowPath");
-            StartCoroutine("FollowPath");
-            pathSuccess = false;
+            StartMovement(newPath);
         }
+    }
+
+    private void StartMovement(Vector2[] newPath)
+    {
+        path = newPath;
+        targetIndex = 0;
+        StopCoroutine("FollowPath");
+        StartCoroutine("FollowPath");
     }
 
     /// <summary>
@@ -128,6 +177,11 @@ public class HoboController : Character
                     targetIndex = 0;
                     path = new Vector2[0];
                     movementDirection = Vector3.zero;
+                    if (scavenging)
+                    {
+                        movingToTarget = false;
+                        paths.Remove(shortestPath);
+                    }
                     yield break;
                 }
                 currentWaypoint = path[targetIndex];
@@ -153,6 +207,7 @@ public class HoboController : Character
 
     public override void ConsumeItem(int itemID)
     {
+        //Think this over later
     }
 
     protected override void Attack()
@@ -169,6 +224,17 @@ public class HoboController : Character
 
     public override void Gather(List<BaseItem> items)
     {
+        foreach (BaseItem item in items)
+        {
+            if (item.Consumable)
+            {
+                //Does nothing right now
+                ConsumeItem(item.BaseItemID);
+                items.Remove(item);
+            }
+        }
+
+        characterInventory.AddItemToInventory(items);
     }
 
     protected override void GetInput()
@@ -189,7 +255,6 @@ public class HoboController : Character
     // Update is called once per frame
     protected override void Update()
     {
-        AnalyzeStates();
         base.Update();
         /*GetInput();
         RecoverStamina();
@@ -202,7 +267,7 @@ public class HoboController : Character
 }
 public enum ThresholdState
 {
-    Well,
+    Satisfied,
     Low,
     Critical
 }

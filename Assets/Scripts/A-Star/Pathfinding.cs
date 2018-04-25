@@ -101,15 +101,17 @@ public class Pathfinding : MonoBehaviour
             } 
         }
         yield return null;
+        int pathLength = 0;
         if (pathSuccess)
         {
+            pathLength = waypoints.Length;
             //Finalize the waypoint array
             waypoints = RetracePath(startNode, targetNode);
             //Pathfind is only successful when there's a node to go to
             pathSuccess = waypoints.Length > 0;
         }
         //Return to request manager
-        requestManager.FinishedProcessingPath(waypoints, pathSuccess);
+        requestManager.FinishedProcessingPath(waypoints, pathSuccess, pathLength);
     }
 
     /// <summary>

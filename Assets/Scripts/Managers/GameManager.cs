@@ -1,15 +1,26 @@
 ﻿using System.Collections;
 using System.Linq;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    //Trash management variables
+    //Interaction variables
     public List<IInteractable> interactables = new List<IInteractable>();
     public List<Collider2D> interactablesColliders;
+    private List<TrashSpawn> trashSpawns = new List<TrashSpawn>();
 
-    private  static GameManager instance;
+    //Trash management variables
+    public List<TrashSpawn> GetTrashcans
+    {
+        get
+        {
+            return trashSpawns;
+        }
+    }
+
+    private static GameManager instance;
 
     static public GameManager Instance
     {
@@ -36,6 +47,10 @@ public class GameManager : MonoBehaviour
         foreach (IInteractable item in interactables)
         {
             interactablesColliders.Add(item.GetCollider());
+        }
+        foreach (TrashSpawn item in interactables)
+        {
+            trashSpawns.Add(item);
         }
     }
 
