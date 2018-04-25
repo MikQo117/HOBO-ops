@@ -10,6 +10,7 @@ public abstract class Character : MonoBehaviour
     protected float        drunkAmount;
     protected float        stamina = 100;
     protected float        staminaRecoveryRate = 2;
+    protected float        moneyAmount = 0;
 
     //Max stats
     protected int          maxHealth = 100;
@@ -54,7 +55,8 @@ public abstract class Character : MonoBehaviour
     private Inventory characterInventory;
     //Interaction variables
     [SerializeField]
-    protected new Collider2D collider;    
+    protected new Collider2D collider;
+    protected bool returningBottles;    
     
     //Get & Set
     protected virtual float Health{
@@ -163,7 +165,7 @@ public abstract class Character : MonoBehaviour
     protected abstract void Attack();
     public abstract void ConsumeItem(int itemID);
     public abstract void Gather(List<BaseItem> items);
-    public abstract void Return(List<BaseItem> items);
+    public abstract void ReturnBottle();
     protected abstract void Beg();
 
     private void CheckForInteraction()
@@ -331,6 +333,7 @@ public abstract class Character : MonoBehaviour
         WalkstrafeDown,
         WalkUp
     }
+
     protected virtual void Awake()
     {
 

@@ -172,7 +172,7 @@ public class HoboController : Character
     {
     }
 
-    public override void Return(List<BaseItem> items)
+    public override void ReturnBottle()
     {
     }
     protected override void GetInput()

@@ -10,11 +10,11 @@ public class PlayerController : Character
 
 
     //Camera Variables
-    private Camera                 mainCamera;
-    private float                  lenght = 1000;
-    private Vector3                SprintVelocity;
-    private Vector3                CameraZoffset = new Vector3(0, 0, -5);
-    private float                  smoothTime = 0.3f;
+    private Camera mainCamera;
+    private float lenght = 1000;
+    private Vector3 SprintVelocity;
+    private Vector3 CameraZoffset = new Vector3(0, 0, -5);
+    private float smoothTime = 0.3f;
 
     public Bounds bound;
     //Getters 
@@ -50,7 +50,7 @@ public class PlayerController : Character
 
     public override void ConsumeItem(int itemID)
     {
-        if (CharacterInventory.InventoryList.Exists(x => x.BaseItemID == itemID)) 
+        if (CharacterInventory.InventoryList.Exists(x => x.BaseItemID == itemID))
         {
             if (CharacterInventory.InventoryList.Find(x => x.BaseItemID == itemID).Consumable)
             {
@@ -64,8 +64,23 @@ public class PlayerController : Character
         }
     }
 
-    public override void Return(List<BaseItem> items)
-    { 
+    public override void ReturnBottle()
+    {
+        List<BaseItem> items = CharacterInventory.InventoryList.FindAll(x => x.BaseItemID == 0);
+        if (items != null && returningBottles)
+        {
+            for (int i = 0; i < items.Count; i++)
+            {
+                moneyAmount += items.First().MoneyAmount;
+                CharacterInventory.RemoveItemFromInventory(items.First());
+            }
+
+        }
+        else
+        {
+            //Display UI stuff that inventory is empty of bottles
+            return;
+        }
     }
 
     protected override void Death()
@@ -96,6 +111,7 @@ public class PlayerController : Character
             sprinting = true;
         else
             sprinting = false;
+        returningBottles = Input.GetKeyDown(KeyCode.E) ? true : false;
 
     }
 

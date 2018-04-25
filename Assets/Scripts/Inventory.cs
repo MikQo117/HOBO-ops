@@ -26,4 +26,8 @@ public class Inventory : MonoBehaviour
             InventoryList.Remove(InventoryList.Where(x => x != null && x.BaseItemID == ItemID).FirstOrDefault());
         }
     }
+    public void RemoveItemFromInventory(BaseItem item)
+    {
+        InventoryList.Remove(item);
+    }
 }
