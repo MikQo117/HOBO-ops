@@ -1,0 +1,10 @@
+ManifestFileVersion: 0
+CRC: 2972306733
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: materials
+      Dependencies: {}
+    Info_1:
+      Name: settings
+      Dependencies: {}
