@@ -254,7 +254,7 @@ public abstract class Character : MonoBehaviour
     protected void SpriteFlip()
     {
         bool flip;
-        flip = movementDirection.x > 0 ? true : false;
+        flip = movementDirection.x < 0 ? true : false;
         Sr.flipX = flip;
     }
 
