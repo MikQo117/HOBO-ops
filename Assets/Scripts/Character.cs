@@ -164,7 +164,7 @@ public abstract class Character : MonoBehaviour
     public abstract void Gather(List<BaseItem> items);
     protected abstract void Beg();
 
-    private void CheckForInteraction()
+    protected virtual void CheckForInteraction()
     {
         //For through all interactable colliders, and see if intersects
         foreach (Collider2D item in GameManager.Instance.interactablesColliders)

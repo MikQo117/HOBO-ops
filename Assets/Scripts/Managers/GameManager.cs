@@ -48,9 +48,12 @@ public class GameManager : MonoBehaviour
         {
             interactablesColliders.Add(item.GetCollider());
         }
-        foreach (TrashSpawn item in interactables)
+        foreach (IInteractable item in interactables)
         {
-            trashSpawns.Add(item);
+            if (item is TrashSpawn)
+            {
+                trashSpawns.Add((TrashSpawn)item);
+            }
         }
     }
 

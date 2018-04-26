@@ -121,7 +121,7 @@ public class Grid : MonoBehaviour
     }
 
 #if UNITY_EDITOR
-    private void OnDrawGizmos()
+    /*private void OnDrawGizmos()
     {
         Gizmos.DrawWireCube(transform.position, new Vector3(GridWorldSize.x, GridWorldSize.y, 1f));
 
@@ -137,6 +137,39 @@ public class Grid : MonoBehaviour
                 Gizmos.DrawCube(n.WorldPosition, Vector3.one * (nodeDiameter - 0.1f));
             }
         } 
-    }
+    }*/
+
+    /*void OnDrawGizmos()
+    {
+        Gizmos.DrawWireCube(transform.position, new Vector3(GridWorldSize.x, 1, GridWorldSize.y));
+
+        if (true)
+        {
+            if (path != null)
+            {
+                foreach (Node n in path)
+                {
+                    Gizmos.color = Color.black;
+                    Gizmos.DrawCube(n.worldPosition, Vector3.one * (nodeDiameter - .1f));
+                }
+            }
+        }
+        else
+        {
+
+            if (grid != null)
+            {
+                foreach (Node n in grid)
+                {
+                    Gizmos.color = (n.walkable) ? Color.white : Color.red;
+                    if (path != null)
+                        if (path.Contains(n))
+                            Gizmos.color = Color.black;
+                    Gizmos.DrawCube(n.worldPosition, Vector3.one * (nodeDiameter - .1f));
+                }
+            }
+        }
+    }*/
+
 #endif
 }
