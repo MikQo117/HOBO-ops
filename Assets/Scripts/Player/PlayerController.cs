@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
+
 
 public class PlayerController : Character
 {
@@ -10,7 +10,7 @@ public class PlayerController : Character
 
 
     //Camera Variables
-    private Camera  mainCamera;
+    public  Camera  mainCamera;
     private float   lenght = 1000;
     private Vector3 SprintVelocity;
     private Vector3 CameraZoffset = new Vector3(0, 0, -5);
@@ -82,8 +82,8 @@ public class PlayerController : Character
 
     public override void Buy(BaseItem item)
     {
-        CharacterInventory.AddItemToInventory(item);
-        moneyAmount -= item.ItemCost;
+            CharacterInventory.AddItemToInventory(item);
+            moneyAmount -= item.ItemCost;
     }
 
     protected override void Death()
@@ -117,7 +117,6 @@ public class PlayerController : Character
         returningBottles = Input.GetKeyDown(KeyCode.E) ? true : false;
 
     }
-
 
     protected void CameraMovement()
     {

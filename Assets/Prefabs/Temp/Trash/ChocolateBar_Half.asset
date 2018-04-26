@@ -20,3 +20,4 @@ MonoBehaviour:
   consumable: 1
   objectSprite: {fileID: 0}
   itemCost: 0
+  dropProBability: 0.1

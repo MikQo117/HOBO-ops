@@ -62,7 +62,7 @@ public class Consumable : MonoBehaviour
     //Assign Scriptableobjects data to monobehaviour script
     private void InfromationAssignToGameobject()
     {
-        int r                                 = Random.Range(0, 2);
+        int r                                 = Random.Range(0, 1);
         name                                  = ItemBase[r].Objectname;
         gameObject.name                       = ItemBase[r].Objectname;
         healthAmount                          = ItemBase[r].HealthAmount;

@@ -10,7 +10,7 @@ public abstract class Character : MonoBehaviour
     protected float        drunkAmount;
     protected float        stamina = 100;
     protected float        staminaRecoveryRate = 2;
-    protected float        moneyAmount = 0;
+    protected float        moneyAmount = 100;
 
     //Max stats
     protected int          maxHealth = 100;
@@ -18,16 +18,16 @@ public abstract class Character : MonoBehaviour
     protected int          maxStamina= 100;
 
     //stat decay variables
-    protected float healthDecay    = 1/4;
-    protected float sanityDecay    = 1/10;
-    protected float drunkDecay     = 1/10;
-    protected float staminaDecay   = 10;
+    protected const float healthDecay  = 0.25f;
+    protected const float sanityDecay  = 0.1f;
+    protected const float drunkDecay   = 0.1f;
+    protected const float staminaDecay = 10.0f;
 
     //Character movement
     [SerializeField]
     protected float        movementSpeed;
     [SerializeField]
-    public float        sprintSpeed;
+    public float           sprintSpeed;
     public Vector3         movementDirection;
     protected bool         sprinting;
 
@@ -334,7 +334,7 @@ public abstract class Character : MonoBehaviour
     {
         Health      -= healthDecay * Time.deltaTime;
         Sanity      -= sanityDecay * Time.deltaTime;
-        DrunkAmount -= drunkDecay * Time.deltaTime;
+        DrunkAmount -= drunkDecay  * Time.deltaTime;
     }
 
     enum AnimationClips

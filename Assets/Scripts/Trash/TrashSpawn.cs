@@ -6,15 +6,16 @@ using UnityEngine;
 public class TrashSpawn : MonoBehaviour, IInteractable
 {
     [SerializeField]
-    private List<BaseItem> spawnableItems;
+    private List<BaseItem>         spawnableItems;
     [SerializeField]
-    private List<BaseItem> trashCanInventory;
+    private List<BaseItem>         trashCanInventory;
     [SerializeField]
-    private new Collider2D collider;
-    double                 diceRoll;
-    double                 cumulative = 0.0f;
-
-
+    private new Collider2D         collider;
+    private double                 diceRoll;
+    private double                 cumulative = 0.0f;
+    private double                 bottleDropChance = 0.7f;
+    private int                    numberOfItems;
+    private int                    maxNumberOfItems = 4;
 
     //GET & SET
     public List<BaseItem> Spawnableitems
@@ -81,7 +82,18 @@ public class TrashSpawn : MonoBehaviour, IInteractable
 
             if (diceRoll < cumulative)
             {
-                trashCanInventory.Add(spawnableItems[i]);
+                if (cumulative > bottleDropChance)
+                {
+                    numberOfItems = Random.Range(0, maxNumberOfItems);
+                    for (int a = 0; a < numberOfItems; a++)
+                    {
+                        trashCanInventory.Add(spawnableItems[i]);
+                    }
+                }
+                else
+                {
+                    trashCanInventory.Add(spawnableItems[i]);
+                }
                 break;
             }
         }

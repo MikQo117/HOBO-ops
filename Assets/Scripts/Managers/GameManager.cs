@@ -12,7 +12,6 @@ public class GameManager : MonoBehaviour
     private float              spawnableItemIndex;
     private const float        originalSpawnTimer = 1.0f;
     float                      spawntimer;
-    private const int          maxNumberOfitem = 4;
 
     //Others
     private static GameManager instance;
@@ -26,7 +25,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public List<TrashSpawn>   GetTrashCans
+    public List<TrashSpawn> GetTrashCans
     {
         get
         {
@@ -41,15 +40,11 @@ public class GameManager : MonoBehaviour
         spawntimer -= Time.deltaTime;
         if (spawntimer <= 0)
         {
-            int numberOfItems = Random.Range(0, 4);
-            for (int a = 0; a < numberOfItems; a++)
+            for (int i = 0; i < trashCans.Count; i++)
             {
-                for (int i = 0; i < trashCans.Count; i++)
-                {
-                    trashCans[i].SpawnItems();
-                }
+                trashCans[i].SpawnItems();
             }
-        ResetTimer();
+            ResetTimer();
         }
 
     }

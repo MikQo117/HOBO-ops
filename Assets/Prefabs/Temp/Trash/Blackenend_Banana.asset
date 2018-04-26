@@ -20,3 +20,4 @@ MonoBehaviour:
   consumable: 1
   objectSprite: {fileID: 21300000, guid: 4a82d830cc421dc44aec2b034f353a9e, type: 3}
   itemCost: 0
+  dropProBability: 0.15
