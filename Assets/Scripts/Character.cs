@@ -1,51 +1,67 @@
-﻿using System.Collections;
+﻿using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class Character : MonoBehaviour
 {
     //Character stats
-    protected int health;
-    protected int sanity;
-    protected float stamina;
-    protected float staminaRecoveryRate;
+    protected float        health = 10;
+    protected float        sanity = 10;
+    protected float        drunkAmount;
+    protected float        stamina = 100;
+    protected float        staminaRecoveryRate = 2;
+    protected float        moneyAmount = 100;
 
     //Max stats
-    protected int maxHealth;
-    protected int maxSanity;
-    protected int maxStamina;
+    protected int          maxHealth = 100;
+    protected int          maxSanity = 100;
+    protected int          maxStamina= 100;
+
+    //stat decay variables
+    protected const float healthDecay  = 0.25f;
+    protected const float sanityDecay  = 0.1f;
+    protected const float drunkDecay   = 0.1f;
+    protected const float staminaDecay = 10.0f;
 
     //Character movement
     [SerializeField]
-    protected float movementSpeed;
+    protected float        movementSpeed;
     [SerializeField]
-    protected float sprintSpeed;
-    protected Vector3 movementDirection;
-    protected bool sprinting;
+    public float           sprintSpeed;
+    public Vector3         movementDirection;
+    protected bool         sprinting;
 
     //Collision variables
     [SerializeField]
-    protected int NoOfRays;
+    protected int          NoOfRays;
     [SerializeField]
-    private LayerMask raycastMask;
-    private float lengthOfRay;
+    private LayerMask      raycastMask;
+    private float          lengthOfRay;
 
     //Animation variables
-    protected Animator animator;
+    protected Animator     animator;
+    private Sprite         currentIdleSprite = null;
     [SerializeField]
-    private Sprite currentIdleSprite = null;
-    [SerializeField]
-    private Sprite[] idleSprites;
+    private Sprite[]       idleSprites;
     private SpriteRenderer Sr;
 
     //Exhaust variables
-    protected bool exhausted; //Must disable sprinting
-    private float exhaustTimer;
-    protected float exhaustDuration;
+    [SerializeField]
+    protected bool         exhausted; //Must disable sprinting
+    private float          exhaustTimer;
+    protected float        exhaustDuration = 5;
+
+    //Inventory variable
+    private Inventory characterInventory;
+    //Interaction variables
+    [SerializeField]
+    protected new Collider2D collider;
+    protected bool returningBottles;
+    //temporary Booleans For interactions
+     
 
     //Get & Set
-    protected int Health
-    {
+    protected virtual float Health{
         get
         {
             return health;
@@ -63,7 +79,7 @@ public abstract class Character : MonoBehaviour
             }
         }
     }
-    protected int Sanity
+    protected virtual float Sanity
     {
         get
         {
@@ -79,7 +95,7 @@ public abstract class Character : MonoBehaviour
             sanity = Mathf.Clamp(value, 0, maxSanity);
         }
     }
-    protected float Stamina
+    protected virtual float Stamina
     {
         get
         {
@@ -99,38 +115,55 @@ public abstract class Character : MonoBehaviour
             }
         }
     }
-
-
-    // Use this for initialization
-    protected virtual void Start()
+    protected virtual float DrunkAmount
     {
-        exhaustTimer = exhaustDuration;
-        lengthOfRay = GetComponent<Collider2D>().bounds.extents.magnitude / 2;
-        Sr = GetComponent<SpriteRenderer>();
+        get
+        {
+            return drunkAmount;
+        }
 
-        animator = GetComponent<Animator>();
+        set
+        {
+            drunkAmount = value;
+        }
     }
-
-    // Update is called once per frame
-    protected virtual void Update()
+    public virtual float MoneyAmount
     {
-        GetInput();
-        RecoverStamina();
-        ExhaustTimer();
-        AnimationChanger();
-        Collision();
-        ApplyMovement();
+        get
+        {
+            return moneyAmount;
+        }        
+    }
+    public bool Sprinting
+    {
+        get
+        {
+            return sprinting;
+        }
+        
+    }
+    public Inventory CharacterInventory
+    {
+        get
+        {
+            return characterInventory;
+        }
+        set
+        {
+            characterInventory = value;
+        }
     }
 
     protected virtual void ApplyMovement()
     {
-        if (sprinting)
+        if (sprinting && !exhausted)
         {
-            transform.Translate(movementDirection  * sprintSpeed * Time.deltaTime);
+            Stamina -= staminaDecay * Time.deltaTime;
+            transform.Translate(movementDirection * sprintSpeed * Time.deltaTime);
         }
         else
         {
-            transform.Translate(movementDirection  * movementSpeed * Time.deltaTime);
+            transform.Translate(movementDirection * movementSpeed * Time.deltaTime);
         }
 
     }
@@ -138,10 +171,30 @@ public abstract class Character : MonoBehaviour
     protected abstract void GetInput();
 
     protected abstract void Death();
+    //Minigame Methods
     protected abstract void Attack();
-    protected abstract void ConsumeItem();
-    protected abstract void Gather();
     protected abstract void Beg();
+    //Interactable Methods
+    public abstract void ConsumeItem(int itemID);
+    public abstract void Gather(List<BaseItem> items);
+    public abstract void ReturnBottle();
+    public abstract void Buy(BaseItem item);
+    
+   
+
+    private void CheckForInteraction()
+    {
+        //For through all interactable colliders, and see if Cointains()
+        foreach (Collider2D item in GameManager.Instance.interactablesColliders)
+        {
+            //If contains, get component from collider, typeof IInteractable
+            if (collider.bounds.Intersects(item.GetComponent<Collider2D>().bounds))
+            {
+                //Call Interact and pass this as parameter
+                item.GetComponent<IInteractable>().Interact(this);
+            }
+        }
+    }
 
     public void TakeHealthDamage(int amount)
     {
@@ -161,13 +214,21 @@ public abstract class Character : MonoBehaviour
                 Stamina += staminaRecoveryRate * Time.deltaTime;
             }
         }
+        if(sprinting)
+        {
+            if(Stamina <= 0)
+            {
+                Exhausted();
+                ExhaustTimer();
+            }
+        }
     }
     protected virtual void Collision()
     {
         Ray2D ray;
         Vector2 origin;
 
-        //Startingpoint determination from characters collider whenever the character is moving horizontally or vertically
+        //Origin starting determination from characters collider whenever the character is moving horizontally or vertically
         if (movementDirection.y != 0)
         {
             origin = new Vector2(GetComponent<Collider2D>().bounds.min.x, GetComponent<Collider2D>().bounds.center.y);
@@ -188,20 +249,30 @@ public abstract class Character : MonoBehaviour
             ray = new Ray2D(origin, (movementDirection).normalized);
             Debug.DrawRay(ray.origin, ray.direction, Color.blue);
 
-            RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction, lengthOfRay, raycastMask);
-            if (hit)
+            RaycastHit2D BuildingHit = Physics2D.Raycast(ray.origin, ray.direction, lengthOfRay, raycastMask);
+
+            RaycastHit2D LitterHit = Physics2D.Raycast(ray.origin, ray.direction, lengthOfRay, 1 << 8);
+
+            if (BuildingHit)
             {
-                movementDirection = movementDirection - Vector3.Project(movementDirection, hit.normal.normalized);
+                movementDirection = movementDirection - Vector3.Project(movementDirection, BuildingHit.normal.normalized);
                 return;
             }
-                //origin change for next raycast based on character movement
+            //Checking the litter we hit and adding it to inventory
+            if (LitterHit)
+            {
+                CharacterInventory.AddItemToInventory(LitterHit.collider.gameObject.GetComponent<Consumable>());
+                Destroy(LitterHit.collider.gameObject);
+            }
+
+            //Adding new raycast to next point
             if (movementDirection.x != 0 && movementDirection.y == 0)
                 origin += new Vector2(0, distanceBetweenRaysY);
             else
                 origin += new Vector2(distanceBetweenRaysX, 0);
-
         }
     }
+
 
     protected virtual void Exhausted()
     {
@@ -210,6 +281,7 @@ public abstract class Character : MonoBehaviour
             exhausted = true;
         }
     }
+
     protected void ExhaustTimer()
     {
         //Only tick when exhausted
@@ -247,7 +319,7 @@ public abstract class Character : MonoBehaviour
         if (movementDirection.x != 0 && movementDirection.y < 0) { animator.Play(AnimationClips.WalkstrafeDown.ToString()); currentIdleSprite = idleSprites[2]; SpriteFlip(); }
 
         //Idle
-        if (movementDirection.x == 0 && movementDirection.y == 0) { animator.Play(AnimationClips.Idle.ToString()); Sr.sprite = idleSprites[2]; }
+        if (movementDirection.x == 0 && movementDirection.y == 0) { animator.Play(AnimationClips.Idle.ToString()); Sr.sprite = currentIdleSprite; }
 
     }
 
@@ -258,6 +330,13 @@ public abstract class Character : MonoBehaviour
         Sr.flipX = flip;
     }
 
+    protected void StatsDecay()
+    {
+        Health      -= healthDecay * Time.deltaTime;
+        Sanity      -= sanityDecay * Time.deltaTime;
+        DrunkAmount -= drunkDecay  * Time.deltaTime;
+    }
+
     enum AnimationClips
     {
         Idle,
@@ -266,5 +345,33 @@ public abstract class Character : MonoBehaviour
         WalkStrafeUp,
         WalkstrafeDown,
         WalkUp
+    }
+
+    protected virtual void Awake()
+    {
+
+    }
+    // Use this for initialization
+    protected virtual void Start()
+    {
+        exhaustTimer = exhaustDuration;
+        lengthOfRay = GetComponent<Collider2D>().bounds.extents.magnitude / 2;
+        Sr = GetComponent<SpriteRenderer>();
+        CharacterInventory = gameObject.AddComponent<Inventory>();
+        animator = GetComponent<Animator>();
+        collider = GetComponent<Collider2D>();
+    }
+
+    // Update is called once per frame
+    protected virtual void Update()
+    {
+        GetInput();
+        CheckForInteraction();
+        StatsDecay();
+        RecoverStamina();
+        ExhaustTimer();
+        Collision();
+        AnimationChanger();
+        ApplyMovement();
     }
 }
