@@ -11,6 +11,10 @@ public class TrashSpawn : MonoBehaviour, IInteractable
     private List<BaseItem> trashCanInventory;
     [SerializeField]
     private new Collider2D collider;
+    double                 diceRoll;
+    double                 cumulative = 0.0f;
+
+
 
     //GET & SET
     public List<BaseItem> Spawnableitems
@@ -69,8 +73,21 @@ public class TrashSpawn : MonoBehaviour, IInteractable
 
     public void SpawnItems()
     {
-        //Populates items list
+        cumulative = 0.0f;
+        diceRoll = Random.value;
+        for (int i = 0; i < spawnableItems.Count; i++)
+        {
+            cumulative += spawnableItems[i].DropProBability;
+
+            if (diceRoll < cumulative)
+            {
+                trashCanInventory.Add(spawnableItems[i]);
+                break;
+            }
+        }
+
     }
+
     private void Awake()
     {
         Instance = this;

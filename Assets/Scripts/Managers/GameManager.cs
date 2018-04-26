@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     private float              spawnableItemIndex;
     private const float        originalSpawnTimer = 1.0f;
     float                      spawntimer;
+    private const int          maxNumberOfitem = 4;
 
     //Others
     private static GameManager instance;
@@ -40,30 +41,12 @@ public class GameManager : MonoBehaviour
         spawntimer -= Time.deltaTime;
         if (spawntimer <= 0)
         {
-            for (int i = 0; i < trashCans.Count; i++)
+            int numberOfItems = Random.Range(0, 4);
+            for (int a = 0; a < numberOfItems; a++)
             {
-                spawnableItemIndex = Random.Range(0.0f, 10.1f);
-                if (spawnableItemIndex <= 7)
+                for (int i = 0; i < trashCans.Count; i++)
                 {
-                    int amountOfBottlesSpawned = Random.Range(2, 5);
-
-                    for (int a = 0; a < amountOfBottlesSpawned; a++)
-                    {
-                        trashCans.ElementAt(i).TrashCanInventory.Add(TrashSpawn.Instance.Spawnableitems.ElementAt((int)SpawnableitemList.Bottle));
-                    }
-                }
-                else if (spawnableItemIndex > 7 && spawnableItemIndex <= 8.5f)
-                {
-                    trashCans.ElementAt(i).TrashCanInventory.Add(TrashSpawn.Instance.Spawnableitems.ElementAt((int)SpawnableitemList.Black_Banana));
-
-                }
-                else if (spawnableItemIndex > 8.5f && spawnableItemIndex < 9.5f)
-                {
-                    trashCans.ElementAt(i).TrashCanInventory.Add(TrashSpawn.Instance.Spawnableitems.ElementAt((int)SpawnableitemList.Half_ChocolateBar));
-                }
-                else
-                {
-                    trashCans.ElementAt(i).TrashCanInventory.Add(TrashSpawn.Instance.Spawnableitems.ElementAt((int)SpawnableitemList.Old_SandWich));
+                    trashCans[i].SpawnItems();
                 }
             }
         ResetTimer();

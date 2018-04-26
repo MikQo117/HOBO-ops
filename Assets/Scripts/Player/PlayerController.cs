@@ -10,11 +10,11 @@ public class PlayerController : Character
 
 
     //Camera Variables
-    private Camera mainCamera;
-    private float lenght = 1000;
+    private Camera  mainCamera;
+    private float   lenght = 1000;
     private Vector3 SprintVelocity;
     private Vector3 CameraZoffset = new Vector3(0, 0, -5);
-    private float smoothTime = 0.3f;
+    private float   smoothTime = 0.3f;
 
     public Bounds bound;
     //Getters 

@@ -28,7 +28,6 @@ public class LiqourStore : MonoBehaviour, IInteractable
             source.Buy(shopInventory.ElementAt(1));
         }
     }
-
     public void Start()
     {
         collider = GetComponent<Collider2D>();
