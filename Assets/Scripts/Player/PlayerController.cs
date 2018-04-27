@@ -58,9 +58,6 @@ public class PlayerController : Character
 
             //Destination is unit vector * Speed and directions magnitude effects on how much speed is used;
             movementDirection = direction.normalized *  directionMagnitude;
-
-            //Move the player towards a destination
-            transform.Translate(movementDirection * Time.deltaTime);
         }
         else
         {
