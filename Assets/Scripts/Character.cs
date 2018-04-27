@@ -25,11 +25,10 @@ public abstract class Character : MonoBehaviour
 
     //Character movement
     [SerializeField]
-    protected float        movementSpeed;
     [SerializeField]
-    public float           sprintSpeed;
-    public Vector3         movementDirection;
-    protected bool         sprinting;
+protected float sprintSpeed;
+protected Vector3 movementDirection;
+protected bool sprinting;
 
     //Collision variables
     [SerializeField]
@@ -316,7 +315,7 @@ public abstract class Character : MonoBehaviour
         if (movementDirection.x != 0 && movementDirection.y > 0) { animator.Play(AnimationClips.WalkStrafeUp.ToString()); currentIdleSprite = idleSprites[1]; SpriteFlip(); }
 
         //strafing downwards animation changer
-        if (movementDirection.x != 0 && movementDirection.y < 0) { animator.Play(AnimationClips.WalkstrafeDown.ToString()); currentIdleSprite = idleSprites[2]; SpriteFlip(); }
+        if (movementDirection.x != 0 && movementDirection.y < 0) { animator.Play(AnimationClips.WalkStrafeDown.ToString()); currentIdleSprite = idleSprites[2]; SpriteFlip(); }
 
         //Idle
         if (movementDirection.x == 0 && movementDirection.y == 0) { animator.Play(AnimationClips.Idle.ToString()); Sr.sprite = currentIdleSprite; }
@@ -326,7 +325,7 @@ public abstract class Character : MonoBehaviour
     protected void SpriteFlip()
     {
         bool flip;
-        flip = movementDirection.x > 0 ? true : false;
+        flip = movementDirection.x < 0 ? true : false;
         Sr.flipX = flip;
     }
 
@@ -343,7 +342,7 @@ public abstract class Character : MonoBehaviour
         WalkSideways,
         WalkDown,
         WalkStrafeUp,
-        WalkstrafeDown,
+        WalkStrafeDown,
         WalkUp
     }
 

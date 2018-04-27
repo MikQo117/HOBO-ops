@@ -22,6 +22,12 @@ public class PlayerController : Character
     public float HealthGetter()
     {
         return Health;
+        if (InputManager.Instance == null)
+        {
+            GameObject inputManager = new GameObject();
+            inputManager.AddComponent<InputManager>();
+            inputManager.name = "InputManager";
+        }
     }
 
     public float SanityGetter()
@@ -106,11 +112,31 @@ public class PlayerController : Character
 
     protected override void GetInput()
     {
-        //Get WASD directions
-        movementDirection = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+        if (InputManager.Instance.AxisDown("Horizontal") || InputManager.Instance.AxisDown("Vertical"))
+        {
+            //Determines wanted direction
+            Vector2 direction = Vector2.right * InputManager.Instance.XAxis + Vector2.up * InputManager.Instance.YAxis;
+
+            float directionMagnitude = direction.magnitude;
+
+            if (directionMagnitude > 1)
+            {
+                directionMagnitude = 1;
+            }
+
+            //Destination is unit vector * Speed and directions magnitude effects on how much speed is used;
+            movementDirection = direction.normalized *  directionMagnitude;
+
+            //Move the player towards a destination
+            transform.Translate(movementDirection * Time.deltaTime);
+        }
+        else
+        {
+            movementDirection = Vector3.zero;
+        }
 
         //Sprint
-        if (Input.GetKey(KeyCode.LeftShift))
+        if (InputManager.Instance.AxisDown("Fire3"))
             sprinting = true;
         else
             sprinting = false;
