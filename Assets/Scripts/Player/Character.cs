@@ -54,7 +54,7 @@ public abstract class Character : MonoBehaviour
     protected float        exhaustDuration = 5;
 
     //Inventory variable
-    private Inventory characterInventory;
+    protected Inventory characterInventory;
     //Interaction variables
     [SerializeField]
     protected new Collider2D collider;
@@ -184,13 +184,16 @@ public abstract class Character : MonoBehaviour
     
    
 
-    private void CheckForInteraction()
+    /// <summary>
+    /// Checks if the character is intersecting a interactable collider.
+    /// </summary>
+    protected virtual void CheckForInteraction()
     {
-        //For through all interactable colliders, and see if Cointains()
+        //For through all interactable colliders, and see if intersects
         foreach (Collider2D item in GameManager.Instance.interactablesColliders)
         {
             //If contains, get component from collider, typeof IInteractable
-            if (collider.bounds.Intersects(item.GetComponent<Collider2D>().bounds))
+            if (collider.bounds.Intersects(item.bounds))
             {
                 //Call Interact and pass this as parameter
                 item.GetComponent<IInteractable>().Interact(this);

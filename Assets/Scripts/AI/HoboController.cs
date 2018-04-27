@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class HoboController : Character
@@ -13,6 +13,15 @@ public class HoboController : Character
     //State machine variables
     private ThresholdState hpState;
     private ThresholdState spState;
+    private bool scavenging = false;
+    
+    //Scavenge variables
+    private Vector2[] shortestPath;
+    private Dictionary<Vector2[], int> paths = new Dictionary<Vector2[], int>();
+    private int requestsSent = 0;
+    private bool movingToTarget = false;
+    private List<TrashSpawn> spawnsToSearch = new List<TrashSpawn>();
+
 
     protected override float Health
     {
@@ -27,15 +36,18 @@ public class HoboController : Character
 
             if (value >= 80 && value < 100)
             {
-                hpState = ThresholdState.Well;
+                hpState = ThresholdState.Satisfied;
+                AnalyzeStates();
             }
             else if (value >= 40 && value < 20)
             {
                 hpState = ThresholdState.Low;
+                AnalyzeStates();
             }
             else
             {
                 hpState = ThresholdState.Critical;
+                AnalyzeStates();
             }
         }
     }
@@ -53,22 +65,28 @@ public class HoboController : Character
 
             if (value >= 70 && value < 100)
             {
-                spState = ThresholdState.Well;
+                spState = ThresholdState.Satisfied;
+                AnalyzeStates();
             }
             else if (value >= 30 && value < 15)
             {
                 spState = ThresholdState.Low;
+                AnalyzeStates();
             }
             else
             {
                 spState = ThresholdState.Critical;
+                AnalyzeStates();
             }
         }
     }
 
+    /// <summary>
+    /// Starts an action corresponding to the current state.
+    /// </summary>
     private void AnalyzeStates()
     {
-        if (hpState == ThresholdState.Well && spState == ThresholdState.Well)
+        if (hpState == ThresholdState.Satisfied && spState == ThresholdState.Satisfied)
         {
             //Idle actions
             //Debug.Log("Hobo AI idle");
@@ -76,6 +94,7 @@ public class HoboController : Character
         else if (hpState == ThresholdState.Low)
         {
             //Scavenge
+            StartScavenge();
             //Debug.Log("Hobo AI scavenging");
         }
         else
@@ -85,14 +104,78 @@ public class HoboController : Character
         }
     }
 
-    private void Scavenge()
+    /// <summary>
+    /// Gets all trashcans and begins to scavenge them.
+    /// </summary>
+    private void StartScavenge()
     {
-        //Get nearest trashcan
-        //Move to it
-        //when reached, search it
-        //If food found, eat it
-        //bottle do nothing special
-        //repeat
+        scavenging = true;
+        if (spawnsToSearch.Count <= 0)
+        {
+            foreach (IInteractable item in GameManager.Instance.interactables)
+            {
+                if (item is TrashSpawn)
+                {
+                    TrashSpawn temp = item as TrashSpawn;
+                    spawnsToSearch.Add(temp);
+                }
+            } 
+        }
+        foreach (TrashSpawn item in spawnsToSearch)
+        {
+            PathRequestManager.RequestPath(transform.position, item.transform.position, OnTrashPathFound);
+            requestsSent++;
+        }
+    }
+
+    /// <summary>
+    /// Checks if the character is intersecting a interactable collider.
+    /// </summary>
+    protected override void CheckForInteraction()
+    {
+        //For through all interactable colliders, and see if intersects
+        foreach (Collider2D item in GameManager.Instance.interactablesColliders)
+        {
+            //Debug.Log("Closest point from player: " + item.bounds.ClosestPoint(transform.position));
+            //If contains, get component from collider, typeof IInteractable
+            if (collider.bounds.Intersects(item.bounds))
+            {
+                Debug.Log("Hit interactable");
+                //Call Interact and pass this as parameter
+                IInteractable temp = item.GetComponent<IInteractable>();
+                temp.Interact(this);
+                if (temp is TrashSpawn)
+                {
+                    paths.Clear();
+                    requestsSent = 0;
+                    spawnsToSearch.Remove(temp as TrashSpawn);
+                    Debug.Log("Spawns remaining: " + spawnsToSearch.Count);
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// A callback when a path is found. When all the sent request come back, starts movement.
+    /// </summary>
+    /// <param name="newPath">The new calculated path.</param>
+    /// <param name="pathSuccess">Was the pathfind successful?</param>
+    /// <param name="pathLength">The lenght of the path</param>
+    public void OnTrashPathFound(Vector2[] newPath, bool pathSuccess, int pathLength)
+    {
+        if (pathSuccess)
+        {
+            paths.Add(newPath, pathLength);
+            if (paths.Count >= requestsSent)
+            {
+                //shortestPath = paths.First().Key;
+                shortestPath = paths.OrderBy(kvp => kvp.Value).First().Key; //Vittumikäsäätö
+                //shortestPath = paths.Aggregate((l, r) => l.Value < r.Value ? l : r).Key; //Vittumikäsäätö
+                //shortestPath = paths.Where(x => x.Value == paths.Select(k => paths[k.Key]).Min());
+                StartMovement(shortestPath);
+                movingToTarget = true;
+            }
+        }
     }
 
     /// <summary>
@@ -100,16 +183,25 @@ public class HoboController : Character
     /// </summary>
     /// <param name="newPath">The new calulated path.</param>
     /// <param name="pathSuccess">Was the pathfind successful?</param>
-    public void OnPathFound(Vector2[] newPath, bool pathSuccess)
+    /// <param name="pathLength">The lenght of the path.</param>
+    public void OnPathFound(Vector2[] newPath, bool pathSuccess, int pathLength)
     {
         if (pathSuccess)
         {
-            path = newPath;
-            targetIndex = 0;
-            StopCoroutine("FollowPath");
-            StartCoroutine("FollowPath");
-            pathSuccess = false;
+            StartMovement(newPath);
         }
+    }
+
+    /// <summary>
+    /// Starts FollowPath co-routine.
+    /// </summary>
+    /// <param name="newPath">The new calulated path.</param>
+    private void StartMovement(Vector2[] newPath)
+    {
+        path = newPath;
+        targetIndex = 0;
+        StopCoroutine("FollowPath");
+        StartCoroutine("FollowPath");
     }
 
     /// <summary>
@@ -129,6 +221,11 @@ public class HoboController : Character
                     targetIndex = 0;
                     path = new Vector2[0];
                     movementDirection = Vector3.zero;
+                    if (scavenging)
+                    {
+                        
+                        StartScavenge();
+                    }
                     yield break;
                 }
                 currentWaypoint = path[targetIndex];
@@ -139,21 +236,28 @@ public class HoboController : Character
         }
     }
 
+    /// <summary>
+    /// Applies the movement.
+    /// </summary>
     protected override void ApplyMovement()
     {
-        if (sprinting)
+        if (movingToTarget)
         {
-            transform.position = Vector3.MoveTowards(transform.position, currentWaypoint, Time.deltaTime);
-        }
-        else
-        {
-            transform.position = Vector3.MoveTowards(transform.position, currentWaypoint, sprintSpeed * Time.deltaTime);
+            if (sprinting)
+            {
+                transform.position = Vector3.MoveTowards(transform.position, currentWaypoint, movementSpeed * Time.deltaTime);
+            }
+            else
+            {
+                transform.position = Vector3.MoveTowards(transform.position, currentWaypoint, sprintSpeed * Time.deltaTime);
+            } 
         }
     }
 
 
     public override void ConsumeItem(int itemID)
     {
+        //Think this over later
     }
 
     protected override void Attack()
@@ -168,37 +272,40 @@ public class HoboController : Character
     {
     }
 
+    /// <summary>
+    /// Stores a list of items to the inventory but consumes the consumables.
+    /// </summary>
+    /// <param name="items">List of items to store.</param>
     public override void Gather(List<BaseItem> items)
     {
+
+        /*foreach (BaseItem item in items)
+        {
+            if (item.Consumable)
+            {
+                //Does nothing right now
+                ConsumeItem(item.BaseItemID);
+                items.Remove(item);
+            }
+        }*/
+
+        characterInventory.AddItemToInventory(items);
     }
 
-    public override void ReturnBottle()
-    {
-    }
     protected override void GetInput()
     {
-        //Test
-        if (Input.GetMouseButtonDown(0))
-        {
-            PathRequestManager.RequestPath(transform.position, Camera.main.ScreenToWorldPoint(Input.mousePosition), OnPathFound);
-        }
-    }
-
-    public override void Buy(BaseItem item)
-    {
-        
     }
 
     // Use this for initialization
     protected override void Start()
     {
         base.Start();
+        StartScavenge();
     }
 
     // Update is called once per frame
     protected override void Update()
     {
-        AnalyzeStates();
         base.Update();
         /*GetInput();
         RecoverStamina();
@@ -208,10 +315,19 @@ public class HoboController : Character
         ApplyMovement();*/
     }
 
+    public override void ReturnBottle()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override void Buy(BaseItem item)
+    {
+        throw new System.NotImplementedException();
+    }
 }
 public enum ThresholdState
 {
-    Well,
+    Satisfied,
     Low,
     Critical
 }
