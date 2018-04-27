@@ -24,6 +24,11 @@ public abstract class Character : MonoBehaviour
     protected const float staminaDecay = 10.0f;
 
     //Character movement
+    [SerializeField]
+    [Range(0.01f, 10f)]
+    protected float       movementSpeed = 1;
+    [SerializeField]
+    [Range(0.01f, 10f)]
     protected float       sprintSpeed = 5;
     protected Vector3     movementDirection;
     protected bool        sprinting;
@@ -160,7 +165,7 @@ public abstract class Character : MonoBehaviour
         }
         else
         {
-            transform.Translate(movementDirection  * Time.deltaTime);
+            transform.Translate(movementDirection * movementSpeed * Time.deltaTime);
         }
 
     }
