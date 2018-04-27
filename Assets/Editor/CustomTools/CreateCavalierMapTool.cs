@@ -180,11 +180,12 @@ public class CreateCavalierMapTool : EditorWindow
     private void PlaceTiles()
     {
         float offsetX = pixelMap.texture.width;
+        GameObject map = new GameObject("Map");
 
-        for (int y = 0; y < pixelMap.texture.height - 1; y++)
+        for (int y = 0; y < pixelMap.texture.height; y++)
         {
             offsetX--;
-            for (int x = 0; x < pixelMap.texture.width - 1; x++)
+            for (int x = 0; x < pixelMap.texture.width; x++)
             {
                 PixelData currentPixel = pixelDatas[y, x];
 
@@ -206,14 +207,16 @@ public class CreateCavalierMapTool : EditorWindow
                     {
                         case PixelData.Tile.Road:
                             to.Tile = roadTiles[0];
+                            tileObject.name = "Road";
                             break;
                         case PixelData.Tile.Sidewalk:
                             to.Tile = sidewalkTiles[0];
+                            tileObject.name = "Sidewalks";
                             break;
                         default:
                             break;
                     }
-
+                    tileObject.transform.parent = map.transform;
                     tileObject.transform.position = currentPixel.Position;
                     tileObject.transform.position = new Vector2(tileObject.transform.position.x - offsetX * 0.5f, tileObject.transform.position.y * 0.5f);
                 }
