@@ -41,8 +41,6 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        
-
         //interactables = GetComponents< typeof(IInteractable )>().ToList();
         foreach (IInteractable item in interactables)
         {

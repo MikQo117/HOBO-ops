@@ -14,6 +14,14 @@ public class HoboController : Character
     private ThresholdState hpState;
     private ThresholdState spState;
     private bool scavenging = false;
+    
+    //Scavenge variables
+    private Vector2[] shortestPath;
+    private Dictionary<Vector2[], int> paths = new Dictionary<Vector2[], int>();
+    private int requestsSent = 0;
+    private bool movingToTarget = false;
+    private List<TrashSpawn> spawnsToSearch = new List<TrashSpawn>();
+
 
     protected override int Health
     {
@@ -73,6 +81,9 @@ public class HoboController : Character
         }
     }
 
+    /// <summary>
+    /// Starts an action corresponding to the current state.
+    /// </summary>
     private void AnalyzeStates()
     {
         if (hpState == ThresholdState.Satisfied && spState == ThresholdState.Satisfied)
@@ -93,13 +104,9 @@ public class HoboController : Character
         }
     }
 
-    private Vector2[] shortestPath;
-    private TrashSpawn nearestSpawn = new TrashSpawn();
-    private Dictionary<Vector2[], int> paths = new Dictionary<Vector2[], int>();
-    private int requestsSent = 0;
-    private bool movingToTarget = false;
-    private List<TrashSpawn> spawnsToSearch = new List<TrashSpawn>();
-
+    /// <summary>
+    /// Gets all trashcans and begins to scavenge them.
+    /// </summary>
     private void StartScavenge()
     {
         scavenging = true;
@@ -116,11 +123,14 @@ public class HoboController : Character
         }
         foreach (TrashSpawn item in spawnsToSearch)
         {
-            PathRequestManager.RequestPath(transform.position, item.transform.position, OnPathStuff);
+            PathRequestManager.RequestPath(transform.position, item.transform.position, OnTrashPathFound);
             requestsSent++;
         }
     }
 
+    /// <summary>
+    /// Checks if the character is intersecting a interactable collider.
+    /// </summary>
     protected override void CheckForInteraction()
     {
         //For through all interactable colliders, and see if intersects
@@ -136,24 +146,29 @@ public class HoboController : Character
                 temp.Interact(this);
                 if (temp is TrashSpawn)
                 {
+                    paths.Clear();
+                    requestsSent = 0;
                     spawnsToSearch.Remove(temp as TrashSpawn);
-                    Debug.Log(spawnsToSearch.Count);
-                    foreach (TrashSpawn item2 in spawnsToSearch)
-                    {
-                        Debug.Log(item2); 
-                    }
+                    Debug.Log("Spawns remaining: " + spawnsToSearch.Count);
                 }
             }
         }
     }
 
-    public void OnPathStuff(Vector2[] newPath, bool pathSuccess, int pathLength)
+    /// <summary>
+    /// A callback when a path is found. When all the sent request come back, starts movement.
+    /// </summary>
+    /// <param name="newPath">The new calculated path.</param>
+    /// <param name="pathSuccess">Was the pathfind successful?</param>
+    /// <param name="pathLength">The lenght of the path</param>
+    public void OnTrashPathFound(Vector2[] newPath, bool pathSuccess, int pathLength)
     {
         if (pathSuccess)
         {
             paths.Add(newPath, pathLength);
             if (paths.Count >= requestsSent)
             {
+                //shortestPath = paths.First().Key;
                 shortestPath = paths.OrderBy(kvp => kvp.Value).First().Key; //Vittumikäsäätö
                 //shortestPath = paths.Aggregate((l, r) => l.Value < r.Value ? l : r).Key; //Vittumikäsäätö
                 //shortestPath = paths.Where(x => x.Value == paths.Select(k => paths[k.Key]).Min());
@@ -168,6 +183,7 @@ public class HoboController : Character
     /// </summary>
     /// <param name="newPath">The new calulated path.</param>
     /// <param name="pathSuccess">Was the pathfind successful?</param>
+    /// <param name="pathLength">The lenght of the path.</param>
     public void OnPathFound(Vector2[] newPath, bool pathSuccess, int pathLength)
     {
         if (pathSuccess)
@@ -176,6 +192,10 @@ public class HoboController : Character
         }
     }
 
+    /// <summary>
+    /// Starts FollowPath co-routine.
+    /// </summary>
+    /// <param name="newPath">The new calulated path.</param>
     private void StartMovement(Vector2[] newPath)
     {
         path = newPath;
@@ -203,6 +223,7 @@ public class HoboController : Character
                     movementDirection = Vector3.zero;
                     if (scavenging)
                     {
+                        
                         StartScavenge();
                     }
                     yield break;
@@ -215,6 +236,9 @@ public class HoboController : Character
         }
     }
 
+    /// <summary>
+    /// Applies the movement.
+    /// </summary>
     protected override void ApplyMovement()
     {
         if (movingToTarget)
@@ -248,8 +272,13 @@ public class HoboController : Character
     {
     }
 
+    /// <summary>
+    /// Stores a list of items to the inventory but consumes the consumables.
+    /// </summary>
+    /// <param name="items">List of items to store.</param>
     public override void Gather(List<BaseItem> items)
     {
+
         /*foreach (BaseItem item in items)
         {
             if (item.Consumable)
@@ -260,7 +289,7 @@ public class HoboController : Character
             }
         }*/
 
-        //characterInventory.AddItemToInventory(items);
+        characterInventory.AddItemToInventory(items);
     }
 
     protected override void GetInput()

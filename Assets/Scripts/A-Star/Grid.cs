@@ -139,18 +139,18 @@ public class Grid : MonoBehaviour
         } 
     }*/
 
-    /*void OnDrawGizmos()
+    void OnDrawGizmos()
     {
-        Gizmos.DrawWireCube(transform.position, new Vector3(GridWorldSize.x, 1, GridWorldSize.y));
+        Gizmos.DrawWireCube(transform.position, new Vector3(GridWorldSize.x, GridWorldSize.y, 1));
 
         if (true)
         {
-            if (path != null)
+            if (Path != null)
             {
-                foreach (Node n in path)
+                foreach (Node n in Path)
                 {
-                    Gizmos.color = Color.black;
-                    Gizmos.DrawCube(n.worldPosition, Vector3.one * (nodeDiameter - .1f));
+                    Gizmos.color = Color.red;
+                    Gizmos.DrawCube(n.WorldPosition, Vector3.one * (nodeDiameter - .1f));
                 }
             }
         }
@@ -161,15 +161,15 @@ public class Grid : MonoBehaviour
             {
                 foreach (Node n in grid)
                 {
-                    Gizmos.color = (n.walkable) ? Color.white : Color.red;
-                    if (path != null)
-                        if (path.Contains(n))
+                    Gizmos.color = (n.Walkable) ? Color.white : Color.red;
+                    if (Path != null)
+                        if (Path.Contains(n))
                             Gizmos.color = Color.black;
-                    Gizmos.DrawCube(n.worldPosition, Vector3.one * (nodeDiameter - .1f));
+                    Gizmos.DrawCube(n.WorldPosition, Vector3.one * (nodeDiameter - .1f));
                 }
             }
         }
-    }*/
+    }
 
 #endif
 }

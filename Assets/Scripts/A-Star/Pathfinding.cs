@@ -12,6 +12,8 @@ public class Pathfinding : MonoBehaviour
 {
     private PathRequestManager requestManager;
     private Grid               grid;
+    private int                pathLength = 0;
+
 
     /// <summary>
     /// Finds a path between A and B using the A* algorithm.
@@ -105,14 +107,16 @@ public class Pathfinding : MonoBehaviour
         {
             //Finalize the waypoint array
             waypoints = RetracePath(startNode, targetNode);
+            foreach (Vector2 item in waypoints)
+            {
+                print("waypoints: " + item); 
+            }
             //Pathfind is only successful when there's a node to go to
             pathSuccess = waypoints.Length > 0;
         }
         //Return to request manager
         requestManager.FinishedProcessingPath(waypoints, pathSuccess, pathLength);
     }
-
-    int pathLength = 0;
 
     /// <summary>
     /// Retraces the path back through parents, and reverses it to match the actual route.
@@ -133,6 +137,7 @@ public class Pathfinding : MonoBehaviour
         }
 
         path.Add(startNode);
+        grid.Path = path;
         pathLength = path.Count;
         Vector2[] waypoints = SimplifyPath(path);
         Array.Reverse(waypoints); //*anteeksimitävittua*
@@ -152,10 +157,10 @@ public class Pathfinding : MonoBehaviour
         /*for (int i = 1; i < path.Count; i++)
         {
             Vector2 directionNew = new Vector2(path[i - 1].GridX - path[i].GridX, path[i - 1].GridY - path[i].GridY);
-            //if (directionNew != directionOld)
-            //{
+            if (directionNew != directionOld)
+            {
                 waypoints.Add(path[i-1].WorldPosition);
-            //}
+            }
             directionOld = directionNew;
         }*/
 

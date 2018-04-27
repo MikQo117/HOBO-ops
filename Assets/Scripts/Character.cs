@@ -164,6 +164,9 @@ public abstract class Character : MonoBehaviour
     public abstract void Gather(List<BaseItem> items);
     protected abstract void Beg();
 
+    /// <summary>
+    /// Checks if the character is intersecting a interactable collider.
+    /// </summary>
     protected virtual void CheckForInteraction()
     {
         //For through all interactable colliders, and see if intersects
