@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour
     private List<TrashSpawn>   trashCans = new List<TrashSpawn>();
     public List<Collider2D>    interactablesColliders;
     private float              spawnableItemIndex;
-    private const float        originalSpawnTimer = 1.0f;
+    private const float        originalSpawnTimer = 30.0f;
     float                      spawntimer;
 
     //Others

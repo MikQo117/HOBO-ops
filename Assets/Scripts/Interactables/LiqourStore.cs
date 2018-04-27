@@ -29,7 +29,7 @@ public class LiqourStore : MonoBehaviour, IInteractable
         }
     }
 
-    public void Awake()
+    public void Start()
     {
         collider = GetComponent<Collider2D>();
         GameManager.Instance.interactables.Add(this);

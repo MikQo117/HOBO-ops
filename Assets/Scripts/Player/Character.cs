@@ -24,8 +24,7 @@ public abstract class Character : MonoBehaviour
     protected const float staminaDecay = 10.0f;
 
     //Character movement
-    [SerializeField]
-    protected float       sprintSpeed;
+    protected float       sprintSpeed = 5;
     protected Vector3     movementDirection;
     protected bool        sprinting;
 
@@ -253,7 +252,7 @@ public abstract class Character : MonoBehaviour
 
             if (BuildingHit)
             {
-                movementDirection = movementDirection - Vector3.Project(movementDirection, BuildingHit.normal.normalized);
+                movementDirection = movementDirection - Vector3.Project(movementDirection, BuildingHit.normal.normalized)* 2;
                 return;
             }
             //Checking the litter we hit and adding it to inventory

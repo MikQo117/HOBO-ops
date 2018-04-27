@@ -123,7 +123,6 @@ public class PlayerController : Character
 
             //Move the player towards a destination
             transform.Translate(movementDirection * Time.deltaTime);
-            Debug.DrawRay(transform.position,movementDirection,Color.red);
         }
         else
         {

@@ -82,9 +82,10 @@ public class TrashSpawn : MonoBehaviour, IInteractable
 
             if (diceRoll < cumulative)
             {
-                if (cumulative > bottleDropChance)
+                if (diceRoll < bottleDropChance)
                 {
                     numberOfItems = Random.Range(0, maxNumberOfItems);
+
                     for (int a = 0; a < numberOfItems; a++)
                     {
                         trashCanInventory.Add(spawnableItems[i]);
@@ -97,10 +98,9 @@ public class TrashSpawn : MonoBehaviour, IInteractable
                 break;
             }
         }
-
     }
 
-    private void Awake()
+    private void Start()
     {
         Instance = this;
         collider = GetComponent<Collider2D>();
