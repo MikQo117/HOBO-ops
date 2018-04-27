@@ -143,7 +143,7 @@ public class HoboController : Character
     {
         if (sprinting)
         {
-            transform.position = Vector3.MoveTowards(transform.position, currentWaypoint, movementSpeed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, currentWaypoint, Time.deltaTime);
         }
         else
         {

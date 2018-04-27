@@ -22,12 +22,6 @@ public class PlayerController : Character
     public float HealthGetter()
     {
         return Health;
-        if (InputManager.Instance == null)
-        {
-            GameObject inputManager = new GameObject();
-            inputManager.AddComponent<InputManager>();
-            inputManager.name = "InputManager";
-        }
     }
 
     public float SanityGetter()
@@ -129,6 +123,7 @@ public class PlayerController : Character
 
             //Move the player towards a destination
             transform.Translate(movementDirection * Time.deltaTime);
+            Debug.DrawRay(transform.position,movementDirection,Color.red);
         }
         else
         {
@@ -176,6 +171,12 @@ public class PlayerController : Character
     protected override void Awake()
     {
         pl = this;
+        if (InputManager.Instance == null)
+        {
+            GameObject inputManager = new GameObject();
+            inputManager.AddComponent<InputManager>();
+            inputManager.name = "InputManager";
+        }
     }
 
 

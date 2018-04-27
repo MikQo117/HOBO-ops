@@ -23,9 +23,6 @@ public class UImanager_Player : MonoBehaviour
         SanityBar.fillAmount = Mathf.Clamp01(PlayerController.pl.SanityGetter() / maxValue);
         StaminaBar.fillAmount = Mathf.Clamp01(PlayerController.pl.StaminaGetter() / maxValue);
 
-        HealthBar.GetComponentInChildren<Text>().text  = "" + (int)PlayerController.pl.HealthGetter();
-        SanityBar.GetComponentInChildren<Text>().text  = "" + (int)PlayerController.pl.SanityGetter();
-        StaminaBar.GetComponentInChildren<Text>().text = "" + (int)PlayerController.pl.StaminaGetter();
     }
 
     private void Inventory()
