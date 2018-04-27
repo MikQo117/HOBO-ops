@@ -17,8 +17,10 @@ public abstract class Character : MonoBehaviour
 
     //Character movement
     [SerializeField]
+    [Range(0.01f, 10f)]
     protected float movementSpeed;
     [SerializeField]
+    [Range(0.01f, 10f)]
     protected float sprintSpeed;
     protected Vector3 movementDirection;
     protected bool sprinting;
