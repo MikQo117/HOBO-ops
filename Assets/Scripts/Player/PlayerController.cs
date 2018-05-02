@@ -121,9 +121,9 @@ public class PlayerController : Character
     protected void CameraMovement()
     {
 
-        Vector3 temp = Vector3.SmoothDamp(mainCamera.transform.position, transform.TransformPoint(movementDirection * 5), ref SprintVelocity, smoothTime);
+        Vector3 temp = Vector3.SmoothDamp(mainCamera.transform.position, transform.TransformPoint(movementDirection * 3), ref SprintVelocity, smoothTime);
 
-        if (Sprinting)
+        if (Sprinting && !exhausted)
         {
             mainCamera.transform.position = temp + CameraZoffset;
         }
