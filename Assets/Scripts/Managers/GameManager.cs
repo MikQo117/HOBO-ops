@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     private float              spawnableItemIndex;
     private const float        originalSpawnTimer = 30.0f;
     float                      spawntimer;
+
     public List<TrashSpawn> GetTrashSpawns
     {
         get
@@ -46,10 +47,9 @@ public class GameManager : MonoBehaviour
             }
             ResetTimer();
         }
-
     }
 
-    void ResetTimer()
+    private void ResetTimer()
     {
         spawntimer = originalSpawnTimer;
     }
@@ -81,13 +81,5 @@ public class GameManager : MonoBehaviour
     private void Update()
     {
         AddItemToTrashCans();
-    }
-
-    enum SpawnableitemList
-    {
-        Bottle,
-        Half_ChocolateBar,
-        Black_Banana,
-        Old_SandWich
     }
 }

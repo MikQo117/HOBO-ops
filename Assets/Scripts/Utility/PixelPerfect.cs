@@ -17,7 +17,7 @@ public class PixelPerfect : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (SettingsManager.Instance)
+        if (SettingsManager.Instance.Settings)
         {
             c = GetComponent<Camera>();
             pixelsPerUnit = SettingsManager.Instance.Settings.PixelsPerUnit;

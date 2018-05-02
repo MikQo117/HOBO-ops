@@ -63,7 +63,7 @@ public abstract class Character : MonoBehaviour
      
 
     //Get & Set
-    protected virtual float Health{
+    public virtual float Health{
         get
         {
             return health;
@@ -81,7 +81,7 @@ public abstract class Character : MonoBehaviour
             }
         }
     }
-    protected virtual float Sanity
+    public virtual float Sanity
     {
         get
         {
@@ -97,7 +97,7 @@ public abstract class Character : MonoBehaviour
             sanity = Mathf.Clamp(value, 0, maxSanity);
         }
     }
-    protected virtual float Stamina
+    public virtual float Stamina
     {
         get
         {
@@ -144,7 +144,7 @@ public abstract class Character : MonoBehaviour
         }
         
     }
-    public Inventory CharacterInventory
+    public Inventory Inventory
     {
         get
         {
@@ -266,7 +266,7 @@ public abstract class Character : MonoBehaviour
             //Checking the litter we hit and adding it to inventory
             if (LitterHit)
             {
-                CharacterInventory.AddItemToInventory(LitterHit.collider.gameObject.GetComponent<Consumable>());
+                Inventory.AddItemToInventory(LitterHit.collider.gameObject.GetComponent<Consumable>());
                 Destroy(LitterHit.collider.gameObject);
             }
 
@@ -362,7 +362,7 @@ public abstract class Character : MonoBehaviour
         exhaustTimer = exhaustDuration;
         lengthOfRay = GetComponent<Collider2D>().bounds.extents.magnitude / 2;
         Sr = GetComponent<SpriteRenderer>();
-        CharacterInventory = gameObject.AddComponent<Inventory>();
+        Inventory = gameObject.AddComponent<Inventory>();
         animator = GetComponent<Animator>();
         collider = GetComponent<Collider2D>();
     }

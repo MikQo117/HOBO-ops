@@ -11,11 +11,13 @@ public class TrashSpawn : MonoBehaviour, IInteractable
     private List<BaseItem>         trashCanInventory;
     [SerializeField]
     private new Collider2D         collider;
+    //variables
     private double                 diceRoll;
     private double                 cumulative = 0.0f;
-    private double                 bottleDropChance = 0.7f;
     private int                    numberOfItems;
-    private int                    maxNumberOfItems = 4;
+    //constatnts
+    private const int              maxNumberOfItems = 4;
+    private const double           bottleDropChance = 0.7f;
 
     //GET & SET
     public List<BaseItem> Spawnableitems
@@ -48,8 +50,6 @@ public class TrashSpawn : MonoBehaviour, IInteractable
     {
         return collider;
     }
-
-    public static TrashSpawn Instance;
 
     //Methods
 
@@ -102,7 +102,6 @@ public class TrashSpawn : MonoBehaviour, IInteractable
 
     private void Start()
     {
-        Instance = this;
         collider = GetComponent<Collider2D>();
         GameManager.Instance.interactables.Add(this);
     }

@@ -6,65 +6,30 @@ using UnityEngine;
 public class BaseItem : ScriptableObject
 {
     //Consumable variables
-    [SerializeField]
-    private string   objectname;
-    [SerializeField]
-    private float    healthAmount;
-    [SerializeField]
-    private float    sanityAmount;
-    [SerializeField]
-    private float    drunkAmount;
-    [SerializeField]
-    private float    moneyAmount;
-    [SerializeField]
-    private int      baseItemID;
-    [SerializeField]
-    private bool     consumable;
-    [SerializeField]
-    private Sprite   objectSprite;
-    [SerializeField]
-    private float    itemCost;
-    [SerializeField]
-    private float dropProBability;
+    [SerializeField] private string   objectname;
+    [SerializeField] private float    healthAmount;
+    [SerializeField] private float    sanityAmount;
+    [SerializeField] private float    drunkAmount;
+    [SerializeField] private float    moneyAmount;
+    [SerializeField] private int      baseItemID;
+    [SerializeField] private bool     consumable;
+    [SerializeField] private Sprite   objectSprite;
+    [SerializeField] private float    itemCost;
+    [SerializeField] private float dropProBability;
     //Get & Set
     public float HealthAmount
     {
-        get
-        { 
-        
-            return healthAmount;
-        }
-
-        private set
-        {
-            healthAmount = value;
-        }
+        get { return healthAmount; }
     }
 
     public float SanityAmount
     {
-        get
-        {
-            return sanityAmount;
-        }
-
-        private set
-        {
-            sanityAmount = value;
-        }
+        get { return sanityAmount; }
     }
 
     public float DrunkAmount
     {
-        get
-        {
-                return drunkAmount;
-        }
-
-        private set
-        {
-            drunkAmount = value;
-        }
+        get { return drunkAmount; }
     }
 
     public float MoneyAmount
@@ -76,43 +41,37 @@ public class BaseItem : ScriptableObject
             else
                 return 0;
         }
-
-        set
-        {
-            moneyAmount = value;
-        }
-
     }
 
-    public float ItemCost {get { return itemCost; }}
+    public float ItemCost
+    {
+        get { return itemCost; }
+    }
 
-    public int BaseItemID { get { return baseItemID; } set { value = baseItemID; } }
+    public int BaseItemID
+    {
+        get { return baseItemID; }
+    }
 
-    public bool Consumable { get { return consumable; } set { consumable = value; } }
+    public bool Consumable
+    {
+        get { return consumable; } 
+    }
 
 
     public Sprite ObjectSprite
     {
-        get
-        {
-            return objectSprite;
-        }
+        get { return objectSprite; }
 
     }
 
     public string Objectname
     {
-        get
-        {
-            return objectname;
-        }
+        get { return objectname; }
     }
 
     public float DropProBability
     {
-        get
-        {
-            return dropProBability;
-        }
+        get { return dropProBability; }
     }
 }

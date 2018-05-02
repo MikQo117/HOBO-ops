@@ -23,7 +23,7 @@ public class HoboController : Character
     private List<TrashSpawn> spawnsToSearch = new List<TrashSpawn>();
 
 
-    protected override float Health
+    public override float Health
     {
         get
         {
@@ -52,7 +52,7 @@ public class HoboController : Character
         }
     }
 
-    protected override float Sanity
+    public override float Sanity
     {
         get
         {
@@ -112,11 +112,12 @@ public class HoboController : Character
         scavenging = true;
         if (spawnsToSearch.Count <= 0)
         {
+            requestsSent = 0;
             foreach (IInteractable item in GameManager.Instance.interactables)
             {
                 if (item is TrashSpawn)
                 {
-                    TrashSpawn temp = item as TrashSpawn;
+                    TrashSpawn temp = (TrashSpawn)item;
                     spawnsToSearch.Add(temp);
                 }
             } 
@@ -147,7 +148,6 @@ public class HoboController : Character
                 if (temp is TrashSpawn)
                 {
                     paths.Clear();
-                    requestsSent = 0;
                     spawnsToSearch.Remove(temp as TrashSpawn);
                     Debug.Log("Spawns remaining: " + spawnsToSearch.Count);
                 }

@@ -200,8 +200,7 @@ public class CreateCavalierMapTool : EditorWindow
                 {
                     GameObject tileObject = new GameObject("Tile");
 
-                    tileObject.AddComponent<TileObject>();
-                    TileObject to = tileObject.GetComponent<TileObject>();
+                    TileObject to = tileObject.AddComponent<TileObject>();
 
                     switch (currentPixel.TileType)
                     {

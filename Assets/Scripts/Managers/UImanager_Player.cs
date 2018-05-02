@@ -21,20 +21,22 @@ public class UImanager_Player : MonoBehaviour
     // Use this for initialization
     private void StatusBarValueChanger()
     {
-        HealthBar.fillAmount = Mathf.Clamp01(PlayerController.pl.HealthGetter() / maxValue);
-        SanityBar.fillAmount = Mathf.Clamp01(PlayerController.pl.SanityGetter() / maxValue);
-        StaminaBar.fillAmount = Mathf.Clamp01(PlayerController.pl.StaminaGetter() / maxValue);
+        HealthBar.fillAmount  = Mathf.Clamp01(PlayerController.pl.Health / maxValue);
+        SanityBar.fillAmount  = Mathf.Clamp01(PlayerController.pl.Sanity / maxValue);
+        StaminaBar.fillAmount = Mathf.Clamp01(PlayerController.pl.Stamina / maxValue);
 
     }
 
     private void Inventory()
     {
-        transform.GetChild(0).gameObject.SetActive(showing);
-        transform.GetChild(1).gameObject.SetActive(showing);
-        BottleText.text = PlayerController.pl.CharacterInventory.InventoryList.Count(x => x.BaseItemID == 8).ToString();
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            transform.GetChild(i).gameObject.SetActive(showing);
+        }
+        BottleText.text = PlayerController.pl.Inventory.InventoryList.Count(x => x.BaseItemID == 8).ToString();
         for (int i = 0; i < inventoryObjects.Count; i++)
         {
-            inventoryObjects[i].GetComponentInChildren<Text>().text = PlayerController.pl.CharacterInventory.InventoryList.Count(x => x.BaseItemID == i && x != null).ToString();
+            inventoryObjects[i].GetComponentInChildren<Text>().text = PlayerController.pl.Inventory.InventoryList.Count(x => x.BaseItemID == i && x != null).ToString();
         }
     }
 

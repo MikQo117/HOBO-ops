@@ -10,17 +10,23 @@ public class Inventory : MonoBehaviour
 
     public void AddItemToInventory(Consumable item)
     {
-        var itemOfInterest = item.ItemBase.Where(x => x != null && x.BaseItemID == item.ConsumableID);
-        InventoryList.Add(itemOfInterest.First());
+        BaseItem itemOfInterest = (BaseItem)item.ItemBase.Where(x => x != null && x.BaseItemID == item.ConsumableID);
+        InventoryList.Add(itemOfInterest);
     }
 
     public void AddItemToInventory(List<BaseItem> items)
     {
-        InventoryList.AddRange(items);
+        if (items != null)
+        {
+            InventoryList.AddRange(items); 
+        }
     }
     public void AddItemToInventory(BaseItem item)
     {
-        InventoryList.Add(item);
+        if (item != null)
+        {
+            InventoryList.Add(item); 
+        }
     }
 
     public void RemoveItemFromInventory(int ItemID)
