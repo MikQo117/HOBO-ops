@@ -1,17 +1,26 @@
 ﻿using System.Collections;
 using System.Linq;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    //Trash management variables
+    //Interaction variables
     public List<IInteractable> interactables = new List<IInteractable>();
-    private List<TrashSpawn>   trashCans = new List<TrashSpawn>();
+    private List<TrashSpawn>   trashSpawns = new List<TrashSpawn>();
     public List<Collider2D>    interactablesColliders;
     private float              spawnableItemIndex;
-    private const float        originalSpawnTimer = 1.0f;
+    private const float        originalSpawnTimer = 30.0f;
     float                      spawntimer;
+
+    public List<TrashSpawn> GetTrashSpawns
+    {
+        get
+        {
+            return trashSpawns;
+        }
+    }
 
     //Others
     private static GameManager instance;
@@ -25,14 +34,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public List<TrashSpawn> GetTrashCans
-    {
-        get
-        {
-            return trashCans;
-        }
-    }
-
     // Use this for initialization
 
     private void AddItemToTrashCans()
@@ -40,16 +41,15 @@ public class GameManager : MonoBehaviour
         spawntimer -= Time.deltaTime;
         if (spawntimer <= 0)
         {
-            for (int i = 0; i < trashCans.Count; i++)
+            for (int i = 0; i < trashSpawns.Count; i++)
             {
-                trashCans[i].SpawnItems();
+                trashSpawns[i].SpawnItems();
             }
             ResetTimer();
         }
-
     }
 
-    void ResetTimer()
+    private void ResetTimer()
     {
         spawntimer = originalSpawnTimer;
     }
@@ -67,9 +67,12 @@ public class GameManager : MonoBehaviour
         foreach (IInteractable item in interactables)
         {
             interactablesColliders.Add(item.GetCollider());
-            if (item.GetType() == typeof(TrashSpawn))
+        }
+        foreach (IInteractable item in interactables)
+        {
+            if (item is TrashSpawn)
             {
-                trashCans.Add((TrashSpawn)item);
+                trashSpawns.Add((TrashSpawn)item);
             }
         }
         ResetTimer();
@@ -78,13 +81,5 @@ public class GameManager : MonoBehaviour
     private void Update()
     {
         AddItemToTrashCans();
-    }
-
-    enum SpawnableitemList
-    {
-        Bottle,
-        Half_ChocolateBar,
-        Black_Banana,
-        Old_SandWich
     }
 }

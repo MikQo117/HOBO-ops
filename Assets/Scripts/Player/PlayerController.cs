@@ -17,23 +17,6 @@ public class PlayerController : Character
     private float   smoothTime = 0.3f;
 
     public Bounds bound;
-    //Getters 
-
-    public float HealthGetter()
-    {
-        return Health;
-    }
-
-    public float SanityGetter()
-    {
-        return Sanity;
-    }
-
-    public float StaminaGetter()
-    {
-        return stamina;
-    }
-
 
     //Minigame methods
     protected override void Attack()
@@ -47,29 +30,29 @@ public class PlayerController : Character
     //Interaction Methods
     public override void ConsumeItem(int itemID)
     {
-        if (CharacterInventory.InventoryList.Exists(x => x.BaseItemID == itemID))
+        if (Inventory.InventoryList.Exists(x => x.BaseItemID == itemID))
         {
-            if (CharacterInventory.InventoryList.Find(x => x.BaseItemID == itemID).Consumable)
+            if (Inventory.InventoryList.Find(x => x.BaseItemID == itemID).Consumable)
             {
-                BaseItem ConsumableItem = CharacterInventory.InventoryList.Find(x => x.BaseItemID == itemID);
+                BaseItem ConsumableItem = Inventory.InventoryList.Find(x => x.BaseItemID == itemID);
 
-                Health += ConsumableItem.HealthAmount;
-                Sanity += ConsumableItem.SanityAmount;
+                base.Health += ConsumableItem.HealthAmount;
+                base.Sanity += ConsumableItem.SanityAmount;
                 DrunkAmount += ConsumableItem.DrunkAmount;
-                CharacterInventory.RemoveItemFromInventory(itemID);
+                Inventory.RemoveItemFromInventory(itemID);
             }
         }
     }
 
     public override void ReturnBottle()
     {
-        List<BaseItem> items = CharacterInventory.InventoryList.FindAll(x => x.BaseItemID == 0);
+        List<BaseItem> items = Inventory.InventoryList.FindAll(x => x.BaseItemID == 0);
         if (items != null && returningBottles)
         {
             for (int i = 0; i < items.Count; i++)
             {
                 moneyAmount += items.First().MoneyAmount;
-                CharacterInventory.RemoveItemFromInventory(items.First());
+                Inventory.RemoveItemFromInventory(items.First());
             }
 
         }
@@ -82,7 +65,7 @@ public class PlayerController : Character
 
     public override void Buy(BaseItem item)
     {
-            CharacterInventory.AddItemToInventory(item);
+            Inventory.AddItemToInventory(item);
             moneyAmount -= item.ItemCost;
     }
 
@@ -96,7 +79,7 @@ public class PlayerController : Character
         if (items != null)
         {
             //Some ui thing to show what we gathered
-            pl.CharacterInventory.AddItemToInventory(items);
+            pl.Inventory.AddItemToInventory(items);
         }
         else
         {
@@ -106,11 +89,28 @@ public class PlayerController : Character
 
     protected override void GetInput()
     {
-        //Get WASD directions
-        movementDirection = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+        if (InputManager.Instance.AxisDown("Horizontal") || InputManager.Instance.AxisDown("Vertical"))
+        {
+            //Determines wanted direction
+            Vector2 direction = Vector2.right * InputManager.Instance.XAxis + Vector2.up * InputManager.Instance.YAxis;
+
+            float directionMagnitude = direction.magnitude;
+
+            if (directionMagnitude > 1)
+            {
+                directionMagnitude = 1;
+            }
+
+            //Destination is unit vector * Speed and directions magnitude effects on how much speed is used;
+            movementDirection = direction.normalized *  directionMagnitude;
+        }
+        else
+        {
+            movementDirection = Vector3.zero;
+        }
 
         //Sprint
-        if (Input.GetKey(KeyCode.LeftShift))
+        if (InputManager.Instance.AxisDown("Fire3"))
             sprinting = true;
         else
             sprinting = false;
@@ -150,6 +150,12 @@ public class PlayerController : Character
     protected override void Awake()
     {
         pl = this;
+        if (InputManager.Instance == null)
+        {
+            GameObject inputManager = new GameObject();
+            inputManager.AddComponent<InputManager>();
+            inputManager.name = "InputManager";
+        }
     }
 
 
