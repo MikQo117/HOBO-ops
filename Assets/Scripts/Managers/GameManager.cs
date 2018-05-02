@@ -14,6 +14,8 @@ public class GameManager : MonoBehaviour
     private const float        originalSpawnTimer = 30.0f;
     float                      spawntimer;
 
+    private static GameManager instance;
+
     public List<TrashSpawn> GetTrashSpawns
     {
         get
@@ -21,9 +23,6 @@ public class GameManager : MonoBehaviour
             return trashSpawns;
         }
     }
-
-    //Others
-    private static GameManager instance;
 
     //Getters
     static public GameManager Instance
@@ -33,8 +32,6 @@ public class GameManager : MonoBehaviour
             return instance;
         }
     }
-
-    // Use this for initialization
 
     private void AddItemToTrashCans()
     {

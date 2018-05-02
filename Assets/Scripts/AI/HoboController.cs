@@ -5,30 +5,26 @@ using UnityEngine;
 
 public class HoboController : Character
 {
-    //Pathfinding variables
-    private Vector2[] path;
-    private int targetIndex;
-    private Vector2 currentWaypoint;
+    // Pathfinding variables
+    private Vector2[]                  path;
+    private int                        targetIndex;
+    private Vector2                    currentWaypoint;
 
-    //State machine variables
-    private ThresholdState hpState;
-    private ThresholdState spState;
-    private bool scavenging = false;
+    // State machine variables
+    private ThresholdState             hpState, spState;
+    private bool                       scavenging = false;
     
-    //Scavenge variables
-    private Vector2[] shortestPath;
+    // Scavenge variables
+    private Vector2[]                  shortestPath;
     private Dictionary<Vector2[], int> paths = new Dictionary<Vector2[], int>();
-    private int requestsSent = 0;
-    private bool movingToTarget = false;
-    private List<TrashSpawn> spawnsToSearch = new List<TrashSpawn>();
+    private int                        requestsSent = 0;
+    private bool                       movingToTarget = false;
+    private List<TrashSpawn>           spawnsToSearch = new List<TrashSpawn>();
 
 
     public override float Health
     {
-        get
-        {
-            return base.Health;
-        }
+        get { return base.Health; }
 
         set
         {
@@ -54,10 +50,7 @@ public class HoboController : Character
 
     public override float Sanity
     {
-        get
-        {
-            return base.Sanity;
-        }
+        get { return base.Sanity; }
 
         set
         {
@@ -88,18 +81,18 @@ public class HoboController : Character
     {
         if (hpState == ThresholdState.Satisfied && spState == ThresholdState.Satisfied)
         {
-            //Idle actions
+            // Idle actions
             //Debug.Log("Hobo AI idle");
         }
         else if (hpState == ThresholdState.Low)
         {
-            //Scavenge
+            // Scavenge
             StartScavenge();
             //Debug.Log("Hobo AI scavenging");
         }
         else
         {
-            //Beg?!?
+            // Beg?!?
             //Debug.Log("Hobo AI critical action");
         }
     }
@@ -134,15 +127,14 @@ public class HoboController : Character
     /// </summary>
     protected override void CheckForInteraction()
     {
-        //For through all interactable colliders, and see if intersects
+        // For through all interactable colliders, and see if intersects
         foreach (Collider2D item in GameManager.Instance.interactablesColliders)
         {
-            //Debug.Log("Closest point from player: " + item.bounds.ClosestPoint(transform.position));
-            //If contains, get component from collider, typeof IInteractable
+            // If contains, get component from collider, typeof IInteractable
             if (collider.bounds.Intersects(item.bounds))
             {
                 Debug.Log("Hit interactable");
-                //Call Interact and pass this as parameter
+                // Call Interact and pass this as parameter
                 IInteractable temp = item.GetComponent<IInteractable>();
                 temp.Interact(this);
                 if (temp is TrashSpawn)
