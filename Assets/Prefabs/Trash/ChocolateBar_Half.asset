@@ -16,7 +16,7 @@ MonoBehaviour:
   sanityAmount: 0
   drunkAmount: 0
   moneyAmount: 0
-  baseItemID: 1
+  baseItemID: 5
   consumable: 1
   objectSprite: {fileID: 0}
   itemCost: 0

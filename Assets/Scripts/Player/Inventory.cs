@@ -8,6 +8,7 @@ public class Inventory : MonoBehaviour
     //Inventory variable which is used by character class
     public List<BaseItem> InventoryList = new List<BaseItem>();
 
+    //remove if item dropping into the world isn't coming
     public void AddItemToInventory(Consumable item)
     {
         BaseItem itemOfInterest = (BaseItem)item.ItemBase.Where(x => x != null && x.BaseItemID == item.ConsumableID);
