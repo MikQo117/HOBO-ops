@@ -18,7 +18,11 @@ public class UImanager_Player : MonoBehaviour
     //Inventory variables
     private List<Transform> inventoryObjects = new List<Transform>();
     private bool showing = false;
-    // Use this for initialization
+
+    //Daytime indicator variables
+    float arrowrotationChanger = 0.0f;
+    public GameObject Arrow;
+
     private void StatusBarValueChanger()
     {
         HealthBar.fillAmount  = Mathf.Clamp01(PlayerController.pl.Health / maxValue);
@@ -28,7 +32,7 @@ public class UImanager_Player : MonoBehaviour
 
     private void Inventory()
     {
-        for (int i = 0; i < transform.childCount -1; i++)
+        for (int i = 0; i < transform.childCount -2; i++)
         {
             transform.GetChild(i).gameObject.SetActive(showing);
         }
@@ -46,6 +50,11 @@ public class UImanager_Player : MonoBehaviour
             showing = !showing;
         }
     }
+    private void DaytimeIndicator()
+    {//Arrow.transform.localRotation.x
+        arrowrotationChanger = GameManager.Instance.DayTimer * 0.79f;
+        Arrow.GetComponent<Transform>().rotation = Quaternion.Euler(0, 0,-arrowrotationChanger);
+    }
 
     void Start()
     {
@@ -59,6 +68,7 @@ public class UImanager_Player : MonoBehaviour
     void Update()
     {
         UIInput();
+        DaytimeIndicator();
         StatusBarValueChanger();
         Inventory();
     }
