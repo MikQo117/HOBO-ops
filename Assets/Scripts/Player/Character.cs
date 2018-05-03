@@ -24,12 +24,8 @@ public abstract class Character : MonoBehaviour
     protected const float staminaDecay = 10.0f;
 
     //Character movement
-    [SerializeField]
-    [Range(0.01f, 10f)]
     protected float       movementSpeed = 1;
-    [SerializeField]
-    [Range(0.01f, 10f)]
-    protected float       sprintSpeed = 5;
+    protected float       sprintSpeed = 4.3f;
     protected Vector3     movementDirection;
     protected bool        sprinting;
 
@@ -57,10 +53,7 @@ public abstract class Character : MonoBehaviour
     protected Inventory characterInventory;
     //Interaction variables
     [SerializeField]
-    protected new Collider2D collider;
-    protected bool returningBottles;
-    //temporary Booleans For interactions
-     
+    protected new Collider2D collider;     
 
     //Get & Set
     public virtual float Health
@@ -150,18 +143,20 @@ public abstract class Character : MonoBehaviour
         }
     }
 
+    //Methods Start Here
+
     protected virtual void ApplyMovement()
     {
         if (sprinting && !exhausted)
         {
             Stamina -= staminaDecay * Time.deltaTime;
             transform.Translate(movementDirection * sprintSpeed * Time.deltaTime);
+            
         }
         else
         {
             transform.Translate(movementDirection * movementSpeed * Time.deltaTime);
         }
-
     }
 
     protected abstract void GetInput();
@@ -227,7 +222,7 @@ public abstract class Character : MonoBehaviour
         Ray2D ray;
         Vector2 origin;
 
-        //Origin starting determination from characters collider whenever the character is moving horizontally or vertically
+        //Origin starting point determination from characters collider whenever the character is moving horizontally or vertically
         if (movementDirection.y != 0)
         {
             origin = new Vector2(GetComponent<Collider2D>().bounds.min.x, GetComponent<Collider2D>().bounds.center.y);

@@ -7,6 +7,7 @@ public class PlayerController : Character
 {
     //Player Variables
     public static PlayerController pl;
+    private bool shopping;
 
 
     //Camera Variables
@@ -44,22 +45,37 @@ public class PlayerController : Character
         }
     }
 
+    public void InterractWithStore()
+    {
+        if (InputManager.Instance.AxisPressed("Use"))
+        {
+            shopping = !shopping;
+        }
+
+        
+        UIManager.Instance.ShopWindow(shopping);
+    }
+
+    public void InterractWithLiqourStore()
+    {
+        if(InputManager.Instance.AxisPressed("Use"))
+        {
+            shopping = !shopping;
+        }
+        UIManager.Instance.LiqourStoreWindow(shopping);
+    }
+
     public override void ReturnBottle()
     {
+        
         List<BaseItem> items = Inventory.InventoryList.FindAll(x => x.BaseItemID == 0);
-        if (items != null && returningBottles)
+        if (items != null)
         {
             for (int i = 0; i < items.Count; i++)
             {
                 moneyAmount += items.First().MoneyAmount;
                 Inventory.RemoveItemFromInventory(items.First());
             }
-
-        }
-        else
-        {
-            //Display UI stuff that inventory is empty of bottles
-            return;
         }
     }
 
@@ -89,33 +105,39 @@ public class PlayerController : Character
 
     protected override void GetInput()
     {
-        if (InputManager.Instance.AxisDown("Horizontal") || InputManager.Instance.AxisDown("Vertical"))
+        if (!shopping)
         {
-            //Determines wanted direction
-            Vector2 direction = Vector2.right * InputManager.Instance.XAxis + Vector2.up * InputManager.Instance.YAxis;
-
-            float directionMagnitude = direction.magnitude;
-
-            if (directionMagnitude > 1)
+            if (InputManager.Instance.AxisDown("Horizontal") || InputManager.Instance.AxisDown("Vertical"))
             {
-                directionMagnitude = 1;
+                //Determines wanted direction
+                Vector2 direction = Vector2.right * InputManager.Instance.XAxis + Vector2.up * InputManager.Instance.YAxis;
+
+                float directionMagnitude = direction.magnitude;
+
+                if (directionMagnitude > 1)
+                {
+                    directionMagnitude = 1;
+                }
+
+                //Destination is unit vector * Speed and directions magnitude effects on how much speed is used;
+                movementDirection = direction.normalized * directionMagnitude;
+            }
+            else
+            {
+                movementDirection = Vector3.zero;
             }
 
-            //Destination is unit vector * Speed and directions magnitude effects on how much speed is used;
-            movementDirection = direction.normalized *  directionMagnitude;
+            //Sprint
+            if (InputManager.Instance.AxisDown("Fire3"))
+                sprinting = true;
+            else
+                sprinting = false;
         }
         else
         {
-            movementDirection = Vector3.zero;
-        }
-
-        //Sprint
-        if (InputManager.Instance.AxisDown("Fire3"))
-            sprinting = true;
-        else
+            movementDirection = Vector2.zero;
             sprinting = false;
-        returningBottles = Input.GetKeyDown(KeyCode.E) ? true : false;
-
+        }
     }
 
     protected void CameraMovement()
@@ -137,7 +159,10 @@ public class PlayerController : Character
     protected override void Start()
     {
         base.Start();
+        shopping = false;
         mainCamera = Camera.main;
+        UIManager.Instance.ShopWindow(false);
+        UIManager.Instance.LiqourStoreWindow(false);
     }
 
     // Update is called once per frame
@@ -145,6 +170,7 @@ public class PlayerController : Character
     {
         base.Update();
         CameraMovement();
+
     }
 
     protected override void Awake()

@@ -7,12 +7,13 @@ public class InputManager : MonoBehaviour
 {
     public static InputManager Instance;
 
-    public float XAxis, YAxis, LeftShift;
+    public float XAxis, YAxis, LeftShift, E;
 
     //Axis states
     private float previousXAxis, currentXAxis;
     private float previousYAxis, currentYAxis;
     private float previousLeftShift, currentLeftShift;
+    private float previousE, currentE;
 
     /// <summary>
     /// Check if axis is pressed
@@ -38,6 +39,13 @@ public class InputManager : MonoBehaviour
         else if (axis == "Fire3")
         {
             if (currentLeftShift != 0 && previousLeftShift == 0)
+            {
+                return true;
+            }
+        }
+        else if(axis == "Use")
+        {
+            if(currentE != 0 && previousE == 0)
             {
                 return true;
             }
@@ -73,6 +81,13 @@ public class InputManager : MonoBehaviour
                 return true;
             }
         }
+        else if(axis == "Use")
+        {
+            if(currentE == 0 && previousE != 0)
+            {
+                return true;
+            }
+        }
         return false;
     }
 
@@ -104,6 +119,13 @@ public class InputManager : MonoBehaviour
                 return true;
             }
         }
+        else if(axis == "Use")
+        {
+            if(currentE != 0)
+            {
+                return true;
+            }
+        }
 
         return false;
     }
@@ -129,7 +151,7 @@ public class InputManager : MonoBehaviour
         XAxis = Input.GetAxisRaw("Horizontal");
         YAxis = Input.GetAxisRaw("Vertical");
         LeftShift = Input.GetAxisRaw("Fire3");
-
+        E = Input.GetAxisRaw("Use");
 
         previousXAxis = currentXAxis;
         currentXAxis = XAxis;
@@ -137,5 +159,7 @@ public class InputManager : MonoBehaviour
         currentYAxis = YAxis;
         previousLeftShift = currentLeftShift;
         currentLeftShift = LeftShift;
+        previousE = currentE;
+        currentE = E;
     }
 }

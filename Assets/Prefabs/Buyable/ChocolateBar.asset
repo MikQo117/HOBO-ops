@@ -19,5 +19,5 @@ MonoBehaviour:
   baseItemID: 3
   consumable: 1
   objectSprite: {fileID: 0}
-  itemCost: 0
-  dropProBability: 0
+  itemCost: 1
+  dropProbability: 0

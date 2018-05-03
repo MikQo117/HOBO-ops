@@ -98,7 +98,7 @@ public class GameManager : MonoBehaviour
     private void TimeChanger()
     {
         spawntimer -= Time.deltaTime;
-        dayTimer += Time.deltaTime * 10;
+        dayTimer   += Time.deltaTime * 10;
     }
 
     //Unity methods
