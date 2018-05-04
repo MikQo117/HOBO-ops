@@ -16,8 +16,9 @@ public class SpriteProcessor : AssetPostprocessor
         bool isInSpritesDirectory =     lowerCaseStringPath.IndexOf("/sprites/") != -1;
         bool isInTilesDirectory =       lowerCaseStringPath.IndexOf("/sprites/tiles/") != -1;
         bool isInMapsDirectory =        lowerCaseStringPath.IndexOf("/sprites/maps/") != -1;
+        bool isInUIDirectory =          lowerCaseStringPath.IndexOf("/sprites/ui/") != -1;
 
-        // All sprites gets thease import settings
+        // All sprites gets these import settings
         if (isInSpritesDirectory)
         {
             TextureImporter textureImporter = (TextureImporter)assetImporter;
@@ -42,6 +43,11 @@ public class SpriteProcessor : AssetPostprocessor
                 textureImporter.ReadTextureSettings(settings);
                 settings.readable = true;
                 textureImporter.SetTextureSettings(settings);
+            }
+
+            if(isInUIDirectory)
+            {
+                textureImporter.filterMode = FilterMode.Bilinear;
             }
         }
     }
