@@ -8,7 +8,7 @@ public class PlayerController : Character
     //Player Variables
     public static PlayerController pl;
     private bool shopping;
-
+    public bool  Gathered;
 
     //Camera Variables
     public  Camera  mainCamera;
@@ -16,7 +16,6 @@ public class PlayerController : Character
     private Vector3 SprintVelocity;
     private Vector3 CameraZoffset = new Vector3(0, 0, -5);
     private float   smoothTime = 0.3f;
-
     public Bounds bound;
 
     //Minigame methods
@@ -51,8 +50,6 @@ public class PlayerController : Character
         {
             shopping = !shopping;
         }
-
-        
         UIManager.Instance.ShopWindow(shopping);
     }
 
@@ -87,15 +84,23 @@ public class PlayerController : Character
 
     protected override void Death()
     {
-
+        
     }
 
     public override void Gather(List<BaseItem> items)
     {
         if (items != null)
         {
-            UIManager.Instance.PickupIndicator(items);
-            pl.Inventory.AddItemToInventory(items);
+            if (InputManager.Instance.AxisPressed("Use"))
+            {
+                StartCoroutine(UIManager.Instance.PickupIndicator(items));
+                Inventory.AddItemToInventory(items);
+                Gathered = true;
+            }
+            else
+            {
+                Gathered = false;
+            }   
         }
         else
         {
@@ -161,7 +166,6 @@ public class PlayerController : Character
         base.Start();
         shopping = false;
         mainCamera = Camera.main;
-        UIManager.Instance.PickupObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -169,7 +173,6 @@ public class PlayerController : Character
     {
         base.Update();
         CameraMovement();
-
     }
 
     protected override void Awake()

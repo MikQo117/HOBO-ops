@@ -18,6 +18,6 @@ MonoBehaviour:
   moneyAmount: 0
   baseItemID: 5
   consumable: 1
-  objectSprite: {fileID: 0}
+  objectSprite: {fileID: 21300010, guid: 839bef83dcc3b59438e5fd33ed33b070, type: 3}
   itemCost: 0
   dropProbability: 0.15

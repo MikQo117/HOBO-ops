@@ -7289,6 +7289,11 @@ Prefab:
       propertyPath: spawnableItems.Array.size
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 114458897802536056, guid: f2ba4a86d4384da48a01d59f2055f9a3,
+        type: 2}
+      propertyPath: trashCanInventory.Array.size
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 4041573429245110, guid: f2ba4a86d4384da48a01d59f2055f9a3, type: 2}
       propertyPath: m_LocalPosition.x
       value: -7.9800005
@@ -7349,6 +7354,36 @@ Prefab:
       propertyPath: m_Name
       value: TrashBin (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 114458897802536056, guid: f2ba4a86d4384da48a01d59f2055f9a3,
+        type: 2}
+      propertyPath: trashCanInventory.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: af8632615a535594baf87c4a9d0f87ea,
+        type: 2}
+    - target: {fileID: 114458897802536056, guid: f2ba4a86d4384da48a01d59f2055f9a3,
+        type: 2}
+      propertyPath: trashCanInventory.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: 6f6f50788749866428ababe06b3a8ad3,
+        type: 2}
+    - target: {fileID: 114458897802536056, guid: f2ba4a86d4384da48a01d59f2055f9a3,
+        type: 2}
+      propertyPath: trashCanInventory.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: 6f6f50788749866428ababe06b3a8ad3,
+        type: 2}
+    - target: {fileID: 114458897802536056, guid: f2ba4a86d4384da48a01d59f2055f9a3,
+        type: 2}
+      propertyPath: trashCanInventory.Array.data[3]
+      value: 
+      objectReference: {fileID: 11400000, guid: 0f214d8a890dfb54b961d738fbad197a,
+        type: 2}
+    - target: {fileID: 114458897802536056, guid: f2ba4a86d4384da48a01d59f2055f9a3,
+        type: 2}
+      propertyPath: trashCanInventory.Array.data[4]
+      value: 
+      objectReference: {fileID: 11400000, guid: c0476f5cf6f393d45ad36c97eaf36dc2,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: f2ba4a86d4384da48a01d59f2055f9a3, type: 2}
   m_IsPrefabParent: 0
@@ -11087,6 +11122,10 @@ Prefab:
         type: 2}
       propertyPath: m_AnchoredPosition.y
       value: 380
+      objectReference: {fileID: 0}
+    - target: {fileID: 1703046498712632, guid: 51c2750492879eb4db50087025d288b1, type: 2}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 51c2750492879eb4db50087025d288b1, type: 2}

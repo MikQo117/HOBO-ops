@@ -9,35 +9,37 @@ public class UIManager : MonoBehaviour
     public static UIManager Instance;
 
     //StatusBars variables
-    private const float     maxValue = 100;
-    public  Image           HealthBar;
-    public  Image           SanityBar;
-    public  Image           StaminaBar;
-    public  Text            BottleText;
+    private const float maxValue = 100;
+    public Image HealthBar;
+    public Image SanityBar;
+    public Image StaminaBar;
+    public Text BottleText;
 
     //Inventory variables
     private List<Transform> inventoryObjects = new List<Transform>();
-    private bool            showing          = false;
-    private Text            moneyText;
+    private bool showing = false;
+    private Text moneyText;
 
     //Daytime indicator variables
-    float             arrowrotationChanger = 0.0f;
+    float arrowrotationChanger = 0.0f;
     public GameObject Arrow;
 
     //ShopWindow Variables
     private GameObject shopWindow;
     private GameObject liqourStoreWindow;
-    private Text       liqourStoreText;
-    private Text       ReturnBottleText;
+    private Text liqourStoreText;
+    private Text ReturnBottleText;
 
     //Pick up Variables
     private Vector3 originalPoint;
     public GameObject PickupObject;
+    private float timer;
+    public bool CRisRunning = false;
 
     private void StatusBarValueChanger()
     {
-        HealthBar.fillAmount  = Mathf.Clamp01(PlayerController.pl.Health / maxValue);
-        SanityBar.fillAmount  = Mathf.Clamp01(PlayerController.pl.Sanity / maxValue);
+        HealthBar.fillAmount = Mathf.Clamp01(PlayerController.pl.Health / maxValue);
+        SanityBar.fillAmount = Mathf.Clamp01(PlayerController.pl.Sanity / maxValue);
         StaminaBar.fillAmount = Mathf.Clamp01(PlayerController.pl.Stamina / maxValue);
     }
 
@@ -69,7 +71,7 @@ public class UIManager : MonoBehaviour
     private void DaytimeIndicator()
     {
         arrowrotationChanger = GameManager.Instance.DayTimer * 0.79f;
-        Arrow.GetComponent<Transform>().rotation = Quaternion.Euler(0, 0,-arrowrotationChanger);
+        Arrow.GetComponent<Transform>().rotation = Quaternion.Euler(0, 0, -arrowrotationChanger);
     }
 
     public void ShopWindow(bool Active)
@@ -86,14 +88,19 @@ public class UIManager : MonoBehaviour
 
     public IEnumerator PickupIndicator(List<BaseItem> items)
     {
-        Debug.Log("Called");
+        if (CRisRunning) yield break;
+
         PickupObject.SetActive(true);
-        foreach (BaseItem item in items)
+        CRisRunning = true;
+        List<BaseItem> temp = items.Distinct().ToList();
+        for (int i = 0; i < temp.Count; i++)
         {
-           PickupObject.GetComponentInChildren<Image>().sprite = item.ObjectSprite;
-           PickupObject.GetComponentInChildren<Text>().text = items.Count(x => x.BaseItemID == item.BaseItemID).ToString();
-            yield return new WaitForSeconds(2);
+            PickupObject.GetComponentInChildren<Image>().sprite = temp[i].ObjectSprite;
+            PickupObject.GetComponentInChildren<Text>().text = "+ " + items.Count(x => x.BaseItemID == temp[i].BaseItemID).ToString();
+            yield return new WaitForSeconds(0.5f);
+            PickupObject.transform.position = originalPoint;
         }
+        CRisRunning = false;
         PickupObject.SetActive(false);
     }
 
@@ -108,7 +115,7 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
-        if(Instance == null)
+        if (Instance == null)
         {
             Instance = this;
         }
@@ -117,13 +124,19 @@ public class UIManager : MonoBehaviour
         {
             inventoryObjects.Add(transform.GetChild(1).GetChild(i).transform);
         }
+        originalPoint = PickupObject.transform.position;
     }
 
     private void Update()
     {
-            UIInput();
-            DaytimeIndicator();
-            StatusBarValueChanger();
-            Inventory();  
+        UIInput();
+        DaytimeIndicator();
+        StatusBarValueChanger();
+        if(CRisRunning)
+        {
+            PickupObject.transform.position += new Vector3(0, 10) * Time.deltaTime;
+        }
+        timer -= Time.deltaTime;
+        Inventory();
     }
 }
