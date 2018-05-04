@@ -38,7 +38,7 @@ public class PlayerController : Character
 
                 base.Health += ConsumableItem.HealthAmount;
                 base.Sanity += ConsumableItem.SanityAmount;
-                DrunkAmount += ConsumableItem.DrunkAmount;
+                base.DrunkAmount += ConsumableItem.DrunkAmount;
                 Inventory.RemoveItemFromInventory(itemID);
             }
         }
@@ -156,7 +156,7 @@ public class PlayerController : Character
         }
         else
         {
-            mainCamera.transform.position = Vector3.MoveTowards(temp, transform.position, smoothTime * Time.deltaTime * lenght) + CameraZoffset;
+            mainCamera.transform.position = Vector3.MoveTowards(temp, transform.position + new Vector3(0,0.5f), smoothTime * Time.deltaTime * lenght) + CameraZoffset;
         }
     }
 

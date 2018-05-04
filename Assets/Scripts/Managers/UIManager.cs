@@ -96,14 +96,20 @@ public class UIManager : MonoBehaviour
 
         foreach (var item in temp)
         {
+            LocationChecker();
+            PickupObject.GetComponent<RectTransform>().position = originalPoint;
             PickupObject.GetComponentInChildren<Image>().sprite = item.Key.ObjectSprite;
             PickupObject.GetComponentInChildren<Text>().text = "+ " + item.Value.ToString();
             yield return new WaitForSeconds(0.5f);
-            PickupObject.transform.position = originalPoint; 
         }
         
         CRisRunning = false;
         PickupObject.SetActive(false);
+    }
+
+    private void LocationChecker()
+    {
+        originalPoint = PlayerController.pl.mainCamera.WorldToScreenPoint(PlayerController.pl.transform.position);
     }
 
     private void Awake()
@@ -126,7 +132,6 @@ public class UIManager : MonoBehaviour
         {
             inventoryObjects.Add(transform.GetChild(1).GetChild(i).transform);
         }
-        originalPoint = PickupObject.transform.position;
     }
 
     private void Update()
@@ -134,10 +139,12 @@ public class UIManager : MonoBehaviour
         UIInput();
         DaytimeIndicator();
         StatusBarValueChanger();
-        if(CRisRunning)
+
+        if (CRisRunning)
         {
-            PickupObject.transform.position += new Vector3(0, 10) * Time.deltaTime;
+            PickupObject.GetComponent<RectTransform>().position += new Vector3(0, 10) * Time.deltaTime * 20;
         }
+
         timer -= Time.deltaTime;
         Inventory();
     }
