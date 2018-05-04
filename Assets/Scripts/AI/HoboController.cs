@@ -16,6 +16,11 @@ public class HoboController : Character
     private int targetIndex;
     private Vector2 currentWaypoint;
     private bool movingToTarget = false;
+    public Grid Grid;
+
+    //States
+    ScavengeState scavengeState;
+
 
     public bool MovingToTarget
     {
@@ -27,7 +32,9 @@ public class HoboController : Character
     {
         base.Start();
         StateMachine = new StateMachine<HoboController>(this);
-        StateMachine.ChangeState(ScavengeState.Instance);
+        scavengeState = new ScavengeState();
+
+        StateMachine.ChangeState(scavengeState);
     }
 
     protected override void Update()
@@ -51,7 +58,6 @@ public class HoboController : Character
     private IEnumerator FollowPath()
     {
         currentWaypoint = path[0];
-
         while (true)
         {
             if ((Vector2)transform.position == currentWaypoint)

@@ -137,7 +137,6 @@ public class Pathfinding : MonoBehaviour
         }
 
         path.Add(startNode);
-        grid.Path = path;
         pathLength = path.Count;
         Vector2[] waypoints = SimplifyPath(path);
         Array.Reverse(waypoints); //*anteeksimitävittua*

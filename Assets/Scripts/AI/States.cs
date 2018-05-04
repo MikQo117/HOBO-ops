@@ -8,42 +8,16 @@ namespace StateStuff
 {
     public class ScavengeState : State<HoboController>
     {
-        //Singleton instance
-        private static ScavengeState instance;
 
         private Vector2[]                  shortestPath;
         private TrashSpawn                 nearestSpawn = new TrashSpawn();
         private Dictionary<Vector2[], int> paths = new Dictionary<Vector2[], int>();
         private List<SpawnData>            spawns = new List<SpawnData>();
         private int                        requestsSent = 0;
-        private bool                       allPathsFound = false;
-        private List<TrashSpawn>           spawnsToSearch = new List<TrashSpawn>();
 
         //Sub-state variables
         private int                        subState = 0;
-
-        //Constructor
-        private ScavengeState()
-        {
-            if (instance != null)
-            {
-                return;
-            }
-            instance = this;
-        }
-
-        //Singleton getter
-        public static ScavengeState Instance
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    new ScavengeState();
-                }
-                return instance;
-            }
-        }
+        
 
         public void PathEndReached()
         {
@@ -56,17 +30,33 @@ namespace StateStuff
             requestsSent = 0;
             subState = 0;
             paths.Clear();
-            //spawnsToSearch.Clear();
+            spawns.Clear();
             shortestPath = new Vector2[0];
-            allPathsFound = false;
             nearestSpawn = null;
+        }
+
+        private void ResetSubStateVariables()
+        {
+            requestsSent = 0;
+            subState = 0;
+            paths.Clear();
+            shortestPath = new Vector2[0];
+            nearestSpawn = null;
+        }
+
+        private void ResetPaths()
+        {
+            foreach (SpawnData item in spawns)
+            {
+                item.Path = null;
+            }
         }
 
         public override void EnterState(HoboController owner)
         {
             ResetVariables();
             Debug.Log("Entering scavenge state");
-            if (spawnsToSearch.Count <= 0)
+            if (spawns.Count <= 0)
             {
                 GetTrashCans();
                 SendPathRequests(owner.transform.position);
@@ -90,6 +80,7 @@ namespace StateStuff
                     if (!owner.MovingToTarget)
                     {
                         Debug.Log("Movement started");
+                        owner.Grid.Path = shortestPath;
                         owner.StartMovement(shortestPath);
                     }
                     else
@@ -100,14 +91,15 @@ namespace StateStuff
                 case 2:
                     //Target reached, stop movement and gather
                     Debug.Log("Target reached");
-                    spawns.Remove(spawns.Find(x => x.ActiveTarget));
-                    if (spawnsToSearch.Count <= 0)
+                    spawns.Remove(spawns.Find(x => x.ActiveTarget == true));
+                    ResetPaths();
+                    if (spawns.Count <= 0)
                     {
                         owner.StateMachine.ChangeState(IdleState.Instance);
                     }
                     else
                     {
-                        ResetVariables();
+                        ResetSubStateVariables();
                         SendPathRequests(owner.transform.position);
                         subState = 0;
                     }
@@ -126,21 +118,26 @@ namespace StateStuff
 
         private void GetTrashCans()
         {
-            foreach (IInteractable item in GameManager.Instance.interactables)
+            if (GameManager.Instance.interactables.Count > 0)
             {
-                if (item is TrashSpawn)
+                foreach (IInteractable item in GameManager.Instance.interactables)
                 {
-                    TrashSpawn temp = item as TrashSpawn;
-                    spawnsToSearch.Add(temp);
-                }
+                    if (item is TrashSpawn)
+                    {
+                        spawns.Add(new SpawnData((TrashSpawn)item, null, 0));
+                    }
+                } 
+            }
+            else
+            {
+                Debug.Log("Interactables not populated");
             }
         }
         private void SendPathRequests(Vector3 startPosition)
         {
-            foreach (TrashSpawn item in spawnsToSearch)
+            foreach (SpawnData item in spawns)
             {
-                PathRequestManager.RequestPath(startPosition, item.transform.position, OnPathStuff);
-                spawns.Add(new SpawnData(item, null, 0));
+                PathRequestManager.RequestPath(startPosition, item.Target.transform.position, OnPathStuff);
                 requestsSent++;
             }
         }
@@ -157,11 +154,10 @@ namespace StateStuff
                 if (PathsPopulated())
                 {
                     shortestPath = spawns.OrderBy(spawn => spawn.PathLength).First().SetAsCurrent(); //Vittumikäsäätö
-                    //shortestPath = paths.Aggregate((l, r) => l.Value < r.Value ? l : r).Key; //Vittumikäsäätö
-                    //shortestPath = paths.Where(x => x.Value == paths.Select(k => paths[k.Key]).Min());
-                    //StartMovement(shortestPath);
-                    allPathsFound = true;
+                    //shortestPath = spawns.Aggregate((l, r) => l.PathLength < r.PathLength ? l : r).SetAsCurrent(); //Vittumikäsäätö
+                    //shortestPath = spawns.Where(x => x.PathLength == paths.Select(k => paths[k.Key]).Min());
                     subState = 1;
+                    tempIndex = 0;
                 }
             }
         }
@@ -205,6 +201,7 @@ namespace StateStuff
         public bool ActiveTarget
         {
             get { return activeTarget; }
+            set { activeTarget = value; }
         }
 
         public Vector2[] SetAsCurrent()
@@ -258,7 +255,7 @@ namespace StateStuff
         public override void EnterState(HoboController owner)
         {
             Debug.Log("Entering idle state");
-            owner.StateMachine.ChangeState(ScavengeState.Instance);
+            //owner.StateMachine.ChangeState(ScavengeState.Instance);
         }
 
         public override void ExitState(HoboController owner)
@@ -360,34 +357,6 @@ else
 }
 }
 
-private Vector2[] shortestPath;
-private TrashSpawn nearestSpawn = new TrashSpawn();
-private Dictionary<Vector2[], int> paths = new Dictionary<Vector2[], int>();
-private int requestsSent = 0;
-private bool movingToTarget = false;
-private List<TrashSpawn> spawnsToSearch = new List<TrashSpawn>();
-
-private void StartScavenge()
-{
-scavenging = true;
-if (spawnsToSearch.Count <= 0)
-{
-   foreach (IInteractable item in GameManager.Instance.interactables)
-   {
-       if (item is TrashSpawn)
-       {
-           TrashSpawn temp = item as TrashSpawn;
-           spawnsToSearch.Add(temp);
-       }
-   } 
-}
-foreach (TrashSpawn item in spawnsToSearch)
-{
-   PathRequestManager.RequestPath(transform.position, item.transform.position, OnPathStuff);
-   requestsSent++;
-}
-}
-
 protected override void CheckForInteraction()
 {
 //For through all interactable colliders, and see if intersects
@@ -412,74 +381,6 @@ foreach (Collider2D item in GameManager.Instance.interactablesColliders)
            paths.Clear();
        }
    }
-}
-}
-
-public void OnPathStuff(Vector2[] newPath, bool pathSuccess, int pathLength)
-{
-if (pathSuccess)
-{
-   paths.Add(newPath, pathLength);
-   if (paths.Count >= requestsSent)
-   {
-       shortestPath = paths.OrderBy(kvp => kvp.Value).First().Key; //Vittumikäsäätö
-       //shortestPath = paths.Aggregate((l, r) => l.Value < r.Value ? l : r).Key; //Vittumikäsäätö
-       //shortestPath = paths.Where(x => x.Value == paths.Select(k => paths[k.Key]).Min());
-       StartMovement(shortestPath);
-       movingToTarget = true;
-   }
-}
-}
-
-/// <summary>
-/// Called when callback occurs from PathRequestManager.RequestPath().
-/// </summary>
-/// <param name="newPath">The new calulated path.</param>
-/// <param name="pathSuccess">Was the pathfind successful?</param>
-public void OnPathFound(Vector2[] newPath, bool pathSuccess, int pathLength)
-{
-if (pathSuccess)
-{
-   StartMovement(newPath);
-}
-}
-
-private void StartMovement(Vector2[] newPath)
-{
-path = newPath;
-targetIndex = 0;
-StopCoroutine("FollowPath");
-StartCoroutine("FollowPath");
-}
-
-/// <summary>
-/// Co-routine to move along the found path.
-/// </summary>
-private IEnumerator FollowPath()
-{
-currentWaypoint = path[0];
-
-while (true)
-{
-   if ((Vector2)transform.position == currentWaypoint)
-   {
-       targetIndex++;
-       if (targetIndex >= path.Length)
-       {
-           targetIndex = 0;
-           path = new Vector2[0];
-           movementDirection = Vector3.zero;
-           if (scavenging)
-           {
-               StartScavenge();
-           }
-           yield break;
-       }
-       currentWaypoint = path[targetIndex];
-   }
-
-   movementDirection = new Vector3(currentWaypoint.x - transform.position.x, currentWaypoint.y - transform.position.y, 0f).normalized;
-   yield return null;
 }
 }
 
