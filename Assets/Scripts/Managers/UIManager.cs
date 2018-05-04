@@ -92,14 +92,16 @@ public class UIManager : MonoBehaviour
 
         PickupObject.SetActive(true);
         CRisRunning = true;
-        List<BaseItem> temp = items.Distinct().ToList();
-        for (int i = 0; i < temp.Count; i++)
+        var temp = items.GroupBy(x => x).ToDictionary(g => g.Key, g => g.Count()).ToList();
+
+        foreach (var item in temp)
         {
-            PickupObject.GetComponentInChildren<Image>().sprite = temp[i].ObjectSprite;
-            PickupObject.GetComponentInChildren<Text>().text = "+ " + items.Count(x => x.BaseItemID == temp[i].BaseItemID).ToString();
+            PickupObject.GetComponentInChildren<Image>().sprite = item.Key.ObjectSprite;
+            PickupObject.GetComponentInChildren<Text>().text = "+ " + item.Value.ToString();
             yield return new WaitForSeconds(0.5f);
-            PickupObject.transform.position = originalPoint;
+            PickupObject.transform.position = originalPoint; 
         }
+        
         CRisRunning = false;
         PickupObject.SetActive(false);
     }
