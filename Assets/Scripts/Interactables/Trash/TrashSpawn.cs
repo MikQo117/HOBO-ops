@@ -79,7 +79,6 @@ public class TrashSpawn : MonoBehaviour, IInteractable
         for (int i = 0; i < spawnableItems.Count; i++)
         {
             cumulative += spawnableItems[i].DropProBability;
-
             if (diceRoll < cumulative)
             {
                 if (diceRoll < bottleDropChance)

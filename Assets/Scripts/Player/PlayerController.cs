@@ -68,7 +68,7 @@ public class PlayerController : Character
     public override void ReturnBottle()
     {
         
-        List<BaseItem> items = Inventory.InventoryList.FindAll(x => x.BaseItemID == 0);
+        List<BaseItem> items = Inventory.InventoryList.FindAll(x => x.BaseItemID == 8);
         if (items != null)
         {
             for (int i = 0; i < items.Count; i++)
@@ -94,7 +94,7 @@ public class PlayerController : Character
     {
         if (items != null)
         {
-            //Some ui thing to show what we gathered
+            UIManager.Instance.PickupIndicator(items);
             pl.Inventory.AddItemToInventory(items);
         }
         else
@@ -161,8 +161,7 @@ public class PlayerController : Character
         base.Start();
         shopping = false;
         mainCamera = Camera.main;
-        UIManager.Instance.ShopWindow(false);
-        UIManager.Instance.LiqourStoreWindow(false);
+        UIManager.Instance.PickupObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -183,6 +182,4 @@ public class PlayerController : Character
             inputManager.name = "InputManager";
         }
     }
-
-
 }

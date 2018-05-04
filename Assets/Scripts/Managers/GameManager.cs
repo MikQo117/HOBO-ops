@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour
 
     //Daysystem variables
     private float[] intervals = { 0.0f, 150.0f, 300.0f, 375.0f, 430.5f, 456.0f };
-    private float dayTimer = 450.0f;
+    private float dayTimer = 250.0f;
     private const float regulartimeDrop = 30.0f;
     private const float rushHourTimeDrop = 15.0f;
     private bool rushHour;
@@ -98,7 +98,7 @@ public class GameManager : MonoBehaviour
     private void TimeChanger()
     {
         spawntimer -= Time.deltaTime;
-        dayTimer   += Time.deltaTime * 10;
+        dayTimer   += Time.deltaTime;
     }
 
     //Unity methods

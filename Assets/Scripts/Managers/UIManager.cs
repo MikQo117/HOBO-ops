@@ -30,6 +30,10 @@ public class UIManager : MonoBehaviour
     private Text       liqourStoreText;
     private Text       ReturnBottleText;
 
+    //Pick up Variables
+    private Vector3 originalPoint;
+    public GameObject PickupObject;
+
     private void StatusBarValueChanger()
     {
         HealthBar.fillAmount  = Mathf.Clamp01(PlayerController.pl.Health / maxValue);
@@ -41,7 +45,7 @@ public class UIManager : MonoBehaviour
     {
         if (!shopWindow.activeInHierarchy || !liqourStoreWindow.activeInHierarchy)
         {
-            for (int i = 0; i < transform.childCount - 4; i++)
+            for (int i = 0; i < transform.childCount - 5; i++)
             {
                 transform.GetChild(i).gameObject.SetActive(showing);
             }
@@ -61,20 +65,36 @@ public class UIManager : MonoBehaviour
             showing = !showing;
         }
     }
+
     private void DaytimeIndicator()
     {
         arrowrotationChanger = GameManager.Instance.DayTimer * 0.79f;
         Arrow.GetComponent<Transform>().rotation = Quaternion.Euler(0, 0,-arrowrotationChanger);
     }
+
     public void ShopWindow(bool Active)
     {
         ReturnBottleText.text = "You have " + PlayerController.pl.Inventory.InventoryList.Count(x => x.BaseItemID == 8 && x != null) + " Bottles and " + PlayerController.pl.MoneyAmount.ToString("0.##") + "  $$$";
         shopWindow.SetActive(Active);
     }
+
     public void LiqourStoreWindow(bool Active)
     {
         liqourStoreText.text = "You have " + PlayerController.pl.MoneyAmount.ToString("0.##") + " $$$";
         liqourStoreWindow.SetActive(Active);
+    }
+
+    public IEnumerator PickupIndicator(List<BaseItem> items)
+    {
+        Debug.Log("Called");
+        PickupObject.SetActive(true);
+        foreach (BaseItem item in items)
+        {
+           PickupObject.GetComponentInChildren<Image>().sprite = item.ObjectSprite;
+           PickupObject.GetComponentInChildren<Text>().text = items.Count(x => x.BaseItemID == item.BaseItemID).ToString();
+            yield return new WaitForSeconds(2);
+        }
+        PickupObject.SetActive(false);
     }
 
     private void Awake()
