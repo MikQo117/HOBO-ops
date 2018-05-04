@@ -37,6 +37,9 @@ public class RoadTileEditor : Editor
             case RoadTile.RoadType.HorizontalBottom:
                 selectedTile.Sprite = AssetDatabase.LoadAssetAtPath<Sprite>(path + "RoadHB.png");
                 break;
+            case RoadTile.RoadType.HorizontalBottomCrossRoad:
+                selectedTile.Sprite = AssetDatabase.LoadAssetAtPath<Sprite>(path + "RoadHBCR.png");
+                break;
             case RoadTile.RoadType.HorizontalBottomLeft:
                 selectedTile.Sprite = AssetDatabase.LoadAssetAtPath<Sprite>(path + "RoadHBL.png");
                 break;
@@ -72,6 +75,9 @@ public class RoadTileEditor : Editor
                 break;
             case RoadTile.RoadType.VerticalRight:
                 selectedTile.Sprite = AssetDatabase.LoadAssetAtPath<Sprite>(path + "RoadVR.png");
+                break;
+            case RoadTile.RoadType.VerticalRightCrossRoad:
+                selectedTile.Sprite = AssetDatabase.LoadAssetAtPath<Sprite>(path + "RoadVRCR.png");
                 break;
             case RoadTile.RoadType.VerticalTopRight:
                 selectedTile.Sprite = AssetDatabase.LoadAssetAtPath<Sprite>(path + "RoadVTR.png");
