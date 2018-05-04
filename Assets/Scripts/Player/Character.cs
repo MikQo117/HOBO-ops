@@ -63,7 +63,8 @@ public abstract class Character : MonoBehaviour
      
 
     //Get & Set
-    public virtual float Health{
+    public virtual float Health
+    {
         get
         {
             return health;
@@ -131,18 +132,11 @@ public abstract class Character : MonoBehaviour
     }
     public virtual float MoneyAmount
     {
-        get
-        {
-            return moneyAmount;
-        }        
+        get { return moneyAmount; }        
     }
     public bool Sprinting
     {
-        get
-        {
-            return sprinting;
-        }
-        
+        get { return sprinting; }
     }
     public Inventory Inventory
     {

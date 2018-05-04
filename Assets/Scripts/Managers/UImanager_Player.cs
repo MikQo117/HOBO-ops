@@ -24,12 +24,11 @@ public class UImanager_Player : MonoBehaviour
         HealthBar.fillAmount  = Mathf.Clamp01(PlayerController.pl.Health / maxValue);
         SanityBar.fillAmount  = Mathf.Clamp01(PlayerController.pl.Sanity / maxValue);
         StaminaBar.fillAmount = Mathf.Clamp01(PlayerController.pl.Stamina / maxValue);
-
     }
 
     private void Inventory()
     {
-        for (int i = 0; i < transform.childCount; i++)
+        for (int i = 0; i < transform.childCount -1; i++)
         {
             transform.GetChild(i).gameObject.SetActive(showing);
         }
