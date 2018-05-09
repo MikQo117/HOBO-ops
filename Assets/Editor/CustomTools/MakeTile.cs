@@ -47,6 +47,26 @@ public class MakeTile
         Selection.activeObject = tile;
     }
 
+    [MenuItem("Assets/Create/Tile/Grass")]
+    public static void CreateGrassTile()
+    {
+        GrassTile tile = ScriptableObject.CreateInstance<GrassTile>();
+
+        if (!Selection.activeObject)
+        {
+            AssetDatabase.CreateAsset(tile, "Assets/NewGrassTile.asset");
+        }
+        else
+        {
+            AssetDatabase.CreateAsset(tile, GetFolderPath() + "/NewGrassTile.asset");
+        }
+        AssetDatabase.SaveAssets();
+
+        // Select created tile
+        EditorUtility.FocusProjectWindow();
+        Selection.activeObject = tile;
+    }
+
     public static string GetFolderPath()
     {
         string path = "Assets";

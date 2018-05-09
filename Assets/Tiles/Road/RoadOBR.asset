@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Name: RoadOBR
   m_EditorClassIdentifier: 
   Sprite: {fileID: 21300000, guid: 5a8a0c903db47ba4086457b0ac8ae32f, type: 3}
-  RT: 7
+  RT: 8

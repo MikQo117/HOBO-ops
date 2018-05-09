@@ -22,6 +22,7 @@ public class PixelPerfect : MonoBehaviour
             c = GetComponent<Camera>();
             pixelsPerUnit = SettingsManager.Instance.Settings.PixelsPerUnit;
             SetCameraSize(pixelsPerUnit);
+            Destroy(this);
         }
     }
 }

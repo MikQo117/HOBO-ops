@@ -6,6 +6,7 @@ public class RoadTile : Tile
         Empty,
         HorizontalBottom,
         HorizontalBottomLeft,
+        HorizontalBottomCrossRoad,
         HorizontalTop,
         HorizontalTopRight,
         InnerTopLeft,
@@ -17,6 +18,7 @@ public class RoadTile : Tile
         VerticalBottomRight,
         VerticalLeft,
         VerticalRight,
+        VerticalRightCrossRoad,
         VerticalTopRight
     }
 

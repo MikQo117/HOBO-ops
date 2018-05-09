@@ -11,7 +11,9 @@ public class PixelData
     {
         Null,
         Road,
-        Sidewalk
+        Sidewalk,
+        Grass,
+        ParkingLot
     }
 
     public Tile TileType;

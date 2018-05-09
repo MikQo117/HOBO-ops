@@ -18,14 +18,17 @@ public class TileObject : MonoBehaviour
 
     private AssetBundle ab;
 
-    private void Update()
+    private void LateUpdate()
     {
         if(!Application.isPlaying)
         {
             if (!sr)
             {
                 sr = GetComponent<SpriteRenderer>();
-                sr.sprite = Tile.Sprite;
+                if(Tile)
+                {
+                    sr.sprite = Tile.Sprite;
+                }
             }
             else
             {
@@ -48,7 +51,7 @@ public class TileObject : MonoBehaviour
         {
             sr = GetComponent<SpriteRenderer>();
 
-            // Set tile infromation to Gameobject
+            // Set tile information to game object
             if (Tile == null)
             {
                 Debug.LogError("Tile doesn't have Tile information!");
@@ -71,6 +74,7 @@ public class TileObject : MonoBehaviour
                     }
                 }
             }
+            Destroy(this);
         }
     }
 
@@ -83,15 +87,15 @@ public class TileObject : MonoBehaviour
     {
         if (!Tile)
         {
-            // Don't display Gizmos on play
-            if (!UnityEditor.EditorApplication.isPlaying)
+            // Don't display Gizmo's on play
+            if (!EditorApplication.isPlaying)
             {
                 // Show details of the tile
                 if (Tile != null)
                 {
-                    if (UnityEditor.SceneView.lastActiveSceneView.camera.orthographicSize <= 5f)
+                    if (SceneView.lastActiveSceneView.camera.orthographicSize <= 5f)
                     {
-                        UnityEditor.Handles.Label(transform.position + new Vector3(-0.2f, 0.3f, 0), Tile.name);
+                        Handles.Label(transform.position + new Vector3(-0.2f, 0.3f, 0), Tile.name);
                     }
 
                     if (Tile.GetType() == typeof(RoadTile))
@@ -112,9 +116,9 @@ public class TileObject : MonoBehaviour
                 // Give me tile!
                 else
                 {
-                    if (UnityEditor.SceneView.lastActiveSceneView.camera.orthographicSize <= 5f)
+                    if (SceneView.lastActiveSceneView.camera.orthographicSize <= 5f)
                     {
-                        UnityEditor.Handles.Label(transform.position + new Vector3(-0.2f, 0.3f, 0), "I need tile!");
+                        Handles.Label(transform.position + new Vector3(-0.2f, 0.3f, 0), "I need tile!");
                     }
 
                     Gizmos.color = Color.blue;
