@@ -18,14 +18,17 @@ public class TileObject : MonoBehaviour
 
     private AssetBundle ab;
 
-    private void Update()
+    private void LateUpdate()
     {
         if(!Application.isPlaying)
         {
             if (!sr)
             {
                 sr = GetComponent<SpriteRenderer>();
-                sr.sprite = Tile.Sprite;
+                if(Tile)
+                {
+                    sr.sprite = Tile.Sprite;
+                }
             }
             else
             {
@@ -71,6 +74,7 @@ public class TileObject : MonoBehaviour
                     }
                 }
             }
+            Destroy(this);
         }
     }
 
