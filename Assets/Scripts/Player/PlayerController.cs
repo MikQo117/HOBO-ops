@@ -64,7 +64,6 @@ public class PlayerController : Character
 
     public override void ReturnBottle()
     {
-
         List<BaseItem> items = Inventory.InventoryList.FindAll(x => x.BaseItemID == 8);
         if (items != null)
         {
@@ -89,12 +88,14 @@ public class PlayerController : Character
 
     public override void Gather(List<BaseItem> items)
     {
-
         if (InputManager.Instance.AxisPressed("Use"))
         {
             if (items != null)
             {
-                StartCoroutine(UIManager.Instance.PickupIndicator(items));
+                if (!UIManager.Instance.CRisRunning)
+                {
+                    StartCoroutine(UIManager.Instance.PickupIndicator(items));
+                }
                 Inventory.AddItemToInventory(items);
                 Gathered = true;
             }
@@ -127,11 +128,12 @@ public class PlayerController : Character
                 }
 
                 //Destination is unit vector * Speed and directions magnitude effects on how much speed is used;
-                movementDirection = direction.normalized * directionMagnitude;
+                inputDirection = direction.normalized * directionMagnitude;
+                movementDirection = inputDirection;
             }
             else
             {
-                movementDirection = Vector3.zero;
+                inputDirection = Vector3.zero;
             }
 
             //Sprint
@@ -147,15 +149,25 @@ public class PlayerController : Character
         }
     }
 
-    protected override void CheckForInteraction()
+    private void EpromtChecker()
     {
-        base.CheckForInteraction();
-        UIManager.Instance.Eprompt(interaction);
+        foreach (Collider2D item in GameManager.Instance.interactablesColliders)
+        {
+
+            if (transform.GetComponent<Collider2D>().bounds.Contains(item.transform.position))
+            {
+                UIManager.Instance.Eprompt(true);
+                break;
+            }
+            else
+            {
+                UIManager.Instance.Eprompt(false);
+            }
+        }
     }
 
     protected void CameraMovement()
     {
-
         Vector3 temp = Vector3.SmoothDamp(mainCamera.transform.position, transform.TransformPoint(movementDirection * 3), ref SprintVelocity, smoothTime);
 
         if (Sprinting && !exhausted)
@@ -181,6 +193,7 @@ public class PlayerController : Character
     {
         base.Update();
         CameraMovement();
+        EpromtChecker();
     }
 
     protected override void Awake()

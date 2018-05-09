@@ -32,7 +32,7 @@ public class UIManager : MonoBehaviour
 
     //Pick up Variables
     public GameObject     PickupObject;
-    private bool          CRisRunning = false;
+    public bool           CRisRunning = false;
     private Vector2       minAnchor;
     private Vector2       maxAnchor;
     private RectTransform recT;
@@ -153,17 +153,18 @@ public class UIManager : MonoBehaviour
         prompt.GetComponentInChildren<Image>().sprite = EpromptSprites[0];
         yield return new WaitForSeconds(1.0f);
         prompt.GetComponentInChildren<Image>().sprite = EpromptSprites[1];
+        yield return new WaitForSeconds(1.0f);
         eCoroutineRunning = false;
     }
 
     private void Awake()
     {
         moneyText         = transform.GetChild(0).transform.GetChild(2).GetComponent<Text>();
-        shopWindow        = transform.GetChild(4).gameObject;
-        ReturnBottleText  = transform.GetChild(4).transform.GetChild(3).GetComponent<Text>();
-        liqourStoreWindow = transform.GetChild(5).gameObject;
-        liqourStoreText   = transform.GetChild(5).transform.GetChild(3).GetComponent<Text>();
-        prompt            = transform.GetChild(6).transform.gameObject;
+        prompt            = transform.GetChild(4).transform.gameObject;
+        shopWindow        = transform.GetChild(5).gameObject;
+        ReturnBottleText  = transform.GetChild(5).transform.GetChild(3).GetComponent<Text>();
+        liqourStoreWindow = transform.GetChild(6).gameObject;
+        liqourStoreText   = transform.GetChild(6).transform.GetChild(3).GetComponent<Text>();
     }
 
     private void Start()

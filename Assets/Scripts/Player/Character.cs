@@ -28,6 +28,7 @@ public abstract class Character : MonoBehaviour
     protected float       sprintSpeed = 4.3f;
     protected Vector3     movementDirection;
     protected bool        sprinting;
+    protected Vector3     inputDirection;
 
     //Collision variables
     [SerializeField]
@@ -54,7 +55,6 @@ public abstract class Character : MonoBehaviour
     //Interaction variables
     [SerializeField]
     protected new Collider2D collider;
-    protected bool interaction;
 
     //Get & Set
     public virtual float Health
@@ -121,7 +121,14 @@ public abstract class Character : MonoBehaviour
 
         set
         {
+            if(drunkAmount < 0)
+            {
+                return;
+            }
+            else
+            {
             drunkAmount = value;
+            }
         }
     }
     public virtual float MoneyAmount
@@ -148,6 +155,7 @@ public abstract class Character : MonoBehaviour
 
     protected virtual void ApplyMovement()
     {
+        Debug.Log(movementDirection);
         if (sprinting && !exhausted)
         {
             Stamina -= staminaDecay * Time.deltaTime;
@@ -185,13 +193,8 @@ public abstract class Character : MonoBehaviour
             //If contains, get component from collider, typeof IInteractable
             if (collider.bounds.Intersects(item.bounds))
             {
-                interaction = true;
                 //Call Interact and pass this as parameter
                 item.GetComponent<IInteractable>().Interact(this);
-            }
-            else
-            {
-                interaction = false;
             }
         }
     }
@@ -213,13 +216,14 @@ public abstract class Character : MonoBehaviour
             {
                 Stamina += staminaRecoveryRate * Time.deltaTime;
             }
-        }
-        if(sprinting)
-        {
-            if(Stamina <= 0)
+
+            if (sprinting)
             {
-                Exhausted();
-                ExhaustTimer();
+                if (Stamina <= 0)
+                {
+                    Exhausted();
+                    ExhaustTimer();
+                }
             }
         }
     }
@@ -229,7 +233,7 @@ public abstract class Character : MonoBehaviour
         Vector2 origin;
 
         //Origin starting point determination from characters collider whenever the character is moving horizontally or vertically
-        if (movementDirection.y != 0)
+        if (inputDirection.y != 0)
         {
             origin = new Vector2(GetComponent<Collider2D>().bounds.min.x, GetComponent<Collider2D>().bounds.center.y);
         }
@@ -247,26 +251,28 @@ public abstract class Character : MonoBehaviour
         for (int i = 0; i < NoOfRays; i++)
         {
             ray = new Ray2D(origin, (movementDirection).normalized);
-            Debug.DrawRay(ray.origin, ray.direction, Color.blue);
-
+            Debug.DrawRay(ray.origin, ray.direction * lengthOfRay, Color.blue);
             RaycastHit2D BuildingHit = Physics2D.Raycast(ray.origin, ray.direction, lengthOfRay, raycastMask);
+            Debug.DrawRay(transform.position, BuildingHit.point, Color.magenta);
+            Debug.DrawRay(transform.position, movementDirection, Color.yellow);
+            Debug.DrawRay(transform.position,Vector3.Project(movementDirection.normalized, BuildingHit.normal.normalized), Color.red);
 
-            RaycastHit2D LitterHit = Physics2D.Raycast(ray.origin, ray.direction, lengthOfRay, 1 << 8);
+            //RaycastHit2D LitterHit = Physics2D.Raycast(ray.origin, ray.direction, lengthOfRay, 1 << 8);
 
             if (BuildingHit)
             {
-                movementDirection = movementDirection - Vector3.Project(movementDirection, BuildingHit.normal.normalized)* 2;
-                return;
+                movementDirection -= Vector3.Project(movementDirection.normalized, BuildingHit.normal.normalized);
+                break;
             }
             //Checking the litter we hit and adding it to inventory
-            if (LitterHit)
-            {
-                Inventory.AddItemToInventory(LitterHit.collider.gameObject.GetComponent<Consumable>());
-                Destroy(LitterHit.collider.gameObject);
-            }
+            //if (LitterHit)
+            //{
+            //    Inventory.AddItemToInventory(LitterHit.collider.gameObject.GetComponent<Consumable>());
+            //    Destroy(LitterHit.collider.gameObject);
+            //}
 
             //Adding new raycast to next point
-            if (movementDirection.x != 0 && movementDirection.y == 0)
+            if (inputDirection.x != 0 && inputDirection.y == 0)
                 origin += new Vector2(0, distanceBetweenRaysY);
             else
                 origin += new Vector2(distanceBetweenRaysX, 0);
@@ -304,29 +310,29 @@ public abstract class Character : MonoBehaviour
     protected void AnimationChanger()
     {
         //sideways movement animator changer
-        if (movementDirection.x != 0 && movementDirection.y == 0) { animator.Play(AnimationClips.WalkSideways.ToString()); currentIdleSprite = idleSprites[3]; SpriteFlip(); }
+        if (inputDirection.x != 0 && inputDirection.y == 0) { animator.Play(AnimationClips.WalkSideways.ToString()); currentIdleSprite = idleSprites[3]; SpriteFlip(); }
 
         //walking down animator changer
-        if (movementDirection.x == 0 && movementDirection.y < 0) { animator.Play(AnimationClips.WalkDown.ToString()); currentIdleSprite = idleSprites[0]; SpriteFlip(); }
+        if (inputDirection.x == 0 && inputDirection.y < 0) { animator.Play(AnimationClips.WalkDown.ToString()); currentIdleSprite = idleSprites[0]; SpriteFlip(); }
 
         //walking upwards animation changer
-        if (movementDirection.x == 0 && movementDirection.y > 0) { animator.Play(AnimationClips.WalkUp.ToString()); currentIdleSprite = idleSprites[4]; SpriteFlip(); }
+        if (inputDirection.x == 0 && inputDirection.y > 0) { animator.Play(AnimationClips.WalkUp.ToString()); currentIdleSprite = idleSprites[4]; SpriteFlip(); }
 
         //strafing upwards animation changer
-        if (movementDirection.x != 0 && movementDirection.y > 0) { animator.Play(AnimationClips.WalkStrafeUp.ToString()); currentIdleSprite = idleSprites[1]; SpriteFlip(); }
+        if (inputDirection.x != 0 && inputDirection.y > 0) { animator.Play(AnimationClips.WalkStrafeUp.ToString()); currentIdleSprite = idleSprites[1]; SpriteFlip(); }
 
         //strafing downwards animation changer
-        if (movementDirection.x != 0 && movementDirection.y < 0) { animator.Play(AnimationClips.WalkStrafeDown.ToString()); currentIdleSprite = idleSprites[2]; SpriteFlip(); }
+        if (inputDirection.x != 0 && inputDirection.y < 0) { animator.Play(AnimationClips.WalkStrafeDown.ToString()); currentIdleSprite = idleSprites[2]; SpriteFlip(); }
 
         //Idle
-        if (movementDirection.x == 0 && movementDirection.y == 0) { animator.Play(AnimationClips.Idle.ToString()); Sr.sprite = currentIdleSprite; }
+        if (inputDirection.x == 0 && inputDirection.y == 0) { animator.Play(AnimationClips.Idle.ToString()); Sr.sprite = currentIdleSprite; }
 
     }
 
     protected void SpriteFlip()
     {
         bool flip;
-        flip = movementDirection.x < 0 ? true : false;
+        flip = inputDirection.x < 0 ? true : false;
         Sr.flipX = flip;
     }
 
@@ -355,7 +361,7 @@ public abstract class Character : MonoBehaviour
     protected virtual void Start()
     {
         exhaustTimer = exhaustDuration;
-        lengthOfRay = GetComponent<Collider2D>().bounds.extents.magnitude / 2;
+        lengthOfRay = GetComponent<Collider2D>().bounds.extents.magnitude;
         Sr = GetComponent<SpriteRenderer>();
         Inventory = gameObject.AddComponent<Inventory>();
         animator = GetComponent<Animator>();
