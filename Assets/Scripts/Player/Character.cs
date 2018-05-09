@@ -53,7 +53,8 @@ public abstract class Character : MonoBehaviour
     protected Inventory characterInventory;
     //Interaction variables
     [SerializeField]
-    protected new Collider2D collider;     
+    protected new Collider2D collider;
+    protected bool interaction;
 
     //Get & Set
     public virtual float Health
@@ -184,8 +185,13 @@ public abstract class Character : MonoBehaviour
             //If contains, get component from collider, typeof IInteractable
             if (collider.bounds.Intersects(item.bounds))
             {
+                interaction = true;
                 //Call Interact and pass this as parameter
                 item.GetComponent<IInteractable>().Interact(this);
+            }
+            else
+            {
+                interaction = false;
             }
         }
     }

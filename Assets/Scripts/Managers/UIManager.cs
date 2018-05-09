@@ -32,11 +32,16 @@ public class UIManager : MonoBehaviour
 
     //Pick up Variables
     public GameObject     PickupObject;
-    private bool           CRisRunning = false;
+    private bool          CRisRunning = false;
     private Vector2       minAnchor;
     private Vector2       maxAnchor;
     private RectTransform recT;
     private Vector2       Offset = new Vector2(0, 0.1f);
+
+    //E-prompt
+    private GameObject prompt;
+    public Sprite[] EpromptSprites;
+    private bool eCoroutineRunning;
 
     private void StatusBarValueChanger()
     {
@@ -49,7 +54,7 @@ public class UIManager : MonoBehaviour
     {
         if (!shopWindow.activeInHierarchy || !liqourStoreWindow.activeInHierarchy)
         {
-            for (int i = 0; i < transform.childCount - 5; i++)
+            for (int i = 0; i < transform.childCount - 6; i++)
             {
                 transform.GetChild(i).gameObject.SetActive(showing);
             }
@@ -127,7 +132,7 @@ public class UIManager : MonoBehaviour
         StartCoroutine(PickupIndicator(null));
     }
 
-    private void AnchorSetter(bool active)
+    private void AnchorChanger(bool active)
     {
         if(active)
         {
@@ -137,13 +142,28 @@ public class UIManager : MonoBehaviour
 
     }
 
+    public void Eprompt(bool active)
+    {
+        prompt.SetActive(active);
+    }
+
+    private IEnumerator EpromptSpriteChanger()
+    {
+        eCoroutineRunning = true;
+        prompt.GetComponentInChildren<Image>().sprite = EpromptSprites[0];
+        yield return new WaitForSeconds(1.0f);
+        prompt.GetComponentInChildren<Image>().sprite = EpromptSprites[1];
+        eCoroutineRunning = false;
+    }
+
     private void Awake()
     {
-        shopWindow        = transform.GetChild(4).gameObject;
-        liqourStoreWindow = transform.GetChild(5).gameObject;
-        ReturnBottleText  = transform.GetChild(4).transform.GetChild(3).GetComponent<Text>();
         moneyText         = transform.GetChild(0).transform.GetChild(2).GetComponent<Text>();
+        shopWindow        = transform.GetChild(4).gameObject;
+        ReturnBottleText  = transform.GetChild(4).transform.GetChild(3).GetComponent<Text>();
+        liqourStoreWindow = transform.GetChild(5).gameObject;
         liqourStoreText   = transform.GetChild(5).transform.GetChild(3).GetComponent<Text>();
+        prompt            = transform.GetChild(6).transform.gameObject;
     }
 
     private void Start()
@@ -168,7 +188,11 @@ public class UIManager : MonoBehaviour
         UIInput();
         DaytimeIndicator();
         StatusBarValueChanger();
-        AnchorSetter(CRisRunning);
+        if(!eCoroutineRunning)
+        {
+            StartCoroutine(EpromptSpriteChanger());
+        }
+        AnchorChanger(CRisRunning);
         Inventory();
     }
 }

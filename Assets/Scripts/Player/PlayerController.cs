@@ -147,6 +147,12 @@ public class PlayerController : Character
         }
     }
 
+    protected override void CheckForInteraction()
+    {
+        base.CheckForInteraction();
+        UIManager.Instance.Eprompt(interaction);
+    }
+
     protected void CameraMovement()
     {
 
