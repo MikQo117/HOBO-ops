@@ -17,7 +17,6 @@ namespace StateStuff
 
         //Sub-state variables
         private int                        subState = 0;
-        
 
         public void PathEndReached()
         {
@@ -92,6 +91,7 @@ namespace StateStuff
                     //Target reached, stop movement and gather
                     Debug.Log("Target reached");
                     spawns.Remove(spawns.Find(x => x.ActiveTarget == true));
+                    owner.tryInteract = true;
                     ResetPaths();
                     if (spawns.Count <= 0)
                     {

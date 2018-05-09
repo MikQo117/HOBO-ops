@@ -20,6 +20,8 @@ public class HoboController : Character
 
     //States
     ScavengeState scavengeState;
+    public bool tryInteract = false;
+
 
 
     public bool MovingToTarget
@@ -82,12 +84,36 @@ public class HoboController : Character
         }
     }
 
+    protected override void CheckForInteraction()
+    {
+        //For through all interactable colliders, and see if intersects
+        foreach (Collider2D item in GameManager.Instance.interactablesColliders)
+        {
+            //Debug.Log("Closest point from player: " + item.bounds.ClosestPoint(transform.position));
+            //If contains, get component from collider, typeof IInteractable
+            if (collider.bounds.Intersects(item.bounds))
+            {
+                //Call Interact and pass this as parameter
+                IInteractable temp = item.GetComponent<IInteractable>();
+                if (tryInteract)
+                {
+                    Debug.Log("Try to interact");
+                    temp.Interact(this);
+                    tryInteract = false;
+                }
+            }
+        }
+    }
 
     public override void ConsumeItem(int itemID)
     {
     }
     public override void Gather(List<BaseItem> items)
     {
+        if (items != null)
+        {
+            Inventory.AddItemToInventory(items);
+        }
     }
     protected override void Attack()
     {
