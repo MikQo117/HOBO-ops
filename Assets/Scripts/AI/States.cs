@@ -95,7 +95,7 @@ namespace StateStuff
                     ResetPaths();
                     if (spawns.Count <= 0)
                     {
-                        owner.StateMachine.ChangeState(IdleState.Instance);
+                        owner.StateMachine.ChangeState(owner.idleState);
                     }
                     else
                     {
@@ -229,29 +229,6 @@ namespace StateStuff
 
     public class IdleState : State<HoboController>
     {
-        private static IdleState instance;
-
-        private IdleState()
-        {
-            if (instance != null)
-            {
-                return;
-            }
-            instance = this;
-        }
-
-        public static IdleState Instance
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    new IdleState();
-                }
-                return instance;
-            }
-        }
-
         public override void EnterState(HoboController owner)
         {
             Debug.Log("Entering idle state");

@@ -6,23 +6,91 @@ using StateStuff;
 
 public class HoboController : Character
 {
-    public StateMachine<HoboController> StateMachine { get; set; }
-    public bool switchState = false;
-    public float gameTimer;
-    public int seconds = 0;
-
     //Pathfinding variables
-    private Vector2[] path;
-    private int targetIndex;
-    private Vector2 currentWaypoint;
-    private bool movingToTarget = false;
-    public Grid Grid;
+    private Vector2[]                   path;
+    private int                         targetIndex;
+    private Vector2                     currentWaypoint;
+    private bool                        movingToTarget = false;
+    public Grid                         Grid;
 
-    //States
-    ScavengeState scavengeState;
-    public bool tryInteract = false;
+    //States                            Do these need getters?
+    public StateMachine<HoboController> StateMachine { get; set; }
+    public ScavengeState                scavengeState;
+    public IdleState                    idleState;
+
+    //Treshold stuff
+    public bool                         tryInteract = false;
+    private ThresholdState              hpState;
+    private ThresholdState              spState;
 
 
+    public override float Health
+    {
+        get { return base.Health; }
+
+        set
+        {
+            base.Health = value;
+
+            if (value >= 80 && value < 100)
+            {
+                hpState = ThresholdState.Satisfied;
+                AnalyzeStatus();
+            }
+            else if (value >= 40 && value < 80)
+            {
+                hpState = ThresholdState.Low;
+                AnalyzeStatus();
+            }
+            else // Less than 20
+            {
+                hpState = ThresholdState.Critical;
+                AnalyzeStatus();
+            }
+        }
+    }
+
+    public override float Sanity
+    {
+        get { return base.Sanity; }
+
+        set
+        {
+            base.Sanity = value;
+
+            if (value >= 70 && value < 100)
+            {
+                spState = ThresholdState.Satisfied;
+                AnalyzeStatus();
+            }
+            else if (value >= 15 && value < 30)
+            {
+                spState = ThresholdState.Low;
+                AnalyzeStatus();
+            }
+            else // Less than 15
+            {
+                spState = ThresholdState.Critical;
+                AnalyzeStatus();
+            }
+        }
+    }
+
+    private void AnalyzeStatus()
+    {
+        if (hpState == ThresholdState.Satisfied)
+        {
+            StateMachine.ChangeState(idleState);
+        }
+        else if (hpState == ThresholdState.Low)
+        {
+            StateMachine.ChangeState(scavengeState);
+        }
+        else
+        {
+            // Change to beg state
+        }
+    }
 
     public bool MovingToTarget
     {
@@ -35,6 +103,7 @@ public class HoboController : Character
         base.Start();
         StateMachine = new StateMachine<HoboController>(this);
         scavengeState = new ScavengeState();
+        idleState = new IdleState();
 
         StateMachine.ChangeState(scavengeState);
     }
