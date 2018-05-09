@@ -10,36 +10,38 @@ public class UIManager : MonoBehaviour
 
     //StatusBars variables
     private const float maxValue = 100;
-    public Image HealthBar;
-    public Image SanityBar;
-    public Image StaminaBar;
-    public Text BottleText;
+    public Image        HealthBar;
+    public Image        SanityBar;
+    public Image        StaminaBar;
+    public Text         BottleText;
 
     //Inventory variables
     private List<Transform> inventoryObjects = new List<Transform>();
-    private bool showing = false;
-    private Text moneyText;
+    private bool            showing = false;
+    private Text            moneyText;
 
     //Daytime indicator variables
-    float arrowrotationChanger = 0.0f;
+    float             arrowrotationChanger = 0.0f;
     public GameObject Arrow;
 
     //ShopWindow Variables
     private GameObject shopWindow;
     private GameObject liqourStoreWindow;
-    private Text liqourStoreText;
-    private Text ReturnBottleText;
+    private Text       liqourStoreText;
+    private Text       ReturnBottleText;
 
     //Pick up Variables
-    private Vector3 originalPoint;
-    public GameObject PickupObject;
-    private float timer;
-    public bool CRisRunning = false;
+    public GameObject     PickupObject;
+    private bool           CRisRunning = false;
+    private Vector2       minAnchor;
+    private Vector2       maxAnchor;
+    private RectTransform recT;
+    private Vector2       Offset = new Vector2(0, 0.1f);
 
     private void StatusBarValueChanger()
     {
-        HealthBar.fillAmount = Mathf.Clamp01(PlayerController.pl.Health / maxValue);
-        SanityBar.fillAmount = Mathf.Clamp01(PlayerController.pl.Sanity / maxValue);
+        HealthBar.fillAmount  = Mathf.Clamp01(PlayerController.pl.Health / maxValue);
+        SanityBar.fillAmount  = Mathf.Clamp01(PlayerController.pl.Sanity / maxValue);
         StaminaBar.fillAmount = Mathf.Clamp01(PlayerController.pl.Stamina / maxValue);
     }
 
@@ -70,7 +72,7 @@ public class UIManager : MonoBehaviour
 
     private void DaytimeIndicator()
     {
-        arrowrotationChanger = GameManager.Instance.DayTimer * 0.79f;
+        arrowrotationChanger                     = GameManager.Instance.DayTimer * 0.79f;
         Arrow.GetComponent<Transform>().rotation = Quaternion.Euler(0, 0, -arrowrotationChanger);
     }
 
@@ -90,35 +92,58 @@ public class UIManager : MonoBehaviour
     {
         if (CRisRunning) yield break;
 
-        PickupObject.SetActive(true);
-        CRisRunning = true;
-        var temp = items.GroupBy(x => x).ToDictionary(g => g.Key, g => g.Count()).ToList();
-
-        foreach (var item in temp)
+        if (items != null)
         {
-            LocationChecker();
-            PickupObject.GetComponent<RectTransform>().position = originalPoint;
-            PickupObject.GetComponentInChildren<Image>().sprite = item.Key.ObjectSprite;
-            PickupObject.GetComponentInChildren<Text>().text = "+ " + item.Value.ToString();
-            yield return new WaitForSeconds(0.5f);
+            PickupObject.SetActive(true);
+            CRisRunning = true;
+            List<KeyValuePair<BaseItem, int>> temp = items.GroupBy(x => x).ToDictionary(g => g.Key, g => g.Count()).ToList();
+
+            foreach (KeyValuePair<BaseItem, int> item in temp)
+            {
+                PickupObject.GetComponentInChildren<Image>().sprite = item.Key.ObjectSprite;
+                PickupObject.GetComponentInChildren<Text>().text    = "+ " + item.Value.ToString();
+                yield return new WaitForSeconds(0.5f);
+                PickupObject.transform.GetChild(0).GetComponent<RectTransform>().anchorMin = minAnchor;
+                PickupObject.transform.GetChild(0).GetComponent<RectTransform>().anchorMax = maxAnchor;
+            }
+
+            CRisRunning = false;
+            PickupObject.SetActive(false);
         }
-        
-        CRisRunning = false;
-        PickupObject.SetActive(false);
+        else
+        {
+            PickupObject.GetComponentInChildren<Text>().text   = "No Items Found";
+            PickupObject.GetComponentInChildren<Image>().color = new Color32(0, 0, 0, 0);
+            PickupObject.SetActive(true);
+            yield return new WaitForSeconds(0.5f);
+            PickupObject.SetActive(false);
+            PickupObject.GetComponentInChildren<Image>().color = new Color32(255, 255, 255, 255);
+
+        }
     }
 
-    private void LocationChecker()
+    public void NoItemIndicator()
     {
-        originalPoint = PlayerController.pl.mainCamera.WorldToScreenPoint(PlayerController.pl.transform.position);
+        StartCoroutine(PickupIndicator(null));
+    }
+
+    private void AnchorSetter(bool active)
+    {
+        if(active)
+        {
+            recT.anchorMax += Offset * Time.deltaTime;
+            recT.anchorMin += Offset * Time.deltaTime;
+        }
+
     }
 
     private void Awake()
     {
-        shopWindow = transform.GetChild(4).gameObject;
+        shopWindow        = transform.GetChild(4).gameObject;
         liqourStoreWindow = transform.GetChild(5).gameObject;
-        ReturnBottleText = transform.GetChild(4).transform.GetChild(3).GetComponent<Text>();
-        moneyText = transform.GetChild(0).transform.GetChild(2).GetComponent<Text>();
-        liqourStoreText = transform.GetChild(5).transform.GetChild(3).GetComponent<Text>();
+        ReturnBottleText  = transform.GetChild(4).transform.GetChild(3).GetComponent<Text>();
+        moneyText         = transform.GetChild(0).transform.GetChild(2).GetComponent<Text>();
+        liqourStoreText   = transform.GetChild(5).transform.GetChild(3).GetComponent<Text>();
     }
 
     private void Start()
@@ -132,6 +157,10 @@ public class UIManager : MonoBehaviour
         {
             inventoryObjects.Add(transform.GetChild(1).GetChild(i).transform);
         }
+
+        recT      = PickupObject.transform.GetChild(0).GetComponent<RectTransform>();
+        minAnchor = PickupObject.transform.GetChild(0).GetComponent<RectTransform>().anchorMin;
+        maxAnchor = PickupObject.transform.GetChild(0).GetComponent<RectTransform>().anchorMax;
     }
 
     private void Update()
@@ -139,13 +168,7 @@ public class UIManager : MonoBehaviour
         UIInput();
         DaytimeIndicator();
         StatusBarValueChanger();
-
-        if (CRisRunning)
-        {
-            PickupObject.GetComponent<RectTransform>().position += new Vector3(0, 10) * Time.deltaTime * 20;
-        }
-
-        timer -= Time.deltaTime;
+        AnchorSetter(CRisRunning);
         Inventory();
     }
 }

@@ -7,16 +7,16 @@ public class PlayerController : Character
 {
     //Player Variables
     public static PlayerController pl;
-    private bool shopping;
-    public bool  Gathered;
+    private bool                   shopping;
+    public bool                    Gathered;
 
     //Camera Variables
-    public  Camera  mainCamera;
-    private float   lenght = 1000;
-    private Vector3 SprintVelocity;
-    private Vector3 CameraZoffset = new Vector3(0, 0, -5);
-    private float   smoothTime = 0.3f;
-    public Bounds bound;
+    public Camera                  mainCamera;
+    private float                  lenght = 1000;
+    private Vector3                SprintVelocity;
+    private Vector3                CameraZoffset = new Vector3(0, 0, -5);
+    private float                  smoothTime = 0.3f;
+    public Bounds                  bound;
 
     //Minigame methods
     protected override void Attack()
@@ -55,7 +55,7 @@ public class PlayerController : Character
 
     public void InterractWithLiqourStore()
     {
-        if(InputManager.Instance.AxisPressed("Use"))
+        if (InputManager.Instance.AxisPressed("Use"))
         {
             shopping = !shopping;
         }
@@ -64,7 +64,7 @@ public class PlayerController : Character
 
     public override void ReturnBottle()
     {
-        
+
         List<BaseItem> items = Inventory.InventoryList.FindAll(x => x.BaseItemID == 8);
         if (items != null)
         {
@@ -78,20 +78,21 @@ public class PlayerController : Character
 
     public override void Buy(BaseItem item)
     {
-            Inventory.AddItemToInventory(item);
-            moneyAmount -= item.ItemCost;
+        Inventory.AddItemToInventory(item);
+        moneyAmount -= item.ItemCost;
     }
 
     protected override void Death()
     {
-        
+
     }
 
     public override void Gather(List<BaseItem> items)
     {
-        if (items != null)
+
+        if (InputManager.Instance.AxisPressed("Use"))
         {
-            if (InputManager.Instance.AxisPressed("Use"))
+            if (items != null)
             {
                 StartCoroutine(UIManager.Instance.PickupIndicator(items));
                 Inventory.AddItemToInventory(items);
@@ -99,13 +100,14 @@ public class PlayerController : Character
             }
             else
             {
-                Gathered = false;
-            }   
+                UIManager.Instance.NoItemIndicator();
+            }
         }
         else
         {
-            //No items found
+            Gathered = false;
         }
+
     }
 
     protected override void GetInput()
@@ -156,7 +158,7 @@ public class PlayerController : Character
         }
         else
         {
-            mainCamera.transform.position = Vector3.MoveTowards(temp, transform.position + new Vector3(0,0.5f), smoothTime * Time.deltaTime * lenght) + CameraZoffset;
+            mainCamera.transform.position = Vector3.MoveTowards(temp, transform.position + new Vector3(0, 0.5f), smoothTime * Time.deltaTime * lenght) + CameraZoffset;
         }
     }
 
