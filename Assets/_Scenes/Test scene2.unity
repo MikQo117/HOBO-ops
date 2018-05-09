@@ -311,7 +311,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &317973749
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -325,7 +325,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnableItems: []
-  trashCanInventory: []
+  trashCanInventory:
+  - {fileID: 11400000, guid: af8632615a535594baf87c4a9d0f87ea, type: 2}
+  - {fileID: 11400000, guid: af8632615a535594baf87c4a9d0f87ea, type: 2}
+  - {fileID: 11400000, guid: 6f6f50788749866428ababe06b3a8ad3, type: 2}
+  - {fileID: 11400000, guid: 6f6f50788749866428ababe06b3a8ad3, type: 2}
   collider: {fileID: 317973750}
 --- !u!70 &317973750
 CapsuleCollider2D:
@@ -417,7 +421,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &424410928
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -431,7 +435,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnableItems: []
-  trashCanInventory: []
+  trashCanInventory:
+  - {fileID: 11400000, guid: af8632615a535594baf87c4a9d0f87ea, type: 2}
+  - {fileID: 11400000, guid: af8632615a535594baf87c4a9d0f87ea, type: 2}
+  - {fileID: 11400000, guid: 6f6f50788749866428ababe06b3a8ad3, type: 2}
+  - {fileID: 11400000, guid: 6f6f50788749866428ababe06b3a8ad3, type: 2}
   collider: {fileID: 424410929}
 --- !u!70 &424410929
 CapsuleCollider2D:
@@ -593,7 +601,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &576103616
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -607,7 +615,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnableItems: []
-  trashCanInventory: []
+  trashCanInventory:
+  - {fileID: 11400000, guid: af8632615a535594baf87c4a9d0f87ea, type: 2}
+  - {fileID: 11400000, guid: af8632615a535594baf87c4a9d0f87ea, type: 2}
+  - {fileID: 11400000, guid: 6f6f50788749866428ababe06b3a8ad3, type: 2}
+  - {fileID: 11400000, guid: 6f6f50788749866428ababe06b3a8ad3, type: 2}
   collider: {fileID: 576103617}
 --- !u!70 &576103617
 CapsuleCollider2D:
@@ -699,7 +711,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &602204695
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -713,7 +725,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnableItems: []
-  trashCanInventory: []
+  trashCanInventory:
+  - {fileID: 11400000, guid: af8632615a535594baf87c4a9d0f87ea, type: 2}
+  - {fileID: 11400000, guid: af8632615a535594baf87c4a9d0f87ea, type: 2}
+  - {fileID: 11400000, guid: 6f6f50788749866428ababe06b3a8ad3, type: 2}
+  - {fileID: 11400000, guid: 6f6f50788749866428ababe06b3a8ad3, type: 2}
   collider: {fileID: 602204696}
 --- !u!70 &602204696
 CapsuleCollider2D:
@@ -805,7 +821,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &620525824
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -819,7 +835,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnableItems: []
-  trashCanInventory: []
+  trashCanInventory:
+  - {fileID: 11400000, guid: af8632615a535594baf87c4a9d0f87ea, type: 2}
+  - {fileID: 11400000, guid: af8632615a535594baf87c4a9d0f87ea, type: 2}
+  - {fileID: 11400000, guid: 6f6f50788749866428ababe06b3a8ad3, type: 2}
+  - {fileID: 11400000, guid: 6f6f50788749866428ababe06b3a8ad3, type: 2}
   collider: {fileID: 620525825}
 --- !u!70 &620525825
 CapsuleCollider2D:
@@ -925,7 +945,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnableItems: []
-  trashCanInventory: []
+  trashCanInventory:
+  - {fileID: 11400000, guid: af8632615a535594baf87c4a9d0f87ea, type: 2}
+  - {fileID: 11400000, guid: af8632615a535594baf87c4a9d0f87ea, type: 2}
+  - {fileID: 11400000, guid: 6f6f50788749866428ababe06b3a8ad3, type: 2}
+  - {fileID: 11400000, guid: 6f6f50788749866428ababe06b3a8ad3, type: 2}
   collider: {fileID: 661091536}
 --- !u!70 &661091536
 CapsuleCollider2D:
@@ -1017,7 +1041,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &683736591
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1031,7 +1055,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnableItems: []
-  trashCanInventory: []
+  trashCanInventory:
+  - {fileID: 11400000, guid: af8632615a535594baf87c4a9d0f87ea, type: 2}
+  - {fileID: 11400000, guid: af8632615a535594baf87c4a9d0f87ea, type: 2}
+  - {fileID: 11400000, guid: 6f6f50788749866428ababe06b3a8ad3, type: 2}
+  - {fileID: 11400000, guid: 6f6f50788749866428ababe06b3a8ad3, type: 2}
   collider: {fileID: 683736592}
 --- !u!70 &683736592
 CapsuleCollider2D:
@@ -1137,7 +1165,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnableItems: []
-  trashCanInventory: []
+  trashCanInventory:
+  - {fileID: 11400000, guid: af8632615a535594baf87c4a9d0f87ea, type: 2}
+  - {fileID: 11400000, guid: af8632615a535594baf87c4a9d0f87ea, type: 2}
+  - {fileID: 11400000, guid: 6f6f50788749866428ababe06b3a8ad3, type: 2}
+  - {fileID: 11400000, guid: 6f6f50788749866428ababe06b3a8ad3, type: 2}
   collider: {fileID: 813911359}
 --- !u!70 &813911359
 CapsuleCollider2D:
@@ -1229,7 +1261,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &822515595
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1243,7 +1275,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnableItems: []
-  trashCanInventory: []
+  trashCanInventory:
+  - {fileID: 11400000, guid: af8632615a535594baf87c4a9d0f87ea, type: 2}
+  - {fileID: 11400000, guid: af8632615a535594baf87c4a9d0f87ea, type: 2}
+  - {fileID: 11400000, guid: 6f6f50788749866428ababe06b3a8ad3, type: 2}
+  - {fileID: 11400000, guid: 6f6f50788749866428ababe06b3a8ad3, type: 2}
   collider: {fileID: 822515596}
 --- !u!70 &822515596
 CapsuleCollider2D:
@@ -1346,7 +1382,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &856740066
 MonoBehaviour:
@@ -1406,7 +1442,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &885520778
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1420,7 +1456,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnableItems: []
-  trashCanInventory: []
+  trashCanInventory:
+  - {fileID: 11400000, guid: af8632615a535594baf87c4a9d0f87ea, type: 2}
+  - {fileID: 11400000, guid: af8632615a535594baf87c4a9d0f87ea, type: 2}
+  - {fileID: 11400000, guid: 6f6f50788749866428ababe06b3a8ad3, type: 2}
+  - {fileID: 11400000, guid: 6f6f50788749866428ababe06b3a8ad3, type: 2}
   collider: {fileID: 885520779}
 --- !u!70 &885520779
 CapsuleCollider2D:
@@ -1596,7 +1636,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnableItems: []
-  trashCanInventory: []
+  trashCanInventory:
+  - {fileID: 11400000, guid: af8632615a535594baf87c4a9d0f87ea, type: 2}
+  - {fileID: 11400000, guid: af8632615a535594baf87c4a9d0f87ea, type: 2}
+  - {fileID: 11400000, guid: 6f6f50788749866428ababe06b3a8ad3, type: 2}
+  - {fileID: 11400000, guid: 6f6f50788749866428ababe06b3a8ad3, type: 2}
   collider: {fileID: 943730853}
 --- !u!70 &943730853
 CapsuleCollider2D:
@@ -1718,7 +1762,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &981875427
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1732,7 +1776,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnableItems: []
-  trashCanInventory: []
+  trashCanInventory:
+  - {fileID: 11400000, guid: af8632615a535594baf87c4a9d0f87ea, type: 2}
+  - {fileID: 11400000, guid: af8632615a535594baf87c4a9d0f87ea, type: 2}
+  - {fileID: 11400000, guid: 6f6f50788749866428ababe06b3a8ad3, type: 2}
+  - {fileID: 11400000, guid: 6f6f50788749866428ababe06b3a8ad3, type: 2}
   collider: {fileID: 981875428}
 --- !u!70 &981875428
 CapsuleCollider2D:
@@ -1975,66 +2023,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
---- !u!1001 &1064766961
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 4761217013617778, guid: 3b76934347d7f26419522b6c230610ea, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 23.43
-      objectReference: {fileID: 0}
-    - target: {fileID: 4761217013617778, guid: 3b76934347d7f26419522b6c230610ea, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 13.79
-      objectReference: {fileID: 0}
-    - target: {fileID: 4761217013617778, guid: 3b76934347d7f26419522b6c230610ea, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4761217013617778, guid: 3b76934347d7f26419522b6c230610ea, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4761217013617778, guid: 3b76934347d7f26419522b6c230610ea, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4761217013617778, guid: 3b76934347d7f26419522b6c230610ea, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4761217013617778, guid: 3b76934347d7f26419522b6c230610ea, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4761217013617778, guid: 3b76934347d7f26419522b6c230610ea, type: 2}
-      propertyPath: m_RootOrder
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 114256729642719926, guid: 3b76934347d7f26419522b6c230610ea,
-        type: 2}
-      propertyPath: Grid
-      value: 
-      objectReference: {fileID: 856740066}
-    - target: {fileID: 95040924427051810, guid: 3b76934347d7f26419522b6c230610ea,
-        type: 2}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: 0a66d1b9224e0544d81b92170749822a, type: 2}
-    - target: {fileID: 1420961163127652, guid: 3b76934347d7f26419522b6c230610ea, type: 2}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1420961163127652, guid: 3b76934347d7f26419522b6c230610ea, type: 2}
-      propertyPath: m_Name
-      value: HoboAI (3)
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: 3b76934347d7f26419522b6c230610ea, type: 2}
-  m_IsPrefabParent: 0
 --- !u!1 &1131728688
 GameObject:
   m_ObjectHideFlags: 0
@@ -2243,68 +2231,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &1160787326
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 4761217013617778, guid: 3b76934347d7f26419522b6c230610ea, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 40.71
-      objectReference: {fileID: 0}
-    - target: {fileID: 4761217013617778, guid: 3b76934347d7f26419522b6c230610ea, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: -13.62
-      objectReference: {fileID: 0}
-    - target: {fileID: 4761217013617778, guid: 3b76934347d7f26419522b6c230610ea, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4761217013617778, guid: 3b76934347d7f26419522b6c230610ea, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4761217013617778, guid: 3b76934347d7f26419522b6c230610ea, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4761217013617778, guid: 3b76934347d7f26419522b6c230610ea, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4761217013617778, guid: 3b76934347d7f26419522b6c230610ea, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4761217013617778, guid: 3b76934347d7f26419522b6c230610ea, type: 2}
-      propertyPath: m_RootOrder
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 114256729642719926, guid: 3b76934347d7f26419522b6c230610ea,
-        type: 2}
-      propertyPath: Grid
-      value: 
-      objectReference: {fileID: 856740066}
-    - target: {fileID: 95040924427051810, guid: 3b76934347d7f26419522b6c230610ea,
-        type: 2}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: 0a66d1b9224e0544d81b92170749822a, type: 2}
-    - target: {fileID: 1420961163127652, guid: 3b76934347d7f26419522b6c230610ea, type: 2}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1420961163127652, guid: 3b76934347d7f26419522b6c230610ea, type: 2}
-      propertyPath: m_Name
-      value: HoboAI (1)
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: 3b76934347d7f26419522b6c230610ea, type: 2}
-  m_IsPrefabParent: 0
 --- !u!1 &1195653394
 GameObject:
   m_ObjectHideFlags: 0
@@ -2470,7 +2398,7 @@ Transform:
   - {fileID: 1770605569}
   - {fileID: 885520781}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1289421137
 GameObject:
@@ -2520,7 +2448,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1328826673
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2534,7 +2462,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnableItems: []
-  trashCanInventory: []
+  trashCanInventory:
+  - {fileID: 11400000, guid: af8632615a535594baf87c4a9d0f87ea, type: 2}
+  - {fileID: 11400000, guid: af8632615a535594baf87c4a9d0f87ea, type: 2}
+  - {fileID: 11400000, guid: 6f6f50788749866428ababe06b3a8ad3, type: 2}
+  - {fileID: 11400000, guid: 6f6f50788749866428ababe06b3a8ad3, type: 2}
   collider: {fileID: 1328826674}
 --- !u!70 &1328826674
 CapsuleCollider2D:
@@ -3104,66 +3036,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
---- !u!1001 &1523440461
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 4761217013617778, guid: 3b76934347d7f26419522b6c230610ea, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: -33.57
-      objectReference: {fileID: 0}
-    - target: {fileID: 4761217013617778, guid: 3b76934347d7f26419522b6c230610ea, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: -11.21
-      objectReference: {fileID: 0}
-    - target: {fileID: 4761217013617778, guid: 3b76934347d7f26419522b6c230610ea, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4761217013617778, guid: 3b76934347d7f26419522b6c230610ea, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4761217013617778, guid: 3b76934347d7f26419522b6c230610ea, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4761217013617778, guid: 3b76934347d7f26419522b6c230610ea, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4761217013617778, guid: 3b76934347d7f26419522b6c230610ea, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4761217013617778, guid: 3b76934347d7f26419522b6c230610ea, type: 2}
-      propertyPath: m_RootOrder
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 114256729642719926, guid: 3b76934347d7f26419522b6c230610ea,
-        type: 2}
-      propertyPath: Grid
-      value: 
-      objectReference: {fileID: 856740066}
-    - target: {fileID: 95040924427051810, guid: 3b76934347d7f26419522b6c230610ea,
-        type: 2}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: 0a66d1b9224e0544d81b92170749822a, type: 2}
-    - target: {fileID: 1420961163127652, guid: 3b76934347d7f26419522b6c230610ea, type: 2}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1420961163127652, guid: 3b76934347d7f26419522b6c230610ea, type: 2}
-      propertyPath: m_Name
-      value: HoboAI (2)
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: 3b76934347d7f26419522b6c230610ea, type: 2}
-  m_IsPrefabParent: 0
 --- !u!1 &1534732825
 GameObject:
   m_ObjectHideFlags: 0
@@ -3342,7 +3214,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1695597341
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3356,7 +3228,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnableItems: []
-  trashCanInventory: []
+  trashCanInventory:
+  - {fileID: 11400000, guid: af8632615a535594baf87c4a9d0f87ea, type: 2}
+  - {fileID: 11400000, guid: af8632615a535594baf87c4a9d0f87ea, type: 2}
+  - {fileID: 11400000, guid: 6f6f50788749866428ababe06b3a8ad3, type: 2}
+  - {fileID: 11400000, guid: 6f6f50788749866428ababe06b3a8ad3, type: 2}
   collider: {fileID: 1695597342}
 --- !u!70 &1695597342
 CapsuleCollider2D:
@@ -3518,7 +3394,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1737779937
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3532,7 +3408,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnableItems: []
-  trashCanInventory: []
+  trashCanInventory:
+  - {fileID: 11400000, guid: af8632615a535594baf87c4a9d0f87ea, type: 2}
+  - {fileID: 11400000, guid: af8632615a535594baf87c4a9d0f87ea, type: 2}
+  - {fileID: 11400000, guid: 6f6f50788749866428ababe06b3a8ad3, type: 2}
+  - {fileID: 11400000, guid: 6f6f50788749866428ababe06b3a8ad3, type: 2}
   collider: {fileID: 1737779938}
 --- !u!70 &1737779938
 CapsuleCollider2D:
@@ -3753,7 +3633,7 @@ Transform:
   m_Children:
   - {fileID: 1213954564}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1767126790
 SpriteRenderer:
@@ -3829,7 +3709,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1770605566
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3843,7 +3723,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnableItems: []
-  trashCanInventory: []
+  trashCanInventory:
+  - {fileID: 11400000, guid: af8632615a535594baf87c4a9d0f87ea, type: 2}
+  - {fileID: 11400000, guid: af8632615a535594baf87c4a9d0f87ea, type: 2}
+  - {fileID: 11400000, guid: 6f6f50788749866428ababe06b3a8ad3, type: 2}
+  - {fileID: 11400000, guid: 6f6f50788749866428ababe06b3a8ad3, type: 2}
   collider: {fileID: 1770605567}
 --- !u!70 &1770605567
 CapsuleCollider2D:
@@ -3935,7 +3819,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1896236462
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3949,7 +3833,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnableItems: []
-  trashCanInventory: []
+  trashCanInventory:
+  - {fileID: 11400000, guid: af8632615a535594baf87c4a9d0f87ea, type: 2}
+  - {fileID: 11400000, guid: af8632615a535594baf87c4a9d0f87ea, type: 2}
+  - {fileID: 11400000, guid: 6f6f50788749866428ababe06b3a8ad3, type: 2}
+  - {fileID: 11400000, guid: 6f6f50788749866428ababe06b3a8ad3, type: 2}
   collider: {fileID: 1896236463}
 --- !u!70 &1896236463
 CapsuleCollider2D:
@@ -4140,7 +4028,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1958295160
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4154,7 +4042,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnableItems: []
-  trashCanInventory: []
+  trashCanInventory:
+  - {fileID: 11400000, guid: af8632615a535594baf87c4a9d0f87ea, type: 2}
+  - {fileID: 11400000, guid: af8632615a535594baf87c4a9d0f87ea, type: 2}
+  - {fileID: 11400000, guid: 6f6f50788749866428ababe06b3a8ad3, type: 2}
+  - {fileID: 11400000, guid: 6f6f50788749866428ababe06b3a8ad3, type: 2}
   collider: {fileID: 1958295161}
 --- !u!70 &1958295161
 CapsuleCollider2D:
@@ -4262,7 +4154,7 @@ Transform:
   - {fileID: 1195653395}
   - {fileID: 1687700758}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2086656829
 GameObject:
@@ -4282,7 +4174,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &2086656830
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4296,7 +4188,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnableItems: []
-  trashCanInventory: []
+  trashCanInventory:
+  - {fileID: 11400000, guid: af8632615a535594baf87c4a9d0f87ea, type: 2}
+  - {fileID: 11400000, guid: af8632615a535594baf87c4a9d0f87ea, type: 2}
+  - {fileID: 11400000, guid: 6f6f50788749866428ababe06b3a8ad3, type: 2}
+  - {fileID: 11400000, guid: 6f6f50788749866428ababe06b3a8ad3, type: 2}
   collider: {fileID: 2086656831}
 --- !u!70 &2086656831
 CapsuleCollider2D:
@@ -4429,7 +4325,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &2137215572
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4443,7 +4339,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnableItems: []
-  trashCanInventory: []
+  trashCanInventory:
+  - {fileID: 11400000, guid: af8632615a535594baf87c4a9d0f87ea, type: 2}
+  - {fileID: 11400000, guid: af8632615a535594baf87c4a9d0f87ea, type: 2}
+  - {fileID: 11400000, guid: 6f6f50788749866428ababe06b3a8ad3, type: 2}
+  - {fileID: 11400000, guid: 6f6f50788749866428ababe06b3a8ad3, type: 2}
   collider: {fileID: 2137215573}
 --- !u!70 &2137215573
 CapsuleCollider2D:

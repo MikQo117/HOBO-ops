@@ -11,7 +11,6 @@ namespace StateStuff
 
         private Vector2[]                  shortestPath;
         private TrashSpawn                 nearestSpawn = new TrashSpawn();
-        private Dictionary<Vector2[], int> paths = new Dictionary<Vector2[], int>();
         private List<SpawnData>            spawns = new List<SpawnData>();
         private int                        requestsSent = 0;
 
@@ -27,8 +26,8 @@ namespace StateStuff
         private void ResetVariables()
         {
             requestsSent = 0;
+            tempIndex = 0;
             subState = 0;
-            paths.Clear();
             spawns.Clear();
             shortestPath = new Vector2[0];
             nearestSpawn = null;
@@ -38,7 +37,6 @@ namespace StateStuff
         {
             requestsSent = 0;
             subState = 0;
-            paths.Clear();
             shortestPath = new Vector2[0];
             nearestSpawn = null;
         }
@@ -147,10 +145,10 @@ namespace StateStuff
         {
             if (pathSuccess)
             {
-                //paths.Add(newPath, pathLength);
                 spawns[tempIndex].Path = newPath;
-                spawns[tempIndex].PathLength = pathLength;
+                spawns[tempIndex].PathLength = pathLength; 
                 tempIndex++;
+
                 if (PathsPopulated())
                 {
                     shortestPath = spawns.OrderBy(spawn => spawn.PathLength).First().SetAsCurrent(); //Vittumikäsäätö

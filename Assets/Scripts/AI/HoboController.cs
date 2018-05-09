@@ -20,8 +20,8 @@ public class HoboController : Character
 
     //Treshold stuff
     public bool                         tryInteract = false;
-    private ThresholdState              hpState;
-    private ThresholdState              spState;
+    private ThresholdState              hpState, oldHpState;
+    private ThresholdState              spState, oldSpState;
 
 
     public override float Health
@@ -34,18 +34,18 @@ public class HoboController : Character
 
             if (value >= 80 && value < 100)
             {
+                oldHpState = hpState;
                 hpState = ThresholdState.Satisfied;
-                AnalyzeStatus();
             }
             else if (value >= 40 && value < 80)
             {
+                oldHpState = hpState;
                 hpState = ThresholdState.Low;
-                AnalyzeStatus();
             }
             else // Less than 20
             {
+                oldHpState = hpState;
                 hpState = ThresholdState.Critical;
-                AnalyzeStatus();
             }
         }
     }
@@ -60,29 +60,29 @@ public class HoboController : Character
 
             if (value >= 70 && value < 100)
             {
+                oldSpState = spState;
                 spState = ThresholdState.Satisfied;
-                AnalyzeStatus();
             }
             else if (value >= 15 && value < 30)
             {
+                oldSpState = spState;
                 spState = ThresholdState.Low;
-                AnalyzeStatus();
             }
             else // Less than 15
             {
+                oldSpState = spState;
                 spState = ThresholdState.Critical;
-                AnalyzeStatus();
             }
         }
     }
 
     private void AnalyzeStatus()
     {
-        if (hpState == ThresholdState.Satisfied)
+        if (hpState == ThresholdState.Satisfied && oldHpState != hpState)
         {
             StateMachine.ChangeState(idleState);
         }
-        else if (hpState == ThresholdState.Low)
+        else if (hpState == ThresholdState.Low && oldHpState != hpState)
         {
             StateMachine.ChangeState(scavengeState);
         }
@@ -105,11 +105,12 @@ public class HoboController : Character
         scavengeState = new ScavengeState();
         idleState = new IdleState();
 
-        StateMachine.ChangeState(scavengeState);
+        //StateMachine.ChangeState(idleState);
     }
 
     protected override void Update()
     {
+        AnalyzeStatus();
         StateMachine.Update();
         base.Update();
     }
