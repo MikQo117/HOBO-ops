@@ -31,6 +31,7 @@ public class PlayerController : Character
     protected void CameraMovement()
     {
         Vector3 temp = Vector3.SmoothDamp(mainCamera.transform.position, transform.TransformPoint(movementDirection * 3), ref SprintVelocity, smoothTime);
+        temp.z = -5f;
 
         if (Sprinting && !exhausted)
         {
@@ -40,6 +41,7 @@ public class PlayerController : Character
         {
             mainCamera.transform.position = Vector3.MoveTowards(temp, transform.position + new Vector3(0, 0.5f), smoothTime * Time.deltaTime * lenght) + CameraZoffset;
         }
+        mainCamera.transform.position = new Vector3(mainCamera.transform.position.x, mainCamera.transform.position.y, -5f);
     }
 
     protected override void GetInput()

@@ -69,7 +69,7 @@ public class TileObject : MonoBehaviour
                     if (AssetManager.Instance.AssetBundlesList[i].name == "materials")
                     {
                         ab = abl[i];
-                        sr.material = ab.LoadAsset<Material>("PixelSnap.mat");
+                        sr.material = ab.LoadAsset<Material>("Tile.mat");
                         break;
                     }
                 }
