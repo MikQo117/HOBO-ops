@@ -327,7 +327,7 @@ public class CreateCavalierMapTool : EditorWindow
                             to.Tile = FindTileByName(roadTiles, "RoadOBR");
                             break;
                         case PixelData.Tile.Sidewalk:
-                            to.Tile = FindTileByName(sidewalkTiles, "SidewalkOBR");
+                            to.Tile = FindTileByName(sidewalkTiles, "SidewalkV");
                             break;
                         case PixelData.Tile.Grass:
                             to.Tile = FindTileByName(grassTiles, "GrassBR");
