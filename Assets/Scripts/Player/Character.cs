@@ -20,7 +20,6 @@ public abstract class Character : MonoBehaviour
     //stat decay variables
     protected const float healthDecay  = 0.25f;
     protected const float sanityDecay  = 0.1f;
-    protected const float drunkDecay   = 0.1f;
     protected const float staminaDecay = 10.0f;
 
     //Character movement
@@ -112,25 +111,6 @@ public abstract class Character : MonoBehaviour
             }
         }
     }
-    protected virtual float DrunkAmount
-    {
-        get
-        {
-            return drunkAmount;
-        }
-
-        set
-        {
-            if(drunkAmount < 0)
-            {
-                return;
-            }
-            else
-            {
-            drunkAmount = value;
-            }
-        }
-    }
     public virtual float MoneyAmount
     {
         get { return moneyAmount; }        
@@ -155,7 +135,6 @@ public abstract class Character : MonoBehaviour
 
     protected virtual void ApplyMovement()
     {
-        Debug.Log(movementDirection);
         if (sprinting && !exhausted)
         {
             Stamina -= staminaDecay * Time.deltaTime;
@@ -265,11 +244,11 @@ public abstract class Character : MonoBehaviour
                 break;
             }
             //Checking the litter we hit and adding it to inventory
-            //if (LitterHit)
-            //{
-            //    Inventory.AddItemToInventory(LitterHit.collider.gameObject.GetComponent<Consumable>());
-            //    Destroy(LitterHit.collider.gameObject);
-            //}
+            /*if (LitterHit)
+            {
+                Inventory.AddItemToInventory(LitterHit.collider.gameObject.GetComponent<Consumable>());
+                Destroy(LitterHit.collider.gameObject);
+            }*/
 
             //Adding new raycast to next point
             if (inputDirection.x != 0 && inputDirection.y == 0)
@@ -340,7 +319,6 @@ public abstract class Character : MonoBehaviour
     {
         Health      -= healthDecay * Time.deltaTime;
         Sanity      -= sanityDecay * Time.deltaTime;
-        DrunkAmount -= drunkDecay  * Time.deltaTime;
     }
 
     enum AnimationClips

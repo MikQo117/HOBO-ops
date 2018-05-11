@@ -38,7 +38,6 @@ public class PlayerController : Character
 
                 base.Health += ConsumableItem.HealthAmount;
                 base.Sanity += ConsumableItem.SanityAmount;
-                base.DrunkAmount += ConsumableItem.DrunkAmount;
                 Inventory.RemoveItemFromInventory(itemID);
             }
         }
@@ -129,13 +128,12 @@ public class PlayerController : Character
 
                 //Destination is unit vector * Speed and directions magnitude effects on how much speed is used;
                 inputDirection = direction.normalized * directionMagnitude;
-                movementDirection = inputDirection;
             }
             else
             {
                 inputDirection = Vector3.zero;
             }
-
+            movementDirection = inputDirection;
             //Sprint
             if (InputManager.Instance.AxisDown("Fire3"))
                 sprinting = true;
@@ -144,7 +142,7 @@ public class PlayerController : Character
         }
         else
         {
-            movementDirection = Vector2.zero;
+            movementDirection = Vector3.zero;
             sprinting = false;
         }
     }
