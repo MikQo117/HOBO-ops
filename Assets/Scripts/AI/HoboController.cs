@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -246,6 +247,9 @@ public class HoboController : Character
         }
     }
 
+    public override void Sleep()
+    {
+    }
 
     public override void ConsumeItem(int itemID)
     {

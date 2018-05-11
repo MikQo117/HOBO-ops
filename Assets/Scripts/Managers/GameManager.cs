@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
     private const float regulartimeDrop = 30.0f;
     private const float rushHourTimeDrop = 15.0f;
     private bool rushHour;
+    private const float hour = 18.75f; 
 
     private static GameManager instance;
 
@@ -37,6 +38,15 @@ public class GameManager : MonoBehaviour
     public float DayTimer
     {
         get { return dayTimer; }
+        set { dayTimer = value; }
+    }
+
+    public float Hour
+    {
+        get
+        {
+            return hour;
+        }
     }
 
     //Methods
@@ -59,22 +69,30 @@ public class GameManager : MonoBehaviour
         RushHourChecker();
         if (!rushHour)
         {
-            if (dayTimer > intervals[1])
+            if (DayTimer > intervals[1])
             {
                 originalSpawnTimer = regulartimeDrop;
             }
 
-            if (dayTimer >= intervals[5])
+            if (DayTimer >= intervals[5])
             {
-                dayTimer = 0.0f;
+                DayTimer = 0.0f;
             }
 
-            if (dayTimer > intervals[4] || DayTimer < intervals[1])
+            if (DayTimer > intervals[4] || DayTimer < intervals[1])
             {
                 ResetTimer();
             }
         }
 
+    }
+
+    public void DayTimeIncreaser(float hours)
+    {
+        DayTimer = 0.0f;
+        Debug.Log(DayTimer + "Frist");
+        DayTimer += hours;
+        Debug.Log(DayTimer + "last");
     }
 
     private void RushHourChecker()
@@ -98,7 +116,7 @@ public class GameManager : MonoBehaviour
     private void TimeChanger()
     {
         spawntimer -= Time.deltaTime;
-        dayTimer   += Time.deltaTime;
+        DayTimer   += Time.deltaTime;
     }
 
     //Unity methods

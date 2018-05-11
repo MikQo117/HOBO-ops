@@ -51,9 +51,18 @@ public abstract class Character : MonoBehaviour
 
     //Inventory variable
     protected Inventory characterInventory;
+
     //Interaction variables
     [SerializeField]
     protected new Collider2D collider;
+
+    //Sleeping variables
+    protected bool        canSleep;
+    protected float       sleepTimer;
+    protected bool        sleeping;
+    protected float       sanityGain = 0.375f;
+    protected float       healthGain = 1.5f;
+    protected const float sleepTime  = 180.0f;
 
     //Get & Set
     public virtual float Health
@@ -150,14 +159,17 @@ public abstract class Character : MonoBehaviour
     protected abstract void GetInput();
 
     protected abstract void Death();
+
     //Minigame Methods
     protected abstract void Attack();
     protected abstract void Beg();
+
     //Interactable Methods
     public abstract void ConsumeItem(int itemID);
     public abstract void Gather(List<BaseItem> items);
     public abstract void ReturnBottle();
     public abstract void Buy(BaseItem item);
+    public abstract void Sleep();
     
    
 
@@ -286,6 +298,18 @@ public abstract class Character : MonoBehaviour
         }
     }
 
+    protected void SleepTimer()
+    {
+        if(sleepTimer > 0)
+        {
+            sleepTimer -= Time.deltaTime;
+        }
+        else
+        {
+            canSleep = true;
+        }
+    }
+
     protected void AnimationChanger()
     {
         //sideways movement animator changer
@@ -317,8 +341,11 @@ public abstract class Character : MonoBehaviour
 
     protected void StatsDecay()
     {
-        Health      -= healthDecay * Time.deltaTime;
-        Sanity      -= sanityDecay * Time.deltaTime;
+        if (!sleeping)
+        {
+            Health -= healthDecay * Time.deltaTime;
+            Sanity -= sanityDecay * Time.deltaTime;
+        }
     }
 
     enum AnimationClips
@@ -344,6 +371,7 @@ public abstract class Character : MonoBehaviour
         Inventory = gameObject.AddComponent<Inventory>();
         animator = GetComponent<Animator>();
         collider = GetComponent<Collider2D>();
+        canSleep = true;
     }
 
     // Update is called once per frame
@@ -354,6 +382,7 @@ public abstract class Character : MonoBehaviour
         StatsDecay();
         RecoverStamina();
         ExhaustTimer();
+        SleepTimer();
         Collision();
         AnimationChanger();
         ApplyMovement();

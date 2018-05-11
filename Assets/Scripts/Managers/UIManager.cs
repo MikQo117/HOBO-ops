@@ -43,6 +43,24 @@ public class UIManager : MonoBehaviour
     public Sprite[] EpromptSprites;
     private bool eCoroutineRunning;
 
+    //Sleeping System
+    private GameObject sleepWindow;
+    private InputField sleepField;
+    private int        sleepHours;
+
+    public int SleepHours
+    {
+        get
+        {
+            return sleepHours;
+        }
+
+        set
+        {
+            sleepHours = value;
+        }
+    }
+
     private void StatusBarValueChanger()
     {
         HealthBar.fillAmount  = Mathf.Clamp01(PlayerController.pl.Health / maxValue);
@@ -54,7 +72,7 @@ public class UIManager : MonoBehaviour
     {
         if (!shopWindow.activeInHierarchy || !liqourStoreWindow.activeInHierarchy)
         {
-            for (int i = 0; i < transform.childCount - 6; i++)
+            for (int i = 0; i < transform.childCount - 7; i++)
             {
                 transform.GetChild(i).gameObject.SetActive(showing);
             }
@@ -79,6 +97,27 @@ public class UIManager : MonoBehaviour
     {
         arrowrotationChanger                     = GameManager.Instance.DayTimer * 0.79f;
         Arrow.GetComponent<Transform>().rotation = Quaternion.Euler(0, 0, -arrowrotationChanger);
+    }
+
+    public void SleepWindow(bool active)
+    {
+        sleepWindow.SetActive(active);
+        int temp;
+
+            if (int.TryParse(sleepField.text, out temp) && sleepField.text != null)
+            {
+            if (temp > 0 && InputManager.Instance.AxisPressed("Use"))
+                {
+                    SleepHours = int.Parse(sleepField.text);
+                PlayerController.pl.Sleep(sleepHours);
+                }
+            }
+
+        if (!active)
+        {
+            sleepField.text = null;
+        }
+        
     }
 
     public void ShopWindow(bool Active)
@@ -165,6 +204,8 @@ public class UIManager : MonoBehaviour
         ReturnBottleText  = transform.GetChild(5).transform.GetChild(3).GetComponent<Text>();
         liqourStoreWindow = transform.GetChild(6).gameObject;
         liqourStoreText   = transform.GetChild(6).transform.GetChild(3).GetComponent<Text>();
+        sleepWindow       = transform.GetChild(8).transform.gameObject;
+        sleepField        = transform.GetChild(8).transform.GetChild(0).GetComponent<InputField>();
     }
 
     private void Start()
