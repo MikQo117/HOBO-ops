@@ -86,11 +86,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4be67124fe6bea844abbbdf4c229b7ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sprintSpeed: 8
   NoOfRays: 20
   raycastMask:
     serializedVersion: 2
-    m_Bits: 4294967291
+    m_Bits: 4294966984
   idleSprites:
   - {fileID: 21300018, guid: 0103009280c8d1a4e9bce299ca86efd4, type: 3}
   - {fileID: 21300014, guid: 0103009280c8d1a4e9bce299ca86efd4, type: 3}
@@ -98,7 +97,7 @@ MonoBehaviour:
   - {fileID: 21300006, guid: 0103009280c8d1a4e9bce299ca86efd4, type: 3}
   - {fileID: 21300004, guid: 0103009280c8d1a4e9bce299ca86efd4, type: 3}
   exhausted: 0
-  collider: {fileID: 0}
+  collider: {fileID: 70423724229080694}
   mainCamera: {fileID: 0}
   bound:
     m_Center: {x: 0, y: 0, z: 0}

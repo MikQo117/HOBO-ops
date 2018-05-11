@@ -11,11 +11,19 @@ public class GameManager : MonoBehaviour
 {
     //Interaction variables
     public List<IInteractable> interactables = new List<IInteractable>();
-    private List<TrashSpawn>   trashSpawns = new List<TrashSpawn>();
-    public List<Collider2D>    interactablesColliders;
-    private float              spawnableItemIndex;
-    private const float        originalSpawnTimer = 30.0f;
-    float                      spawntimer;
+    private List<TrashSpawn> trashSpawns = new List<TrashSpawn>();
+    public List<Collider2D> interactablesColliders;
+    private float spawnableItemIndex;
+    private float originalSpawnTimer = 30.0f;
+    float spawntimer;
+
+    //Daysystem variables
+    private float[] intervals = { 0.0f, 150.0f, 300.0f, 375.0f, 430.5f, 456.0f };
+    private float dayTimer = 250.0f;
+    private const float regulartimeDrop = 30.0f;
+    private const float rushHourTimeDrop = 15.0f;
+    private bool rushHour;
+    private const float hour = 18.75f; 
 
     private static GameManager instance;
 
@@ -29,24 +37,33 @@ public class GameManager : MonoBehaviour
 
     public List<TrashSpawn> GetTrashSpawns
     {
-        get
-        {
-            return trashSpawns;
-        }
+        get { return trashSpawns; }
     }
 
-    //Getters
     static public GameManager Instance
+    {
+        get { return instance; }
+    }
+
+    public float DayTimer
+    {
+        get { return dayTimer; }
+        set { dayTimer = value; }
+    }
+
+    public float Hour
     {
         get
         {
-            return instance;
+            return hour;
         }
     }
+
+    //Methods
 
     private void AddItemToTrashCans()
     {
-        spawntimer -= Time.deltaTime;
+
         if (spawntimer <= 0)
         {
             for (int i = 0; i < trashSpawns.Count; i++)
@@ -57,10 +74,62 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void IntervalChecker()
+    {
+        RushHourChecker();
+        if (!rushHour)
+        {
+            if (DayTimer > intervals[1])
+            {
+                originalSpawnTimer = regulartimeDrop;
+            }
+
+            if (DayTimer >= intervals[5])
+            {
+                DayTimer = 0.0f;
+            }
+
+            if (DayTimer > intervals[4] || DayTimer < intervals[1])
+            {
+                ResetTimer();
+            }
+        }
+
+    }
+
+    public void DayTimeIncreaser(float hours)
+    {
+        DayTimer = 0.0f;
+        Debug.Log(DayTimer + "Frist");
+        DayTimer += hours;
+        Debug.Log(DayTimer + "last");
+    }
+
+    private void RushHourChecker()
+    {
+        if (DayTimer > intervals[2] && DayTimer < intervals[3])
+        {
+            rushHour = true;
+            originalSpawnTimer = rushHourTimeDrop;
+        }
+        else
+        {
+            rushHour = false;
+        }
+    }
+
     private void ResetTimer()
     {
         spawntimer = originalSpawnTimer;
     }
+
+    private void TimeChanger()
+    {
+        spawntimer -= Time.deltaTime;
+        DayTimer   += Time.deltaTime;
+    }
+
+    //Unity methods
 
     private void Awake()
     {
@@ -89,6 +158,8 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
+        TimeChanger();
+        IntervalChecker();
         AddItemToTrashCans();
         timer += Time.deltaTime;
     }

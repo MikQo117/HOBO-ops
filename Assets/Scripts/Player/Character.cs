@@ -20,18 +20,14 @@ public abstract class Character : MonoBehaviour
     //stat decay variables
     protected const float healthDecay  = 0.25f;
     protected const float sanityDecay  = 0.1f;
-    protected const float drunkDecay   = 0.1f;
     protected const float staminaDecay = 10.0f;
 
     //Character movement
-    [SerializeField]
-    [Range(0.01f, 10f)]
     protected float       movementSpeed = 1;
-    [SerializeField]
-    [Range(0.01f, 10f)]
-    protected float       sprintSpeed = 5;
+    protected float       sprintSpeed = 4.3f;
     protected Vector3     movementDirection;
     protected bool        sprinting;
+    protected Vector3     inputDirection;
 
     //Collision variables
     [SerializeField]
@@ -55,12 +51,18 @@ public abstract class Character : MonoBehaviour
 
     //Inventory variable
     protected Inventory characterInventory;
+
     //Interaction variables
     [SerializeField]
     protected new Collider2D collider;
-    protected bool returningBottles;
-    //temporary Booleans For interactions
-     
+
+    //Sleeping variables
+    protected bool        canSleep;
+    protected float       sleepTimer;
+    protected bool        sleeping;
+    protected float       sanityGain = 0.375f;
+    protected float       healthGain = 1.5f;
+    protected const float sleepTime  = 180.0f;
 
     //Get & Set
     public virtual float Health
@@ -118,18 +120,6 @@ public abstract class Character : MonoBehaviour
             }
         }
     }
-    protected virtual float DrunkAmount
-    {
-        get
-        {
-            return drunkAmount;
-        }
-
-        set
-        {
-            drunkAmount = value;
-        }
-    }
     public virtual float MoneyAmount
     {
         get { return moneyAmount; }        
@@ -150,31 +140,36 @@ public abstract class Character : MonoBehaviour
         }
     }
 
+    //Methods Start Here
+
     protected virtual void ApplyMovement()
     {
         if (sprinting && !exhausted)
         {
             Stamina -= staminaDecay * Time.deltaTime;
             transform.Translate(movementDirection * sprintSpeed * Time.deltaTime);
+            
         }
         else
         {
             transform.Translate(movementDirection * movementSpeed * Time.deltaTime);
         }
-
     }
 
     protected abstract void GetInput();
 
     protected abstract void Death();
+
     //Minigame Methods
     protected abstract void Attack();
     protected abstract void Beg();
+
     //Interactable Methods
     public abstract void ConsumeItem(int itemID);
     public abstract void Gather(List<BaseItem> items);
     public abstract void ReturnBottle();
     public abstract void Buy(BaseItem item);
+    public abstract void Sleep();
     
    
 
@@ -212,13 +207,14 @@ public abstract class Character : MonoBehaviour
             {
                 Stamina += staminaRecoveryRate * Time.deltaTime;
             }
-        }
-        if(sprinting)
-        {
-            if(Stamina <= 0)
+
+            if (sprinting)
             {
-                Exhausted();
-                ExhaustTimer();
+                if (Stamina <= 0)
+                {
+                    Exhausted();
+                    ExhaustTimer();
+                }
             }
         }
     }
@@ -227,8 +223,8 @@ public abstract class Character : MonoBehaviour
         Ray2D ray;
         Vector2 origin;
 
-        //Origin starting determination from characters collider whenever the character is moving horizontally or vertically
-        if (movementDirection.y != 0)
+        //Origin starting point determination from characters collider whenever the character is moving horizontally or vertically
+        if (inputDirection.y != 0)
         {
             origin = new Vector2(GetComponent<Collider2D>().bounds.min.x, GetComponent<Collider2D>().bounds.center.y);
         }
@@ -246,26 +242,28 @@ public abstract class Character : MonoBehaviour
         for (int i = 0; i < NoOfRays; i++)
         {
             ray = new Ray2D(origin, (movementDirection).normalized);
-            Debug.DrawRay(ray.origin, ray.direction, Color.blue);
-
+            Debug.DrawRay(ray.origin, ray.direction * lengthOfRay, Color.blue);
             RaycastHit2D BuildingHit = Physics2D.Raycast(ray.origin, ray.direction, lengthOfRay, raycastMask);
+            Debug.DrawRay(transform.position, BuildingHit.point, Color.magenta);
+            Debug.DrawRay(transform.position, movementDirection, Color.yellow);
+            Debug.DrawRay(transform.position,Vector3.Project(movementDirection.normalized, BuildingHit.normal.normalized), Color.red);
 
-            RaycastHit2D LitterHit = Physics2D.Raycast(ray.origin, ray.direction, lengthOfRay, 1 << 8);
+            //RaycastHit2D LitterHit = Physics2D.Raycast(ray.origin, ray.direction, lengthOfRay, 1 << 8);
 
             if (BuildingHit)
             {
-                movementDirection = movementDirection - Vector3.Project(movementDirection, BuildingHit.normal.normalized)* 2;
-                return;
+                movementDirection -= Vector3.Project(movementDirection.normalized, BuildingHit.normal.normalized);
+                break;
             }
             //Checking the litter we hit and adding it to inventory
-            if (LitterHit)
+            /*if (LitterHit)
             {
                 Inventory.AddItemToInventory(LitterHit.collider.gameObject.GetComponent<Consumable>());
                 Destroy(LitterHit.collider.gameObject);
-            }
+            }*/
 
             //Adding new raycast to next point
-            if (movementDirection.x != 0 && movementDirection.y == 0)
+            if (inputDirection.x != 0 && inputDirection.y == 0)
                 origin += new Vector2(0, distanceBetweenRaysY);
             else
                 origin += new Vector2(distanceBetweenRaysX, 0);
@@ -300,40 +298,54 @@ public abstract class Character : MonoBehaviour
         }
     }
 
+    protected void SleepTimer()
+    {
+        if(sleepTimer > 0)
+        {
+            sleepTimer -= Time.deltaTime;
+        }
+        else
+        {
+            canSleep = true;
+        }
+    }
+
     protected void AnimationChanger()
     {
         //sideways movement animator changer
-        if (movementDirection.x != 0 && movementDirection.y == 0) { animator.Play(AnimationClips.WalkSideways.ToString()); currentIdleSprite = idleSprites[3]; SpriteFlip(); }
+        if (inputDirection.x != 0 && inputDirection.y == 0) { animator.Play(AnimationClips.WalkSideways.ToString()); currentIdleSprite = idleSprites[3]; SpriteFlip(); }
 
         //walking down animator changer
-        if (movementDirection.x == 0 && movementDirection.y < 0) { animator.Play(AnimationClips.WalkDown.ToString()); currentIdleSprite = idleSprites[0]; SpriteFlip(); }
+        if (inputDirection.x == 0 && inputDirection.y < 0) { animator.Play(AnimationClips.WalkDown.ToString()); currentIdleSprite = idleSprites[0]; SpriteFlip(); }
 
         //walking upwards animation changer
-        if (movementDirection.x == 0 && movementDirection.y > 0) { animator.Play(AnimationClips.WalkUp.ToString()); currentIdleSprite = idleSprites[4]; SpriteFlip(); }
+        if (inputDirection.x == 0 && inputDirection.y > 0) { animator.Play(AnimationClips.WalkUp.ToString()); currentIdleSprite = idleSprites[4]; SpriteFlip(); }
 
         //strafing upwards animation changer
-        if (movementDirection.x != 0 && movementDirection.y > 0) { animator.Play(AnimationClips.WalkStrafeUp.ToString()); currentIdleSprite = idleSprites[1]; SpriteFlip(); }
+        if (inputDirection.x != 0 && inputDirection.y > 0) { animator.Play(AnimationClips.WalkStrafeUp.ToString()); currentIdleSprite = idleSprites[1]; SpriteFlip(); }
 
         //strafing downwards animation changer
-        if (movementDirection.x != 0 && movementDirection.y < 0) { animator.Play(AnimationClips.WalkStrafeDown.ToString()); currentIdleSprite = idleSprites[2]; SpriteFlip(); }
+        if (inputDirection.x != 0 && inputDirection.y < 0) { animator.Play(AnimationClips.WalkStrafeDown.ToString()); currentIdleSprite = idleSprites[2]; SpriteFlip(); }
 
         //Idle
-        if (movementDirection.x == 0 && movementDirection.y == 0) { animator.Play(AnimationClips.Idle.ToString()); Sr.sprite = currentIdleSprite; }
+        if (inputDirection.x == 0 && inputDirection.y == 0) { animator.Play(AnimationClips.Idle.ToString()); Sr.sprite = currentIdleSprite; }
 
     }
 
     protected void SpriteFlip()
     {
         bool flip;
-        flip = movementDirection.x < 0 ? true : false;
+        flip = inputDirection.x < 0 ? true : false;
         Sr.flipX = flip;
     }
 
     protected void StatsDecay()
     {
-        Health      -= healthDecay * Time.deltaTime;
-        Sanity      -= sanityDecay * Time.deltaTime;
-        DrunkAmount -= drunkDecay  * Time.deltaTime;
+        if (!sleeping)
+        {
+            Health -= healthDecay * Time.deltaTime;
+            Sanity -= sanityDecay * Time.deltaTime;
+        }
     }
 
     enum AnimationClips
@@ -354,11 +366,12 @@ public abstract class Character : MonoBehaviour
     protected virtual void Start()
     {
         exhaustTimer = exhaustDuration;
-        lengthOfRay = GetComponent<Collider2D>().bounds.extents.magnitude / 2;
+        lengthOfRay = GetComponent<Collider2D>().bounds.extents.magnitude;
         Sr = GetComponent<SpriteRenderer>();
         Inventory = gameObject.AddComponent<Inventory>();
         animator = GetComponent<Animator>();
         collider = GetComponent<Collider2D>();
+        canSleep = true;
     }
 
     // Update is called once per frame
@@ -369,6 +382,7 @@ public abstract class Character : MonoBehaviour
         StatsDecay();
         RecoverStamina();
         ExhaustTimer();
+        SleepTimer();
         Collision();
         AnimationChanger();
         ApplyMovement();

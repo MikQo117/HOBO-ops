@@ -19,13 +19,13 @@ public class LiqourStore : MonoBehaviour, IInteractable
 
     public void Interact(Character source)
     {
-        if (shopInventory.ElementAt(0).ItemCost < source.MoneyAmount && Input.GetKeyDown(KeyCode.F))
+        if(source.GetType() != typeof(PlayerController))
         {
-            source.Buy(shopInventory.ElementAt(0));
+            source.Buy(shopInventory.First());
         }
-        else if(shopInventory.ElementAt(1).ItemCost < source.MoneyAmount && Input.GetKeyDown(KeyCode.R))
+        else
         {
-            source.Buy(shopInventory.ElementAt(1));
+            PlayerController.pl.InterractWithLiqourStore();
         }
     }
 

@@ -56,8 +56,19 @@ public class TrashSpawn : MonoBehaviour, IInteractable
     public void Interact(Character source)
     {
         //Implementation is the same for player and ai
-        source.Gather(GiveShite());
-        TrashCanInventory.Clear();
+        if (source.GetType() != typeof(PlayerController))
+        {
+            source.Gather(GiveShite());
+            TrashCanInventory.Clear();
+        }
+        else
+        {
+            PlayerController.pl.Gather(GiveShite());
+            if(PlayerController.pl.Gathered)
+            {
+                TrashCanInventory.Clear();
+            }
+        }
     }
 
     private List<BaseItem> GiveShite()
@@ -79,7 +90,6 @@ public class TrashSpawn : MonoBehaviour, IInteractable
         for (int i = 0; i < spawnableItems.Count; i++)
         {
             cumulative += spawnableItems[i].DropProBability;
-
             if (diceRoll < cumulative)
             {
                 if (diceRoll < bottleDropChance)
