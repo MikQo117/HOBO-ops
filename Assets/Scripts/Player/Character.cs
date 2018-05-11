@@ -5,8 +5,8 @@ using UnityEngine;
 public abstract class Character : MonoBehaviour
 {
     //Character stats
-    protected float        health = 10;
-    protected float        sanity = 10;
+    protected float        health = 80.5f;
+    protected float        sanity = 100;
     protected float        drunkAmount;
     protected float        stamina = 100;
     protected float        staminaRecoveryRate = 2;
@@ -18,7 +18,7 @@ public abstract class Character : MonoBehaviour
     protected int          maxStamina= 100;
 
     //stat decay variables
-    protected const float healthDecay  = 0.25f;
+    protected const float healthDecay  = 1f;
     protected const float sanityDecay  = 0.1f;
     protected const float drunkDecay   = 0.1f;
     protected const float staminaDecay = 10.0f;

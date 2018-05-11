@@ -69,7 +69,7 @@ public class GameManager : MonoBehaviour
         {
             if (item is TrashSpawn)
             {
-                trashSpawns.Add((TrashSpawn)item);
+                trashSpawns.Add(((TrashSpawn)item));
             }
         }
         ResetTimer();

@@ -109,7 +109,7 @@ public class Pathfinding : MonoBehaviour
             waypoints = RetracePath(startNode, targetNode);
             foreach (Vector2 item in waypoints)
             {
-                print("waypoints: " + item); 
+                //print("waypoints: " + item); 
             }
             //Pathfind is only successful when there's a node to go to
             pathSuccess = waypoints.Length > 0;
@@ -137,7 +137,6 @@ public class Pathfinding : MonoBehaviour
         }
 
         path.Add(startNode);
-        grid.Path = path;
         pathLength = path.Count;
         Vector2[] waypoints = SimplifyPath(path);
         Array.Reverse(waypoints); //*anteeksimitävittua*
