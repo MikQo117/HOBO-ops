@@ -53,16 +53,15 @@ namespace StateStuff
         {
             ResetVariables();
             Debug.Log("Entering scavenge state");
-            if (spawns.Count <= 0)
-            {
-                GetTrashCans();
-                SendPathRequests(owner.transform.position);
-            }
+            GetTrashCans();
+            SendPathRequests(owner.transform.position);
         }
 
+        bool stateActive = false;
 
         public override void UpdateState(HoboController owner)
         {
+            stateActive = owner.StateMachine.currentState == this;
             switch (subState)
             {
                 default:
@@ -91,16 +90,14 @@ namespace StateStuff
                     spawns.Remove(spawns.Find(x => x.ActiveTarget == true));
                     owner.tryInteract = true;
                     ResetPaths();
+                    owner.EatUntilSatisfied();
                     if (spawns.Count <= 0)
                     {
-                        owner.StateMachine.ChangeState(owner.idleState);
+                        owner.StateMachine.ChangeState(owner.idleState); 
                     }
-                    else
-                    {
-                        ResetSubStateVariables();
-                        SendPathRequests(owner.transform.position);
-                        subState = 0;
-                    }
+                    ResetSubStateVariables();
+                    SendPathRequests(owner.transform.position);
+                    subState = 0;
                     break;
             }
         }
@@ -111,6 +108,7 @@ namespace StateStuff
             Debug.Log("Exiting scavenge state");
             //Reset variables
             ResetVariables();
+            stateActive = false;
         }
 
 
@@ -143,7 +141,7 @@ namespace StateStuff
         private int tempIndex = 0;
         public void OnPathStuff(Vector2[] newPath, bool pathSuccess, int pathLength)
         {
-            if (pathSuccess)
+            if (pathSuccess && stateActive)
             {
                 spawns[tempIndex].Path = newPath;
                 spawns[tempIndex].PathLength = pathLength; 
@@ -230,7 +228,7 @@ namespace StateStuff
         public override void EnterState(HoboController owner)
         {
             Debug.Log("Entering idle state");
-            //owner.StateMachine.ChangeState(ScavengeState.Instance);
+            owner.StateMachine.ChangeState(owner.scavengeState);
         }
 
         public override void ExitState(HoboController owner)
