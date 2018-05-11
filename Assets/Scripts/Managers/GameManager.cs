@@ -2,7 +2,10 @@
 using System.Linq;
 using System;
 using System.Collections.Generic;
+using System.IO;
+
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -15,6 +18,14 @@ public class GameManager : MonoBehaviour
     float                      spawntimer;
 
     private static GameManager instance;
+
+    private float timer;
+    public int TrashcansLooted = 0;
+    public int BeersBought = 0;
+    public int WhiskeyBought = 0;
+    public int FoodBought = 0;
+    public int TimesSlept = 0;
+
 
     public List<TrashSpawn> GetTrashSpawns
     {
@@ -53,6 +64,7 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        timer = 0;
         if (instance == null)
         {
             instance = this;
@@ -78,5 +90,33 @@ public class GameManager : MonoBehaviour
     private void Update()
     {
         AddItemToTrashCans();
+        timer += Time.deltaTime;
+    }
+
+    private void LateUpdate()
+    {
+        if(Input.GetKey(KeyCode.R))
+        {
+            for (int i = 0; i < AssetManager.Instance.AssetBundlesList.Count; i++)
+            {
+                AssetManager.Instance.AssetBundlesList[i].Unload(true);
+            }
+
+            string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            string name = "/Hobo-Ops QA " + DateTime.Now.ToString().Replace("/", "-").Replace(":", "-") + ".txt";
+
+            if(!File.Exists(path + name))
+            {
+                using (StreamWriter sw = File.CreateText(path + name))
+                {
+                    Debug.Log("Write");
+                    sw.WriteLine("Hola");
+                    sw.WriteLine("Henlo");
+                    sw.WriteLine("Elapsed time in seconds: " + (int)timer);
+                }
+            }
+            int index = SceneManager.GetActiveScene().buildIndex;
+            SceneManager.LoadScene(index);
+        }
     }
 }
