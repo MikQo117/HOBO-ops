@@ -13,7 +13,7 @@ public class PlayerController : Character
     //Camera Variables
     public Camera mainCamera;
     private float lenght = 1000;
-    private Vector3 SprintVelocity;
+    private Vector2 SprintVelocity;
     private Vector3 CameraZoffset = new Vector3(0, 0, -5);
     private float smoothTime = 0.3f;
     public Bounds bound;
@@ -30,18 +30,17 @@ public class PlayerController : Character
     //Player actions 
     protected void CameraMovement()
     {
-        Vector3 temp = Vector3.SmoothDamp(mainCamera.transform.position, transform.TransformPoint(movementDirection * 3), ref SprintVelocity, smoothTime);
-        temp.z = -5f;
+        Vector2 temp = Vector2.SmoothDamp(mainCamera.transform.position, transform.TransformPoint(movementDirection * 3), ref SprintVelocity, smoothTime, Mathf.Infinity, Time.deltaTime);
 
         if (Sprinting && !exhausted)
         {
-            mainCamera.transform.position = temp + CameraZoffset;
+            mainCamera.transform.position = temp;
         }
         else
         {
-            mainCamera.transform.position = Vector3.MoveTowards(temp, transform.position + new Vector3(0, 0.5f), smoothTime * Time.deltaTime * lenght) + CameraZoffset;
+            mainCamera.transform.position = Vector3.MoveTowards(temp, (Vector2)transform.position + new Vector2(0, 0.5f), smoothTime * Time.deltaTime * lenght);
         }
-        mainCamera.transform.position = new Vector3(mainCamera.transform.position.x, mainCamera.transform.position.y, -5f);
+        mainCamera.transform.position = new Vector3(mainCamera.transform.position.x, mainCamera.transform.position.y, 0);
     }
 
     protected override void GetInput()
