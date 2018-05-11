@@ -142,6 +142,7 @@ public class PlayerController : Character
             {
                 GameManager.Instance.DayTimeIncreaser(hours * GameManager.Instance.Hour - (456 - temp));
             }
+            GameManager.Instance.TimesSlept++;
             sleeping = false;
         }
     }
@@ -192,6 +193,18 @@ public class PlayerController : Character
 
     public override void Buy(BaseItem item)
     {
+        if (item.BaseItemID == 2 || item.BaseItemID == 3 || item.BaseItemID == 6)
+        {
+            GameManager.Instance.FoodBought++;
+        }
+        else if (item.BaseItemID == 0)
+        {
+            GameManager.Instance.BeersBought++;
+        }
+        else if (item.BaseItemID == 1)
+        {
+            GameManager.Instance.WhiskeyBought++;
+        }
         Inventory.AddItemToInventory(item);
         moneyAmount -= item.ItemCost;
     }

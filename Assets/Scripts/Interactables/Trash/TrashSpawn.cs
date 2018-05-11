@@ -66,6 +66,7 @@ public class TrashSpawn : MonoBehaviour, IInteractable
             PlayerController.pl.Gather(GiveShite());
             if(PlayerController.pl.Gathered)
             {
+                GameManager.Instance.TrashcansLooted++;
                 TrashCanInventory.Clear();
             }
         }

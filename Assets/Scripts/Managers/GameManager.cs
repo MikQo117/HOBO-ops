@@ -134,6 +134,12 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         timer = 0;
+        TrashcansLooted = 0;
+        BeersBought = 0;
+        WhiskeyBought = 0;
+        FoodBought = 0;
+        TimesSlept = 0;
+
         if (instance == null)
         {
             instance = this;
@@ -180,10 +186,13 @@ public class GameManager : MonoBehaviour
             {
                 using (StreamWriter sw = File.CreateText(path + name))
                 {
-                    Debug.Log("Write");
-                    sw.WriteLine("Hola");
-                    sw.WriteLine("Henlo");
+                    Debug.Log("Write session data to desktop");
                     sw.WriteLine("Elapsed time in seconds: " + (int)timer);
+                    sw.WriteLine("Trashcans looted:  " + TrashcansLooted);
+                    sw.WriteLine("Beers purchased:   " + BeersBought);
+                    sw.WriteLine("Whiskey purchased: " + WhiskeyBought);
+                    sw.WriteLine("Food purchased:    " + FoodBought);
+                    sw.WriteLine("Times slept:       " + TimesSlept);
                 }
             }
             int index = SceneManager.GetActiveScene().buildIndex;
