@@ -111,7 +111,7 @@ public class TrashSpawn : MonoBehaviour, IInteractable
         }
     }
 
-    private void Start()
+    private void Awake()
     {
         collider = GetComponent<Collider2D>();
         GameManager.Instance.interactables.Add(this);

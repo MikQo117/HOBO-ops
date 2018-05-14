@@ -7317,7 +7317,7 @@ Transform:
   - {fileID: 335289904}
   - {fileID: 1865715905}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &717340779
 Prefab:
@@ -12270,7 +12270,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4101627915979262, guid: b86279f7a8205464999f240549e63755, type: 2}
       propertyPath: m_RootOrder
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 114881857199598344, guid: b86279f7a8205464999f240549e63755,
         type: 2}
@@ -12451,52 +12451,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
---- !u!1 &1127929161
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 1127929163}
-  - component: {fileID: 1127929162}
-  m_Layer: 0
-  m_Name: Gamemanager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1127929162
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1127929161}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 45a23dd6eb13da440a38b09d0214b622, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  interactablesColliders: []
-  TrashcansLooted: 0
-  BeersBought: 0
-  WhiskeyBought: 0
-  FoodBought: 0
-  TimesSlept: 0
---- !u!4 &1127929163
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1127929161}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.04608205, y: 2.0411668, z: -4.4296875}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1132216968
 GameObject:
   m_ObjectHideFlags: 0
@@ -14580,11 +14534,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4488571700351902, guid: 0e93174c2ccb60a46b8e79b3d4e04b7e, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -10.46
+      value: -7.5
       objectReference: {fileID: 0}
     - target: {fileID: 4488571700351902, guid: 0e93174c2ccb60a46b8e79b3d4e04b7e, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 0.00999999
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4488571700351902, guid: 0e93174c2ccb60a46b8e79b3d4e04b7e, type: 2}
       propertyPath: m_LocalPosition.z
@@ -14609,46 +14563,6 @@ Prefab:
     - target: {fileID: 4488571700351902, guid: 0e93174c2ccb60a46b8e79b3d4e04b7e, type: 2}
       propertyPath: m_RootOrder
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 60134112037587500, guid: 0e93174c2ccb60a46b8e79b3d4e04b7e,
-        type: 2}
-      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[1].y
-      value: 0.0039
-      objectReference: {fileID: 0}
-    - target: {fileID: 60134112037587500, guid: 0e93174c2ccb60a46b8e79b3d4e04b7e,
-        type: 2}
-      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[1].x
-      value: -0.0039
-      objectReference: {fileID: 0}
-    - target: {fileID: 60134112037587500, guid: 0e93174c2ccb60a46b8e79b3d4e04b7e,
-        type: 2}
-      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[2].y
-      value: 0.0039
-      objectReference: {fileID: 0}
-    - target: {fileID: 60134112037587500, guid: 0e93174c2ccb60a46b8e79b3d4e04b7e,
-        type: 2}
-      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[0].y
-      value: 0.511
-      objectReference: {fileID: 0}
-    - target: {fileID: 60134112037587500, guid: 0e93174c2ccb60a46b8e79b3d4e04b7e,
-        type: 2}
-      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[3].y
-      value: 0.511
-      objectReference: {fileID: 0}
-    - target: {fileID: 60134112037587500, guid: 0e93174c2ccb60a46b8e79b3d4e04b7e,
-        type: 2}
-      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[2].x
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 60134112037587500, guid: 0e93174c2ccb60a46b8e79b3d4e04b7e,
-        type: 2}
-      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[3].x
-      value: 3.51
-      objectReference: {fileID: 0}
-    - target: {fileID: 60134112037587500, guid: 0e93174c2ccb60a46b8e79b3d4e04b7e,
-        type: 2}
-      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[0].x
-      value: 0.71
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0e93174c2ccb60a46b8e79b3d4e04b7e, type: 2}
@@ -16716,6 +16630,52 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
+--- !u!1 &1655503971
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1655503973}
+  - component: {fileID: 1655503972}
+  m_Layer: 0
+  m_Name: Gamemanager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1655503972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1655503971}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45a23dd6eb13da440a38b09d0214b622, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactablesColliders: []
+  TrashcansLooted: 0
+  BeersBought: 0
+  WhiskeyBought: 0
+  FoodBought: 0
+  TimesSlept: 0
+--- !u!4 &1655503973
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1655503971}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.04608205, y: 2.0411668, z: -4.4296875}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1670068834
 GameObject:
   m_ObjectHideFlags: 0
