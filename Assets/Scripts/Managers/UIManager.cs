@@ -10,33 +10,33 @@ public class UIManager : MonoBehaviour
 
     //StatusBars variables
     private const float maxValue = 100;
-    public Image        HealthBar;
-    public Image        SanityBar;
-    public Image        StaminaBar;
-    public Text         BottleText;
+    public Image HealthBar;
+    public Image SanityBar;
+    public Image StaminaBar;
+    public Text BottleText;
 
     //Inventory variables
     private List<Transform> inventoryObjects = new List<Transform>();
-    private bool            showing = false;
-    private Text            moneyText;
+    private bool showing = false;
+    private Text moneyText;
 
     //Daytime indicator variables
-    float             arrowrotationChanger = 0.0f;
+    float arrowrotationChanger = 0.0f;
     public GameObject Arrow;
 
     //ShopWindow Variables
     private GameObject shopWindow;
     private GameObject liqourStoreWindow;
-    private Text       liqourStoreText;
-    private Text       ReturnBottleText;
+    private Text liqourStoreText;
+    private Text ReturnBottleText;
 
     //Pick up Variables
-    public GameObject     PickupObject;
-    public bool           CRisRunning = false;
-    private Vector2       minAnchor;
-    private Vector2       maxAnchor;
+    public GameObject PickupObject;
+    public bool CRisRunning = false;
+    private Vector2 minAnchor;
+    private Vector2 maxAnchor;
     private RectTransform recT;
-    private Vector2       Offset = new Vector2(0, 0.1f);
+    private Vector2 Offset = new Vector2(0, 0.1f);
 
     //E-prompt
     private GameObject prompt;
@@ -46,7 +46,9 @@ public class UIManager : MonoBehaviour
     //Sleeping System
     private GameObject sleepWindow;
     private InputField sleepField;
-    private int        sleepHours;
+    private int sleepHours;
+    public GameObject SleepText;
+    private bool sCoroutineIsRunning;
 
     public int SleepHours
     {
@@ -63,8 +65,8 @@ public class UIManager : MonoBehaviour
 
     private void StatusBarValueChanger()
     {
-        HealthBar.fillAmount  = Mathf.Clamp01(PlayerController.pl.Health / maxValue);
-        SanityBar.fillAmount  = Mathf.Clamp01(PlayerController.pl.Sanity / maxValue);
+        HealthBar.fillAmount = Mathf.Clamp01(PlayerController.pl.Health / maxValue);
+        SanityBar.fillAmount = Mathf.Clamp01(PlayerController.pl.Sanity / maxValue);
         StaminaBar.fillAmount = Mathf.Clamp01(PlayerController.pl.Stamina / maxValue);
     }
 
@@ -95,7 +97,7 @@ public class UIManager : MonoBehaviour
 
     private void DaytimeIndicator()
     {
-        arrowrotationChanger                     = GameManager.Instance.DayTimer * 0.79f;
+        arrowrotationChanger = GameManager.Instance.DayTimer * 0.79f;
         Arrow.GetComponent<Transform>().rotation = Quaternion.Euler(0, 0, -arrowrotationChanger);
     }
 
@@ -104,21 +106,33 @@ public class UIManager : MonoBehaviour
         sleepWindow.SetActive(active);
         int temp;
 
-            if (int.TryParse(sleepField.text, out temp) && sleepField.text != null)
-            {
+        if (int.TryParse(sleepField.text, out temp) && sleepField.text != null)
+        {
             if (temp > 0 && InputManager.Instance.AxisPressed("Use"))
-                {
-                    SleepHours = int.Parse(sleepField.text);
+            {
+                SleepHours = int.Parse(sleepField.text);
                 PlayerController.pl.Sleep(sleepHours);
-                }
             }
+        }
 
         if (!active)
         {
             sleepField.text = null;
         }
-        
+
     }
+
+    public IEnumerator SleepTextActivator()
+    {
+        if (sCoroutineIsRunning) yield break;
+        sCoroutineIsRunning = true;
+        SleepText.GetComponent<Text>().text = "You can't sleep now. Time remaining " + PlayerController.pl.SleepTimer;
+        SleepText.SetActive(true);
+        yield return new WaitForSeconds(1.0f);
+        SleepText.SetActive(false);
+        sCoroutineIsRunning = false;
+    }
+
 
     public void ShopWindow(bool Active)
     {
@@ -145,7 +159,7 @@ public class UIManager : MonoBehaviour
             foreach (KeyValuePair<BaseItem, int> item in temp)
             {
                 PickupObject.GetComponentInChildren<Image>().sprite = item.Key.ObjectSprite;
-                PickupObject.GetComponentInChildren<Text>().text    = "+ " + item.Value.ToString();
+                PickupObject.GetComponentInChildren<Text>().text = "+ " + item.Value.ToString();
                 yield return new WaitForSeconds(0.5f);
                 PickupObject.transform.GetChild(0).GetComponent<RectTransform>().anchorMin = minAnchor;
                 PickupObject.transform.GetChild(0).GetComponent<RectTransform>().anchorMax = maxAnchor;
@@ -156,7 +170,7 @@ public class UIManager : MonoBehaviour
         }
         else
         {
-            PickupObject.GetComponentInChildren<Text>().text   = "No Items Found";
+            PickupObject.GetComponentInChildren<Text>().text = "No Items Found";
             PickupObject.GetComponentInChildren<Image>().color = new Color32(0, 0, 0, 0);
             PickupObject.SetActive(true);
             yield return new WaitForSeconds(0.5f);
@@ -173,7 +187,7 @@ public class UIManager : MonoBehaviour
 
     private void AnchorChanger(bool active)
     {
-        if(active)
+        if (active)
         {
             recT.anchorMax += Offset * Time.deltaTime;
             recT.anchorMin += Offset * Time.deltaTime;
@@ -198,14 +212,14 @@ public class UIManager : MonoBehaviour
 
     private void Awake()
     {
-        moneyText         = transform.GetChild(0).transform.GetChild(2).GetComponent<Text>();
-        prompt            = transform.GetChild(4).transform.gameObject;
-        shopWindow        = transform.GetChild(5).gameObject;
-        ReturnBottleText  = transform.GetChild(5).transform.GetChild(3).GetComponent<Text>();
+        moneyText = transform.GetChild(0).transform.GetChild(2).GetComponent<Text>();
+        prompt = transform.GetChild(4).transform.gameObject;
+        shopWindow = transform.GetChild(5).gameObject;
+        ReturnBottleText = transform.GetChild(5).transform.GetChild(3).GetComponent<Text>();
         liqourStoreWindow = transform.GetChild(6).gameObject;
-        liqourStoreText   = transform.GetChild(6).transform.GetChild(3).GetComponent<Text>();
-        sleepWindow       = transform.GetChild(8).transform.gameObject;
-        sleepField        = transform.GetChild(8).transform.GetChild(0).GetComponent<InputField>();
+        liqourStoreText = transform.GetChild(6).transform.GetChild(3).GetComponent<Text>();
+        sleepWindow = transform.GetChild(8).transform.gameObject;
+        sleepField = transform.GetChild(8).transform.GetChild(0).GetComponent<InputField>();
     }
 
     private void Start()
@@ -220,7 +234,7 @@ public class UIManager : MonoBehaviour
             inventoryObjects.Add(transform.GetChild(1).GetChild(i).transform);
         }
 
-        recT      = PickupObject.transform.GetChild(0).GetComponent<RectTransform>();
+        recT = PickupObject.transform.GetChild(0).GetComponent<RectTransform>();
         minAnchor = PickupObject.transform.GetChild(0).GetComponent<RectTransform>().anchorMin;
         maxAnchor = PickupObject.transform.GetChild(0).GetComponent<RectTransform>().anchorMax;
     }
@@ -230,7 +244,7 @@ public class UIManager : MonoBehaviour
         UIInput();
         DaytimeIndicator();
         StatusBarValueChanger();
-        if(!eCoroutineRunning)
+        if (!eCoroutineRunning)
         {
             StartCoroutine(EpromptSpriteChanger());
         }

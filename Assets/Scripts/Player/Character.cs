@@ -139,6 +139,10 @@ public abstract class Character : MonoBehaviour
             characterInventory = value;
         }
     }
+    public float SleepTimer
+    {
+        get { return sleepTimer; }
+    }
 
     //Methods Start Here
 
@@ -184,8 +188,14 @@ public abstract class Character : MonoBehaviour
             //If contains, get component from collider, typeof IInteractable
             if (collider.bounds.Intersects(item.bounds))
             {
+                UIManager.Instance.Eprompt(true);
                 //Call Interact and pass this as parameter
                 item.GetComponent<IInteractable>().Interact(this);
+                break;
+            }
+            else
+            {
+                UIManager.Instance.Eprompt(false);
             }
         }
     }
@@ -226,17 +236,17 @@ public abstract class Character : MonoBehaviour
         //Origin starting point determination from characters collider whenever the character is moving horizontally or vertically
         if (inputDirection.y != 0)
         {
-            origin = new Vector2(GetComponent<Collider2D>().bounds.min.x, GetComponent<Collider2D>().bounds.center.y);
+            origin = new Vector2(collider.bounds.min.x , collider.bounds.center.y);
         }
         else
         {
-            origin = new Vector2(GetComponent<Collider2D>().bounds.center.x, (GetComponent<Collider2D>().bounds.min.y));
+            origin = new Vector2(collider.bounds.center.x , (collider.bounds.min.y));
         }
 
 
         //Distance between rays determined by direction
-        float distanceBetweenRaysX = (GetComponent<Collider2D>().bounds.size.x) / (NoOfRays - 1);
-        float distanceBetweenRaysY = (GetComponent<Collider2D>().bounds.size.y) / (NoOfRays - 1);
+        float distanceBetweenRaysX = (collider.bounds.size.x) / (NoOfRays - 1);
+        float distanceBetweenRaysY = (collider.bounds.size.y) / (NoOfRays - 1);
 
         //loop for raycasting
         for (int i = 0; i < NoOfRays; i++)
@@ -248,25 +258,16 @@ public abstract class Character : MonoBehaviour
             Debug.DrawRay(transform.position, movementDirection, Color.yellow);
             Debug.DrawRay(transform.position,Vector3.Project(movementDirection.normalized, BuildingHit.normal.normalized), Color.red);
 
-            //RaycastHit2D LitterHit = Physics2D.Raycast(ray.origin, ray.direction, lengthOfRay, 1 << 8);
+            if (inputDirection.x != 0 && inputDirection.y == 0)
+                origin += new Vector2(0, distanceBetweenRaysY);
+            else
+                origin += new Vector2(distanceBetweenRaysX, 0);
 
             if (BuildingHit)
             {
                 movementDirection -= Vector3.Project(movementDirection.normalized, BuildingHit.normal.normalized);
                 break;
             }
-            //Checking the litter we hit and adding it to inventory
-            /*if (LitterHit)
-            {
-                Inventory.AddItemToInventory(LitterHit.collider.gameObject.GetComponent<Consumable>());
-                Destroy(LitterHit.collider.gameObject);
-            }*/
-
-            //Adding new raycast to next point
-            if (inputDirection.x != 0 && inputDirection.y == 0)
-                origin += new Vector2(0, distanceBetweenRaysY);
-            else
-                origin += new Vector2(distanceBetweenRaysX, 0);
         }
     }
 
@@ -298,7 +299,7 @@ public abstract class Character : MonoBehaviour
         }
     }
 
-    protected void SleepTimer()
+    protected void SleepTimerChecker()
     {
         if(sleepTimer > 0)
         {
@@ -366,7 +367,7 @@ public abstract class Character : MonoBehaviour
     protected virtual void Start()
     {
         exhaustTimer = exhaustDuration;
-        lengthOfRay = GetComponent<Collider2D>().bounds.extents.magnitude;
+        lengthOfRay = collider.bounds.extents.magnitude;
         Sr = GetComponent<SpriteRenderer>();
         Inventory = gameObject.AddComponent<Inventory>();
         animator = GetComponent<Animator>();
@@ -382,7 +383,7 @@ public abstract class Character : MonoBehaviour
         StatsDecay();
         RecoverStamina();
         ExhaustTimer();
-        SleepTimer();
+        SleepTimerChecker();
         Collision();
         AnimationChanger();
         ApplyMovement();
