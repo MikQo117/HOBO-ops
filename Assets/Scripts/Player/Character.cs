@@ -139,6 +139,10 @@ public abstract class Character : MonoBehaviour
             characterInventory = value;
         }
     }
+    public float SleepTimer
+    {
+        get { return sleepTimer; }
+    }
 
     //Methods Start Here
 
@@ -184,8 +188,14 @@ public abstract class Character : MonoBehaviour
             //If contains, get component from collider, typeof IInteractable
             if (collider.bounds.Intersects(item.bounds))
             {
+                UIManager.Instance.Eprompt(true);
                 //Call Interact and pass this as parameter
                 item.GetComponent<IInteractable>().Interact(this);
+                break;
+            }
+            else
+            {
+                UIManager.Instance.Eprompt(false);
             }
         }
     }
@@ -298,7 +308,7 @@ public abstract class Character : MonoBehaviour
         }
     }
 
-    protected void SleepTimer()
+    protected void SleepTimerChecker()
     {
         if(sleepTimer > 0)
         {
@@ -382,7 +392,7 @@ public abstract class Character : MonoBehaviour
         StatsDecay();
         RecoverStamina();
         ExhaustTimer();
-        SleepTimer();
+        SleepTimerChecker();
         Collision();
         AnimationChanger();
         ApplyMovement();

@@ -117,6 +117,14 @@ public class PlayerController : Character
                 UIManager.Instance.SleepWindow(shopping);
             }
         }
+        else
+        {
+            if(InputManager.Instance.AxisPressed("Use"))
+            {
+                StartCoroutine(UIManager.Instance.SleepTextActivator());
+            }
+        }
+
     }
 
     public override void Sleep()
@@ -201,24 +209,6 @@ public class PlayerController : Character
 
     }
 
-    private void EpromtChecker()
-    {
-        foreach (Collider2D item in GameManager.Instance.interactablesColliders)
-        {
-
-            if (transform.GetComponent<Collider2D>().bounds.Contains(item.transform.position))
-            {
-                UIManager.Instance.Eprompt(true);
-                break;
-            }
-            else
-            {
-                UIManager.Instance.Eprompt(false);
-            }
-        }
-    }
-
-
     //Unity Methods
     protected override void Start()
     {
@@ -231,7 +221,6 @@ public class PlayerController : Character
     {
         base.Update();
         CameraMovement();
-        EpromtChecker();
     }
 
     protected override void Awake()
