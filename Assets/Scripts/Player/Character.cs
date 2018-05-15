@@ -5,12 +5,12 @@ using UnityEngine;
 public abstract class Character : MonoBehaviour
 {
     //Character stats
-    protected float        health = 10;
-    protected float        sanity = 10;
+    protected float        health = 30;
+    protected float        sanity = 30;
     protected float        drunkAmount;
     protected float        stamina = 100;
     protected float        staminaRecoveryRate = 2;
-    protected float        moneyAmount = 100;
+    protected float        moneyAmount = 2;
 
     //Max stats
     protected int          maxHealth = 100;
@@ -174,6 +174,7 @@ public abstract class Character : MonoBehaviour
     public abstract void ReturnBottle();
     public abstract void Buy(BaseItem item);
     public abstract void Sleep();
+    public abstract void Sleep(int hours);
     
    
 

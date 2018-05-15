@@ -50,6 +50,9 @@ public class UIManager : MonoBehaviour
     public GameObject SleepText;
     private bool sCoroutineIsRunning;
 
+    //Death Screen Variables
+    private GameObject deathScreen;
+
     public int SleepHours
     {
         get
@@ -74,7 +77,7 @@ public class UIManager : MonoBehaviour
     {
         if (!shopWindow.activeInHierarchy || !liqourStoreWindow.activeInHierarchy)
         {
-            for (int i = 0; i < transform.childCount - 7; i++)
+            for (int i = 0; i < transform.childCount - 8; i++)
             {
                 transform.GetChild(i).gameObject.SetActive(showing);
             }
@@ -132,7 +135,6 @@ public class UIManager : MonoBehaviour
         SleepText.SetActive(false);
         sCoroutineIsRunning = false;
     }
-
 
     public void ShopWindow(bool Active)
     {
@@ -210,6 +212,11 @@ public class UIManager : MonoBehaviour
         eCoroutineRunning = false;
     }
 
+    public void DeathScreen()
+    {
+        deathScreen.SetActive(true);
+    }
+
     private void Awake()
     {
         moneyText = transform.GetChild(0).transform.GetChild(2).GetComponent<Text>();
@@ -220,6 +227,7 @@ public class UIManager : MonoBehaviour
         liqourStoreText = transform.GetChild(6).transform.GetChild(3).GetComponent<Text>();
         sleepWindow = transform.GetChild(8).transform.gameObject;
         sleepField = transform.GetChild(8).transform.GetChild(0).GetComponent<InputField>();
+        deathScreen = transform.GetChild(9).gameObject;
     }
 
     private void Start()

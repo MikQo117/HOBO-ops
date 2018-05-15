@@ -131,7 +131,8 @@ public class PlayerController : Character
     public override void Sleep()
     {
     }
-    public void Sleep(int hours)
+
+    public override void Sleep(int hours)
     {
         if (hours > 0)
         {
@@ -220,7 +221,7 @@ public class PlayerController : Character
 
     protected override void Death()
     {
-
+        UIManager.Instance.DeathScreen();
     }
 
     //Unity Methods

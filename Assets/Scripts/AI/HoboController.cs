@@ -320,6 +320,10 @@ public class HoboController : Character
     {
         throw new System.NotImplementedException();
     }
+
+    public override void Sleep(int hours)
+    {
+    }
 }
 public enum ThresholdState
 {
