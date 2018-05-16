@@ -99,17 +99,18 @@ public class PlayerController : Character
             if (Inventory.InventoryList.Find(x => x.BaseItemID == itemID).Consumable)
             {
                 BaseItem ConsumableItem = Inventory.InventoryList.Find(x => x.BaseItemID == itemID);
-                if (ConsumableItem.BaseItemID == 2 || ConsumableItem.BaseItemID == 6 || ConsumableItem.BaseItemID == 3)
-                {
-                    GameManager.Instance.FoodConsumed++;
-                }
-                else if (ConsumableItem.BaseItemID == 0)
+
+                if (ConsumableItem.BaseItemID == 0)
                 {
                     GameManager.Instance.BeersConsumed++;
                 }
                 else if (ConsumableItem.BaseItemID == 1)
                 {
                     GameManager.Instance.WhiskeyConsumed++;
+                }
+                else
+                {
+                    GameManager.Instance.FoodConsumed++;
                 }
 
                 base.Health += ConsumableItem.HealthAmount;
@@ -229,17 +230,17 @@ public class PlayerController : Character
     {
         if (MoneyAmount >= item.ItemCost)
         {
-            if (item.BaseItemID == 2 || item.BaseItemID == 3 || item.BaseItemID == 6)
-            {
-                GameManager.Instance.FoodBought++;
-            }
-            else if (item.BaseItemID == 0)
+            if (item.BaseItemID == 0)
             {
                 GameManager.Instance.BeersBought++;
             }
             else if (item.BaseItemID == 1)
             {
                 GameManager.Instance.WhiskeyBought++;
+            }
+            else
+            {
+                GameManager.Instance.FoodBought++;
             }
             Inventory.AddItemToInventory(item);
             moneyAmount -= item.ItemCost;
