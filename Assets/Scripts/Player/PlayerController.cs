@@ -9,14 +9,20 @@ public class PlayerController : Character
     public static PlayerController pl;
     private bool shopping;
     public bool Gathered;
+    private bool paused;
 
     //Camera Variables
     public Camera mainCamera;
-    private float lenght = 1000;
     private Vector2 SprintVelocity;
     private Vector3 CameraZoffset = new Vector3(0, 0, -5);
     private float smoothTime = 0.3f;
     public Bounds bound;
+
+    //Get & Set
+    public bool Paused
+    {
+        get { return paused; }
+    }
 
     //Minigame methods
     protected override void Attack()
@@ -31,11 +37,21 @@ public class PlayerController : Character
     protected void CameraMovement()
     {
         mainCamera.transform.position = Vector2.SmoothDamp(mainCamera.transform.position, transform.TransformPoint(movementDirection * 3), ref SprintVelocity, smoothTime, Mathf.Infinity, Time.deltaTime);
+        mainCamera.transform.position = new Vector3(mainCamera.transform.position.x, mainCamera.transform.position.y, CameraZoffset.z);
+    }
+
+    private void PauseMethod()
+    {
+
+        if (paused)
+        {
+            //UIManager.Instance.PauseMenu(paused);
+        }
     }
 
     protected override void GetInput()
     {
-        if (!shopping)
+        if (!shopping || !Paused)
         {
             if (InputManager.Instance.AxisDown("Horizontal") || InputManager.Instance.AxisDown("Vertical"))
             {
@@ -68,6 +84,11 @@ public class PlayerController : Character
             movementDirection = Vector3.zero;
             sprinting = false;
         }
+
+        if (InputManager.Instance.AxisDown("Pause"))
+        {
+            paused = !paused;
+        }
     }
 
     public override void ConsumeItem(int itemID)
@@ -77,6 +98,19 @@ public class PlayerController : Character
             if (Inventory.InventoryList.Find(x => x.BaseItemID == itemID).Consumable)
             {
                 BaseItem ConsumableItem = Inventory.InventoryList.Find(x => x.BaseItemID == itemID);
+
+                if (ConsumableItem.BaseItemID == 0)
+                {
+                    GameManager.Instance.BeersConsumed++;
+                }
+                else if (ConsumableItem.BaseItemID == 1)
+                {
+                    GameManager.Instance.WhiskeyConsumed++;
+                }
+                else
+                {
+                    GameManager.Instance.FoodConsumed++;
+                }
 
                 base.Health += ConsumableItem.HealthAmount;
                 base.Sanity += ConsumableItem.SanityAmount;
@@ -110,7 +144,7 @@ public class PlayerController : Character
         }
         else
         {
-            if(InputManager.Instance.AxisPressed("Use"))
+            if (InputManager.Instance.AxisPressed("Use"))
             {
                 StartCoroutine(UIManager.Instance.SleepTextActivator());
             }
@@ -177,6 +211,7 @@ public class PlayerController : Character
                     StartCoroutine(UIManager.Instance.PickupIndicator(items));
                 }
                 Inventory.AddItemToInventory(items);
+                items.Clear();
                 Gathered = true;
             }
             else
@@ -193,25 +228,33 @@ public class PlayerController : Character
 
     public override void Buy(BaseItem item)
     {
-        if (item.BaseItemID == 2 || item.BaseItemID == 3 || item.BaseItemID == 6)
+        if (MoneyAmount >= item.ItemCost)
         {
-            GameManager.Instance.FoodBought++;
+            if (item.BaseItemID == 0)
+            {
+                GameManager.Instance.BeersBought++;
+            }
+            else if (item.BaseItemID == 1)
+            {
+                GameManager.Instance.WhiskeyBought++;
+            }
+            else
+            {
+                GameManager.Instance.FoodBought++;
+            }
+            Inventory.AddItemToInventory(item);
+            moneyAmount -= item.ItemCost;
         }
-        else if (item.BaseItemID == 0)
-        {
-            GameManager.Instance.BeersBought++;
-        }
-        else if (item.BaseItemID == 1)
-        {
-            GameManager.Instance.WhiskeyBought++;
-        }
-        Inventory.AddItemToInventory(item);
-        moneyAmount -= item.ItemCost;
     }
 
     protected override void Death()
     {
         UIManager.Instance.DeathScreen();
+    }
+
+    protected override void SpriteFlip(bool inverted)
+    {
+        base.SpriteFlip(false);
     }
 
     //Unity Methods
@@ -226,6 +269,7 @@ public class PlayerController : Character
     {
         base.Update();
         CameraMovement();
+        PauseMethod();
     }
 
     protected override void Awake()

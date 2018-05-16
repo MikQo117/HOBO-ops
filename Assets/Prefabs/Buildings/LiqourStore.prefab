@@ -160,7 +160,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DefaultMaterial: {fileID: 2100000, guid: 5ef9c963e1b5d6741bd7c38222882faf, type: 2}
   PlayerIsNear: {fileID: 2100000, guid: cc9cd56a27a24f64f8bb4de18c6df4a2, type: 2}
-  DistanceThreshold: 1
+  DistanceThreshold: 0.75
 --- !u!114 &114487553134463060
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -174,7 +174,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DefaultMaterial: {fileID: 2100000, guid: 5ef9c963e1b5d6741bd7c38222882faf, type: 2}
   PlayerIsNear: {fileID: 2100000, guid: cc9cd56a27a24f64f8bb4de18c6df4a2, type: 2}
-  DistanceThreshold: 1
+  DistanceThreshold: 0.75
 --- !u!114 &114811169951790260
 MonoBehaviour:
   m_ObjectHideFlags: 1

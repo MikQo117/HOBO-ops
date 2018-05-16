@@ -92,7 +92,7 @@ public class UIManager : MonoBehaviour
 
     private void UIInput()
     {
-        if (Input.GetKeyDown(KeyCode.I))
+        if (Input.GetKeyDown(KeyCode.Tab))
         {
             showing = !showing;
         }
@@ -108,7 +108,7 @@ public class UIManager : MonoBehaviour
     {
         sleepWindow.SetActive(active);
         int temp;
-
+        sleepField.Select();
         if (int.TryParse(sleepField.text, out temp) && sleepField.text != null)
         {
             if (temp > 0 && InputManager.Instance.AxisPressed("Use"))
@@ -117,7 +117,6 @@ public class UIManager : MonoBehaviour
                 PlayerController.pl.Sleep(sleepHours);
             }
         }
-
         if (!active)
         {
             sleepField.text = null;
@@ -129,7 +128,7 @@ public class UIManager : MonoBehaviour
     {
         if (sCoroutineIsRunning) yield break;
         sCoroutineIsRunning = true;
-        SleepText.GetComponent<Text>().text = "You can't sleep now. Time remaining " + PlayerController.pl.SleepTimer;
+        SleepText.GetComponent<Text>().text = "You can't sleep now." + System.Environment.NewLine + "Time remaining: " + (int)PlayerController.pl.SleepTimer;
         SleepText.SetActive(true);
         yield return new WaitForSeconds(1.0f);
         SleepText.SetActive(false);
