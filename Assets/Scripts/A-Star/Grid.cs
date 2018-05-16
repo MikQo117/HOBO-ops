@@ -145,12 +145,25 @@ public class Grid : MonoBehaviour
 
         if (true)
         {
-            if (Path != null)
+            if (grid != null && DisplayGridGizmos)
             {
-                foreach (Node n in Path)
+                /*foreach (Node n in Path)
                 {
                     Gizmos.color = Color.red;
                     Gizmos.DrawCube(n.WorldPosition, Vector3.one * (nodeDiameter - .1f));
+                }*/
+
+                foreach (Node n in grid)
+                {
+                    if(n.Walkable)
+                    {
+                        Gizmos.color = Color.green;
+                    }
+                    else
+                    {
+                        Gizmos.color = Color.red;
+                    }
+                    Gizmos.DrawCube(n.WorldPosition, Vector3.one * (nodeDiameter - .01f));
                 }
             }
         }

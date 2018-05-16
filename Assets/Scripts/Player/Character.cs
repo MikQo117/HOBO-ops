@@ -333,7 +333,7 @@ public abstract class Character : MonoBehaviour
     protected void SpriteFlip()
     {
         bool flip;
-        flip = inputDirection.x < 0 ? true : false;
+        flip = inputDirection.x > 0 ? true : false;
         Sr.flipX = flip;
     }
 
