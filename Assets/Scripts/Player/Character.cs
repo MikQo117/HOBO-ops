@@ -24,9 +24,9 @@ public abstract class Character : MonoBehaviour
 
     //Character movement
     [SerializeField]
-    protected float       movementSpeed = 1;
+    protected float       movementSpeed = 2.2f;
     [SerializeField]
-    protected float       sprintSpeed = 4.3f;
+    protected float       sprintSpeed = 3.7f;
     protected Vector3     movementDirection;
     protected bool        sprinting;
     protected Vector3     inputDirection;
@@ -192,6 +192,7 @@ public abstract class Character : MonoBehaviour
             if (collider.bounds.Intersects(item.bounds))
             {
                 UIManager.Instance.Eprompt(true);
+                Debug.DrawRay(item.transform.position, item.bounds.extents, Color.red);
                 //Call Interact and pass this as parameter
                 item.GetComponent<IInteractable>().Interact(this);
                 break;

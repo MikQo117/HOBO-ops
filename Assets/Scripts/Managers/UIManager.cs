@@ -92,7 +92,7 @@ public class UIManager : MonoBehaviour
 
     private void UIInput()
     {
-        if (Input.GetKeyDown(KeyCode.I))
+        if (Input.GetKeyDown(KeyCode.Tab))
         {
             showing = !showing;
         }
@@ -117,7 +117,6 @@ public class UIManager : MonoBehaviour
                 PlayerController.pl.Sleep(sleepHours);
             }
         }
-
         if (!active)
         {
             sleepField.text = null;
