@@ -31,6 +31,7 @@ public class PlayerController : Character
     protected void CameraMovement()
     {
         mainCamera.transform.position = Vector2.SmoothDamp(mainCamera.transform.position, transform.TransformPoint(movementDirection * 3), ref SprintVelocity, smoothTime, Mathf.Infinity, Time.deltaTime);
+        mainCamera.transform.position = new Vector3(mainCamera.transform.position.x, mainCamera.transform.position.y, -5f);
     }
 
     protected override void GetInput()
