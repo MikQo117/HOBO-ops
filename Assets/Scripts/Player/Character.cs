@@ -253,11 +253,7 @@ public abstract class Character : MonoBehaviour
         for (int i = 0; i < NoOfRays; i++)
         {
             ray = new Ray2D(origin, (movementDirection).normalized);
-            Debug.DrawRay(ray.origin, ray.direction * lengthOfRay, Color.blue);
             RaycastHit2D BuildingHit = Physics2D.Raycast(ray.origin, ray.direction, lengthOfRay, raycastMask);
-            Debug.DrawRay(transform.position, BuildingHit.point, Color.magenta);
-            Debug.DrawRay(transform.position, movementDirection, Color.yellow);
-            Debug.DrawRay(transform.position,Vector3.Project(movementDirection.normalized, BuildingHit.normal.normalized), Color.red);
 
             if (inputDirection.x != 0 && inputDirection.y == 0)
                 origin += new Vector2(0, distanceBetweenRaysY);

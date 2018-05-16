@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     private List<TrashSpawn> trashSpawns = new List<TrashSpawn>();
     public List<Collider2D> interactablesColliders;
     private float spawnableItemIndex;
+    [SerializeField]
     private float originalSpawnTimer = 30.0f;
     float spawntimer;
 

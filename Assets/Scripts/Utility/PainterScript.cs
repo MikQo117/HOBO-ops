@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-[ExecuteInEditMode]
+
 public class PainterScript : MonoBehaviour
 {
 
@@ -24,7 +24,7 @@ public class PainterScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Sorting)
+        if (Sorting && sortList.Count > 0)
         {
             //Sort positions list
             sortList = sortList.OrderByDescending(v => v.Transform.position.y).ThenByDescending(v => v.Transform.position.x).ToList();

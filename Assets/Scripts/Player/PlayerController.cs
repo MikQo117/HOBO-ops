@@ -30,17 +30,7 @@ public class PlayerController : Character
     //Player actions 
     protected void CameraMovement()
     {
-        Vector2 temp = Vector2.SmoothDamp(mainCamera.transform.position, transform.TransformPoint(movementDirection * 3), ref SprintVelocity, smoothTime, Mathf.Infinity, Time.deltaTime);
-
-        if (Sprinting && !exhausted)
-        {
-            mainCamera.transform.position = temp;
-        }
-        else
-        {
-            mainCamera.transform.position = Vector3.MoveTowards(temp, (Vector2)transform.position + new Vector2(0, 0.5f), smoothTime * Time.deltaTime * lenght);
-        }
-        mainCamera.transform.position = new Vector3(mainCamera.transform.position.x, mainCamera.transform.position.y, 0);
+        mainCamera.transform.position = Vector2.SmoothDamp(mainCamera.transform.position, transform.TransformPoint(movementDirection * 3), ref SprintVelocity, smoothTime, Mathf.Infinity, Time.deltaTime);
     }
 
     protected override void GetInput()
