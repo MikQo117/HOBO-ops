@@ -211,6 +211,7 @@ public class PlayerController : Character
                     StartCoroutine(UIManager.Instance.PickupIndicator(items));
                 }
                 Inventory.AddItemToInventory(items);
+                items.Clear();
                 Gathered = true;
             }
             else

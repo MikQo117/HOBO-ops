@@ -64,7 +64,6 @@ public class TrashSpawn : MonoBehaviour, IInteractable
         {
             PlayerController.pl.Gather(GiveShite());
         }
-        //Implementation is the same for player and ai
     }
 
     private List<BaseItem> GiveShite()
