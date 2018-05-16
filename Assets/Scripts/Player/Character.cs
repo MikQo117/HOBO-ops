@@ -38,10 +38,10 @@ public abstract class Character : MonoBehaviour
 
     //Animation variables
     protected Animator     animator;
-    private Sprite         currentIdleSprite = null;
+    private Sprite         currentIdleSprite;
     [SerializeField]
     private Sprite[]       idleSprites;
-    private SpriteRenderer Sr;
+    protected SpriteRenderer Sr;
 
     //Exhaust variables
     [SerializeField]
@@ -311,30 +311,34 @@ public abstract class Character : MonoBehaviour
     protected void AnimationChanger()
     {
         //sideways movement animator changer
-        if (inputDirection.x != 0 && inputDirection.y == 0) { animator.Play(AnimationClips.WalkSideways.ToString()); currentIdleSprite = idleSprites[3]; SpriteFlip(); }
+        if (inputDirection.x != 0 && inputDirection.y == 0) { animator.Play(AnimationClips.WalkSideways.ToString()); currentIdleSprite = idleSprites[3]; SpriteFlip(true); }
 
         //walking down animator changer
-        if (inputDirection.x == 0 && inputDirection.y < 0) { animator.Play(AnimationClips.WalkDown.ToString()); currentIdleSprite = idleSprites[0]; SpriteFlip(); }
+        if (inputDirection.x == 0 && inputDirection.y < 0) { animator.Play(AnimationClips.WalkDown.ToString()); currentIdleSprite = idleSprites[0]; SpriteFlip(false); }
 
         //walking upwards animation changer
-        if (inputDirection.x == 0 && inputDirection.y > 0) { animator.Play(AnimationClips.WalkUp.ToString()); currentIdleSprite = idleSprites[4]; SpriteFlip(); }
+        if (inputDirection.x == 0 && inputDirection.y > 0) { animator.Play(AnimationClips.WalkUp.ToString()); currentIdleSprite = idleSprites[4]; SpriteFlip(false); }
 
         //strafing upwards animation changer
-        if (inputDirection.x != 0 && inputDirection.y > 0) { animator.Play(AnimationClips.WalkStrafeUp.ToString()); currentIdleSprite = idleSprites[1]; SpriteFlip(); }
+        if (inputDirection.x != 0 && inputDirection.y > 0) { animator.Play(AnimationClips.WalkStrafeUp.ToString()); currentIdleSprite = idleSprites[1]; SpriteFlip(false); }
 
         //strafing downwards animation changer
-        if (inputDirection.x != 0 && inputDirection.y < 0) { animator.Play(AnimationClips.WalkStrafeDown.ToString()); currentIdleSprite = idleSprites[2]; SpriteFlip(); }
+        if (inputDirection.x != 0 && inputDirection.y < 0) { animator.Play(AnimationClips.WalkStrafeDown.ToString()); currentIdleSprite = idleSprites[2]; SpriteFlip(false); }
 
         //Idle
-        if (inputDirection.x == 0 && inputDirection.y == 0) { animator.Play(AnimationClips.Idle.ToString()); Sr.sprite = currentIdleSprite; }
+        if (inputDirection.x == 0 && inputDirection.y == 0) {  /*animator.Play(AnimationClips.Idle.ToString())*/; Sr.sprite = currentIdleSprite; }
 
     }
 
-    protected virtual void SpriteFlip()
+    protected virtual void SpriteFlip(bool inverted)
     {
         bool flip;
-        flip = inputDirection.x > 0 ? true : false;
+        flip = inputDirection.x < 0 ? true : false;
         Sr.flipX = flip;
+        if(inverted)
+        {
+            Sr.flipX = !flip;
+        }
     }
 
     protected void StatsDecay()
@@ -368,6 +372,7 @@ public abstract class Character : MonoBehaviour
         Sr = GetComponent<SpriteRenderer>();
         Inventory = gameObject.AddComponent<Inventory>();
         animator = GetComponent<Animator>();
+        currentIdleSprite = idleSprites[0];
         collider = GetComponent<Collider2D>();
         canSleep = true;
     }
@@ -382,7 +387,11 @@ public abstract class Character : MonoBehaviour
         ExhaustTimer();
         SleepTimerChecker();
         Collision();
-        AnimationChanger();
+        //AnimationChanger();
         ApplyMovement();
+    }
+    protected virtual void LateUpdate()
+    {
+        AnimationChanger();
     }
 }

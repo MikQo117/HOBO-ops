@@ -239,6 +239,11 @@ public class PlayerController : Character
         UIManager.Instance.DeathScreen();
     }
 
+    protected override void SpriteFlip(bool inverted)
+    {
+        base.SpriteFlip(false);
+    }
+
     //Unity Methods
     protected override void Start()
     {

@@ -322,9 +322,11 @@ public class HoboController : Character
     {
         throw new System.NotImplementedException();
     }
-    protected override void SpriteFlip()
+    protected override void SpriteFlip(bool inverted)
     {
-        base.SpriteFlip();
+        bool flip;
+        flip = inputDirection.x > 0 ? true : false;
+        Sr.flipX = flip;
     }
 
     public override void Sleep(int hours)
