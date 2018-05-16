@@ -23,8 +23,10 @@ public abstract class Character : MonoBehaviour
     protected const float staminaDecay = 10.0f;
 
     //Character movement
-    protected float       movementSpeed = 1;
-    protected float       sprintSpeed = 4.3f;
+    [SerializeField]
+    protected float       movementSpeed = 2.2f;
+    [SerializeField]
+    protected float       sprintSpeed = 3.7f;
     protected Vector3     movementDirection;
     protected bool        sprinting;
     protected Vector3     inputDirection;
