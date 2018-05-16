@@ -55,9 +55,15 @@ public class TrashSpawn : MonoBehaviour, IInteractable
 
     public void Interact(Character source)
     {
-        //Implementation is the same for player and ai
+        if(source.GetType() != typeof(PlayerController))
+        {
         source.Gather(GiveShite());
         TrashCanInventory.Clear();
+        }
+        else
+        {
+            PlayerController.pl.Gather(GiveShite());
+        }
     }
 
     private List<BaseItem> GiveShite()

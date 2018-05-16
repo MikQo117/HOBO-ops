@@ -192,7 +192,6 @@ public abstract class Character : MonoBehaviour
             if (collider.bounds.Intersects(item.bounds))
             {
                 UIManager.Instance.Eprompt(true);
-                Debug.DrawRay(item.transform.position, item.bounds.extents, Color.red);
                 //Call Interact and pass this as parameter
                 item.GetComponent<IInteractable>().Interact(this);
                 break;
@@ -266,11 +265,9 @@ public abstract class Character : MonoBehaviour
             if (BuildingHit)
             {
                 movementDirection -= Vector3.Project(movementDirection.normalized, BuildingHit.normal.normalized);
-                break;
             }
         }
     }
-
 
     protected virtual void Exhausted()
     {
@@ -329,7 +326,7 @@ public abstract class Character : MonoBehaviour
         if (inputDirection.x != 0 && inputDirection.y < 0) { animator.Play(AnimationClips.WalkStrafeDown.ToString()); currentIdleSprite = idleSprites[2]; SpriteFlip(false); }
 
         //Idle
-        if (inputDirection.x == 0 && inputDirection.y == 0) {  Sr.sprite = currentIdleSprite; }
+        if (inputDirection.x == 0 && inputDirection.y == 0) {  /*animator.Play(AnimationClips.Idle.ToString())*/; Sr.sprite = currentIdleSprite; }
 
     }
 

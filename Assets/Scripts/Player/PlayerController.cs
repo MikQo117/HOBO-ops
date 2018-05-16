@@ -13,7 +13,6 @@ public class PlayerController : Character
 
     //Camera Variables
     public Camera mainCamera;
-    private float lenght = 1000;
     private Vector2 SprintVelocity;
     private Vector3 CameraZoffset = new Vector3(0, 0, -5);
     private float smoothTime = 0.3f;
@@ -38,7 +37,7 @@ public class PlayerController : Character
     protected void CameraMovement()
     {
         mainCamera.transform.position = Vector2.SmoothDamp(mainCamera.transform.position, transform.TransformPoint(movementDirection * 3), ref SprintVelocity, smoothTime, Mathf.Infinity, Time.deltaTime);
-        mainCamera.transform.position = new Vector3(mainCamera.transform.position.x, mainCamera.transform.position.y, -5f);
+        mainCamera.transform.position = new Vector3(mainCamera.transform.position.x, mainCamera.transform.position.y, CameraZoffset.z);
     }
 
     private void PauseMethod()
@@ -212,6 +211,7 @@ public class PlayerController : Character
                     StartCoroutine(UIManager.Instance.PickupIndicator(items));
                 }
                 Inventory.AddItemToInventory(items);
+                items.Clear();
                 Gathered = true;
             }
             else
