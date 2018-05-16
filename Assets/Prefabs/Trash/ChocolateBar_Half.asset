@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Name: ChocolateBar_Half
   m_EditorClassIdentifier: 
   objectname: Chocolatebar_half
-  healthAmount: 7
+  healthAmount: 5
   sanityAmount: 0
   drunkAmount: 0
   moneyAmount: 0
   baseItemID: 5
   consumable: 1
-  objectSprite: {fileID: 21300008, guid: 3ad9b29c532af97439f9dcc700372a8a, type: 3}
+  objectSprite: {fileID: 21300010, guid: 3ad9b29c532af97439f9dcc700372a8a, type: 3}
   itemCost: 0
   dropProbability: 0.15

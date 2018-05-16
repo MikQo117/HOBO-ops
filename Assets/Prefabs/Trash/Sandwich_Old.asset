@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Name: Sandwich_Old
   m_EditorClassIdentifier: 
   objectname: Sandwich_Old
-  healthAmount: 12
+  healthAmount: 10
   sanityAmount: 0
   drunkAmount: 0
   moneyAmount: 0

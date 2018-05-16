@@ -320,6 +320,10 @@ public class HoboController : Character
     {
         throw new System.NotImplementedException();
     }
+    protected override void SpriteFlip()
+    {
+        base.SpriteFlip();
+    }
 
     public override void Sleep(int hours)
     {
