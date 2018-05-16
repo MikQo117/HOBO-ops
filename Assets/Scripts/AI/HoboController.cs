@@ -236,6 +236,7 @@ public class HoboController : Character
     {
         if (movingToTarget)
         {
+            Vector3 temp = ((Vector3)currentWaypoint - transform.position) * movementSpeed * Time.deltaTime;
             if (sprinting)
             {
                 transform.position = Vector3.MoveTowards(transform.position, currentWaypoint, movementSpeed * Time.deltaTime);
@@ -243,7 +244,8 @@ public class HoboController : Character
             else
             {
                 transform.position = Vector3.MoveTowards(transform.position, currentWaypoint, sprintSpeed * Time.deltaTime);
-            } 
+            }
+            inputDirection = temp;
         }
     }
 
