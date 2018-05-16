@@ -192,6 +192,7 @@ public abstract class Character : MonoBehaviour
             if (collider.bounds.Intersects(item.bounds))
             {
                 UIManager.Instance.Eprompt(true);
+                Debug.DrawRay(item.transform.position, item.bounds.extents, Color.red);
                 //Call Interact and pass this as parameter
                 item.GetComponent<IInteractable>().Interact(this);
                 break;

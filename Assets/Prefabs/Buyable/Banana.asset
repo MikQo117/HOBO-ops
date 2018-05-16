@@ -16,7 +16,7 @@ MonoBehaviour:
   sanityAmount: 0
   drunkAmount: 0
   moneyAmount: 0
-  baseItemID: 2
+  baseItemID: 4
   consumable: 1
   objectSprite: {fileID: 21300004, guid: 3ad9b29c532af97439f9dcc700372a8a, type: 3}
   itemCost: 0.3
