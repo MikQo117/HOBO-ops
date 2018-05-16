@@ -34,6 +34,9 @@ public class GameManager : MonoBehaviour
     public int WhiskeyBought = 0;
     public int FoodBought = 0;
     public int TimesSlept = 0;
+    public int BeersConsumed = 0;
+    public int WhiskeyConsumed = 0;
+    public int FoodConsumed = 0;
 
 
     public List<TrashSpawn> GetTrashSpawns
@@ -191,6 +194,9 @@ public class GameManager : MonoBehaviour
                     sw.WriteLine("Whiskey purchased: " + WhiskeyBought);
                     sw.WriteLine("Food purchased:    " + FoodBought);
                     sw.WriteLine("Times slept:       " + TimesSlept);
+                    sw.WriteLine("Whiskey consumed:  " + WhiskeyConsumed);
+                    sw.WriteLine("Beer consumed:     " + BeersConsumed);
+                    sw.WriteLine("Food consumed:     " + FoodConsumed);
                 }
             }
             int index = SceneManager.GetActiveScene().buildIndex;

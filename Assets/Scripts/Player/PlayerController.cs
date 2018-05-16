@@ -99,6 +99,18 @@ public class PlayerController : Character
             if (Inventory.InventoryList.Find(x => x.BaseItemID == itemID).Consumable)
             {
                 BaseItem ConsumableItem = Inventory.InventoryList.Find(x => x.BaseItemID == itemID);
+                if (ConsumableItem.BaseItemID == 2 || ConsumableItem.BaseItemID == 6 || ConsumableItem.BaseItemID == 3)
+                {
+                    GameManager.Instance.FoodConsumed++;
+                }
+                else if (ConsumableItem.BaseItemID == 0)
+                {
+                    GameManager.Instance.BeersConsumed++;
+                }
+                else if (ConsumableItem.BaseItemID == 1)
+                {
+                    GameManager.Instance.WhiskeyConsumed++;
+                }
 
                 base.Health += ConsumableItem.HealthAmount;
                 base.Sanity += ConsumableItem.SanityAmount;

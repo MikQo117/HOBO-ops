@@ -23,7 +23,9 @@ public abstract class Character : MonoBehaviour
     protected const float staminaDecay = 10.0f;
 
     //Character movement
+    [SerializeField]
     protected float       movementSpeed = 1;
+    [SerializeField]
     protected float       sprintSpeed = 4.3f;
     protected Vector3     movementDirection;
     protected bool        sprinting;
@@ -326,7 +328,7 @@ public abstract class Character : MonoBehaviour
         if (inputDirection.x != 0 && inputDirection.y < 0) { animator.Play(AnimationClips.WalkStrafeDown.ToString()); currentIdleSprite = idleSprites[2]; SpriteFlip(false); }
 
         //Idle
-        if (inputDirection.x == 0 && inputDirection.y == 0) {  /*animator.Play(AnimationClips.Idle.ToString())*/; Sr.sprite = currentIdleSprite; }
+        if (inputDirection.x == 0 && inputDirection.y == 0) {  Sr.sprite = currentIdleSprite; }
 
     }
 

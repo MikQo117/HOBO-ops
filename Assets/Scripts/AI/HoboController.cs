@@ -105,6 +105,7 @@ public class HoboController : Character
         scavengeState = new ScavengeState();
         idleState = new IdleState();
 
+
         StateMachine.ChangeState(scavengeState);
     }
 
@@ -143,6 +144,7 @@ public class HoboController : Character
                     if (StateMachine.currentState.GetType() == typeof(ScavengeState))
                     {
                         movingToTarget = false;
+                        inputDirection = Vector2.zero;
                         ((ScavengeState)StateMachine.currentState).PathEndReached();
                     }
                     yield break;
@@ -150,6 +152,7 @@ public class HoboController : Character
                 currentWaypoint = path[targetIndex];
             }
             inputDirection = ((Vector3)currentWaypoint - transform.position) * Time.deltaTime * movementSpeed;
+            
             transform.position = Vector3.MoveTowards(transform.position, currentWaypoint, movementSpeed * Time.deltaTime);
             yield return null;
         }
@@ -268,6 +271,10 @@ public class HoboController : Character
         bool flip;
         flip = inputDirection.x > 0 ? true : false;
         Sr.flipX = flip;
+        if (inverted)
+        {
+            Sr.flipX = !flip;
+        }
     }
 
     public override void Sleep(int hours)
