@@ -154,7 +154,7 @@ public class GameManager : MonoBehaviour
             interactablesColliders.Add(item.GetCollider());
             if (item is TrashSpawn)
             {
-                trashSpawns.Add((TrashSpawn)item);
+                trashSpawns.Add(((TrashSpawn)item));
             }
         }
         ResetTimer();
