@@ -91,19 +91,18 @@ public class PlayerController : Character
         }
     }
 
-    public override void ConsumeItem(int itemID)
+    public override void ConsumeItem(BaseItem item)
     {
-        if (Inventory.InventoryList.Exists(x => x.BaseItemID == itemID))
-        {
-            if (Inventory.InventoryList.Find(x => x.BaseItemID == itemID).Consumable)
+        
+            if (Inventory.InventoryList.Exists(x => item) && item.Consumable)
             {
-                BaseItem ConsumableItem = Inventory.InventoryList.Find(x => x.BaseItemID == itemID);
 
-                if (ConsumableItem.BaseItemID == 0)
+
+                if (item.BaseItemID == 0)
                 {
                     GameManager.Instance.BeersConsumed++;
                 }
-                else if (ConsumableItem.BaseItemID == 1)
+                else if (item.BaseItemID == 1)
                 {
                     GameManager.Instance.WhiskeyConsumed++;
                 }
@@ -112,11 +111,12 @@ public class PlayerController : Character
                     GameManager.Instance.FoodConsumed++;
                 }
 
-                base.Health += ConsumableItem.HealthAmount;
-                base.Sanity += ConsumableItem.SanityAmount;
-                Inventory.RemoveItemFromInventory(itemID);
-            }
+                base.Health += item.HealthAmount;
+                base.Sanity += item.SanityAmount;
+                Inventory.RemoveItemFromInventory(item);
+            Debug.Log("removed");
         }
+        
     }
 
     public override void ReturnBottle()
@@ -150,6 +150,12 @@ public class PlayerController : Character
             }
         }
 
+    }
+
+    protected override void Collision()
+    {
+        base.Collision();
+        
     }
 
     public override void Sleep()

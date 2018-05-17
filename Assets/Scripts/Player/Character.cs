@@ -171,7 +171,7 @@ public abstract class Character : MonoBehaviour
     protected abstract void Beg();
 
     //Interactable Methods
-    public abstract void ConsumeItem(int itemID);
+    public abstract void ConsumeItem(BaseItem item);
     public abstract void Gather(List<BaseItem> items);
     public abstract void ReturnBottle();
     public abstract void Buy(BaseItem item);
@@ -256,7 +256,6 @@ public abstract class Character : MonoBehaviour
         {
             ray = new Ray2D(origin, (movementDirection).normalized);
             RaycastHit2D BuildingHit = Physics2D.Raycast(ray.origin, ray.direction, lengthOfRay, raycastMask);
-
             if (inputDirection.x != 0 && inputDirection.y == 0)
                 origin += new Vector2(0, distanceBetweenRaysY);
             else
