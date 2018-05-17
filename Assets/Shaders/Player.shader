@@ -18,7 +18,7 @@
 			"ForceNoShadowCasting" = "True"
 		}
 
-		Cull Back
+		Cull Off
 		Lighting Off
 		ZWrite Off
 		Blend One OneMinusSrcAlpha

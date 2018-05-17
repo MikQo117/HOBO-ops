@@ -53,7 +53,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1067968861827880}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 18.32, y: 8.4, z: 0}
+  m_LocalPosition: {x: -14.5, y: 1.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4362120926860656}
@@ -67,7 +67,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1095647581730472}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.9375, y: 0.4765, z: 0}
+  m_LocalPosition: {x: 3.9998, y: 0.492216, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4233074062828226}
@@ -88,8 +88,8 @@ PolygonCollider2D:
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 3.9375, y: 4.5}
+    pivot: {x: 0.02105859, y: 0}
+    oldSize: {x: 4.0859375, y: 4.515625}
     newSize: {x: 3.9375, y: 4.5}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -97,10 +97,10 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0.565, y: 0.48}
-      - {x: 0.085, y: 0}
-      - {x: 3.925, y: 0}
-      - {x: 4.405, y: 0.48}
+    - - {x: 0.5, y: 0.5}
+      - {x: 0, y: 0}
+      - {x: 4, y: 0}
+      - {x: 4.5, y: 0.5}
 --- !u!114 &114008650944597184
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -160,8 +160,8 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 0269348191b77264e905b01368e9637e, type: 3}
+  m_SortingOrder: 109
+  m_Sprite: {fileID: 21300000, guid: c99b917548f9c214fac255882eb691c6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -201,8 +201,8 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 21300002, guid: 0269348191b77264e905b01368e9637e, type: 3}
+  m_SortingOrder: 104
+  m_Sprite: {fileID: 21300002, guid: c99b917548f9c214fac255882eb691c6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

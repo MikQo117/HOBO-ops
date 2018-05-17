@@ -20,6 +20,7 @@
 
 		Cull Back
 		Lighting Off
+		ZTest Less
 		ZWrite Off
 		Blend One OneMinusSrcAlpha
 

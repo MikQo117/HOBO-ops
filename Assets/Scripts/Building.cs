@@ -19,30 +19,32 @@ public class Building : MonoBehaviour
         sr.material = DefaultMaterial;
     }
 
-    private void Update()
+    private void LateUpdate()
     {
-        if(Vector2.Distance(sr.bounds.ClosestPoint(GameManager.Instance.PlayerTransform.position), GameManager.Instance.PlayerTransform.position) < DistanceThreshold)
+        if (InputManager.Instance.AxisDown("Horizontal") || InputManager.Instance.AxisDown("Vertical"))
         {
-            if (GameManager.Instance.PlayerOrderInLayer < sr.sortingOrder)
+            float distance = Vector2.Distance(sr.bounds.ClosestPoint(GameManager.Instance.PlayerTransform.position), GameManager.Instance.PlayerTransform.position);
+
+            if (distance < DistanceThreshold)
             {
-                if (transform.position.y < GameManager.Instance.PlayerTransform.position.y)
+                if (GameManager.Instance.PlayerOrderInLayer < sr.sortingOrder)
                 {
-                    sr.material = PlayerIsNear;
+                    if (transform.position.y < GameManager.Instance.PlayerTransform.position.y)
+                    {
+                        sr.material = PlayerIsNear;
+                    }
+                }
+                else if (sr.material != DefaultMaterial)
+                {
+                    sr.material = DefaultMaterial;
                 }
             }
-            else if(sr.material != DefaultMaterial)
+            else if (sr.material != DefaultMaterial)
             {
                 sr.material = DefaultMaterial;
             }
+            previousLayer = currentLayer;
+            currentLayer = sr.sortingOrder;
         }
-        else if (sr.material != DefaultMaterial)
-        {
-            sr.material = DefaultMaterial;
-        }
-        
-             
-
-        previousLayer = currentLayer;
-        currentLayer = sr.sortingOrder;
     }
 }
