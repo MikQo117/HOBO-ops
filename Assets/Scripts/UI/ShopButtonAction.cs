@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class ShopButtonAction : ButtonAction
 {
-
-    public void Action(BaseItem item)
+    public override void Action(BaseItem item)
     {
         PlayerController.pl.Buy(item);
     }

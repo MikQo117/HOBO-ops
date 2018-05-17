@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class ButtonAction
 {
-    public virtual void Action()
+    public virtual void Action(BaseItem item)
     {
 
     }

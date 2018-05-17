@@ -17,6 +17,7 @@ public class ButtonCollection : MonoBehaviour
 
     protected virtual void OnEnable()
     {
+
         if (buttons == null)
         {
             AssignButtonClicks();
@@ -26,10 +27,6 @@ public class ButtonCollection : MonoBehaviour
     protected virtual void AssignButtonClicks()
     {
         buttons = GetComponentsInChildren<Button>().ToList();
-        foreach (Button item in buttons)
-        {
-            item.onClick.AddListener(delegate { ActionToAssign.Action(); });
-        }
     }
 
 }

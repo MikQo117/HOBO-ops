@@ -145,6 +145,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224901742230432884}
   - component: {fileID: 222868921570103264}
+  - component: {fileID: 114041954162214084}
   m_Layer: 5
   m_Name: ItemsGrid
   m_TagString: Untagged
@@ -634,13 +635,14 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 224600557203926684}
+  - component: {fileID: 114359233633798874}
   m_Layer: 5
   m_Name: InventoryButtons
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1468028107147186
 GameObject:
   m_ObjectHideFlags: 1
@@ -1237,6 +1239,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 224487963225684196}
+  - component: {fileID: 114373575022833818}
   m_Layer: 5
   m_Name: ItemGrid
   m_TagString: Untagged
@@ -1476,6 +1479,22 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114041954162214084
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1091338132444738}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e72af2ec17dbafa43bfdff55eaaa0e3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ItemsToSell:
+  - {fileID: 11400000, guid: cf230b90e3db496449f9a6eb0f4221ca, type: 2}
+  - {fileID: 11400000, guid: 22e4fac2e32de3f42b21b66b556dbf16, type: 2}
+  - {fileID: 11400000, guid: 97bface3fa90f36459103b7acf8a411b, type: 2}
+  - {fileID: 11400000, guid: e7924ca17f3a5344bbd7ca3e5c175583, type: 2}
 --- !u!114 &114057038510322676
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1702,19 +1721,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 114083717838592712}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: Buy
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 11400000, guid: 22e4fac2e32de3f42b21b66b556dbf16,
-            type: 2}
-          m_ObjectArgumentAssemblyTypeName: BaseItem, Assembly-CSharp
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 1
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &114124680970395802
@@ -2509,6 +2516,26 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114359233633798874
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1459679386075428}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0268ff8b5708df43a18db3263c21541, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  InventoryItems:
+  - {fileID: 11400000, guid: e7924ca17f3a5344bbd7ca3e5c175583, type: 2}
+  - {fileID: 11400000, guid: e687583b64bb74c4d8a0ce07dfed2e5d, type: 2}
+  - {fileID: 11400000, guid: cf230b90e3db496449f9a6eb0f4221ca, type: 2}
+  - {fileID: 11400000, guid: 22e4fac2e32de3f42b21b66b556dbf16, type: 2}
+  - {fileID: 11400000, guid: af8632615a535594baf87c4a9d0f87ea, type: 2}
+  - {fileID: 11400000, guid: 0f214d8a890dfb54b961d738fbad197a, type: 2}
+  - {fileID: 11400000, guid: 97bface3fa90f36459103b7acf8a411b, type: 2}
+  - {fileID: 11400000, guid: c0476f5cf6f393d45ad36c97eaf36dc2, type: 2}
 --- !u!114 &114368589659868114
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2569,6 +2596,20 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114373575022833818
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1999211607088910}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e62cfdd4768cef44be8ffa563a7894c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ItemsToSell:
+  - {fileID: 11400000, guid: e7924ca17f3a5344bbd7ca3e5c175583, type: 2}
+  - {fileID: 11400000, guid: e687583b64bb74c4d8a0ce07dfed2e5d, type: 2}
 --- !u!114 &114386921598461116
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2725,19 +2766,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 114518760924186290}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: Buy
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 11400000, guid: e7924ca17f3a5344bbd7ca3e5c175583,
-            type: 2}
-          m_ObjectArgumentAssemblyTypeName: BaseItem, Assembly-CSharp
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 1
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &114419825132685548
@@ -2923,19 +2952,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 114943432658360374}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: Buy
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 11400000, guid: e7924ca17f3a5344bbd7ca3e5c175583,
-            type: 2}
-          m_ObjectArgumentAssemblyTypeName: BaseItem, Assembly-CSharp
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 0
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &114518760924186290
@@ -3596,19 +3613,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 114155883226241252}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: Buy
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 11400000, guid: 97bface3fa90f36459103b7acf8a411b,
-            type: 2}
-          m_ObjectArgumentAssemblyTypeName: BaseItem, Assembly-CSharp
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 1
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &114713960871904256
@@ -3809,19 +3814,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 114057038510322676}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: Buy
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 11400000, guid: cf230b90e3db496449f9a6eb0f4221ca,
-            type: 2}
-          m_ObjectArgumentAssemblyTypeName: BaseItem, Assembly-CSharp
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 1
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &114806254093361574
@@ -4017,19 +4010,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 114247961117410900}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: Buy
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 11400000, guid: e687583b64bb74c4d8a0ce07dfed2e5d,
-            type: 2}
-          m_ObjectArgumentAssemblyTypeName: BaseItem, Assembly-CSharp
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 0
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &114874220898333056

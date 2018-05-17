@@ -10,21 +10,19 @@ public class ShopButtonCollection : ButtonCollection
 
     protected override void Awake()
     {
-        AssignButtonClicks();
     }
 
     protected override void AssignButtonClicks()
     {
+        base.AssignButtonClicks();
         ActionToAssign = new ShopButtonAction();
-        if (ItemsToSell.Count < 0)
+        if (ItemsToSell.Count > 0)
         {
-            buttons = GetComponentsInChildren<Button>().ToList();
             for (int i = 0; i < buttons.Count; i++)
             {
-                buttons[i].onClick.AddListener(delegate
-                {
-                    ((ShopButtonAction)ActionToAssign).Action(ItemsToSell[i]);
-                });
+                BaseItem item = ItemsToSell[i];
+                UnityEngine.Events.UnityAction buyAction = () => ActionToAssign.Action(item);
+                buttons[i].onClick.AddListener(buyAction);
             }
         }
     }
