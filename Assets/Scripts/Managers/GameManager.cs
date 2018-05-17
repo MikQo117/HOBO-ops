@@ -104,9 +104,7 @@ public class GameManager : MonoBehaviour
     public void DayTimeIncreaser(float hours)
     {
         DayTimer = 0.0f;
-        Debug.Log(DayTimer + "Frist");
         DayTimer += hours;
-        Debug.Log(DayTimer + "last");
     }
 
     private void RushHourChecker()

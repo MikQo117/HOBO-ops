@@ -37,7 +37,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1210709970579356}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -10.29, y: -11.62, z: 0}
+  m_LocalPosition: {x: -2.94, y: -5.89, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -67,7 +67,7 @@ Animator:
   m_GameObject: {fileID: 1210709970579356}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 28cf3414a26329541b72c7e378365a68, type: 2}
+  m_Controller: {fileID: 9100000, guid: 9b16403bbabec414c8735f8cc284d5c3, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -86,18 +86,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9aa4190ba6e7b3448639bc1fcbe76d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  movementSpeed: 2.2
+  sprintSpeed: 3.7
   NoOfRays: 20
   raycastMask:
     serializedVersion: 2
     m_Bits: 4294966984
   idleSprites:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 21300000, guid: 4da1417882e94c94a998bebad8c2ea55, type: 3}
+  - {fileID: 21300000, guid: 4da1417882e94c94a998bebad8c2ea55, type: 3}
+  - {fileID: 21300000, guid: 4da1417882e94c94a998bebad8c2ea55, type: 3}
+  - {fileID: 21300000, guid: 4da1417882e94c94a998bebad8c2ea55, type: 3}
+  - {fileID: 21300000, guid: 4da1417882e94c94a998bebad8c2ea55, type: 3}
   exhausted: 0
   collider: {fileID: 70169668376840466}
+  Grid: {fileID: 0}
+  tryInteract: 0
 --- !u!212 &212480495345494680
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -130,12 +134,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300018, guid: 0103009280c8d1a4e9bce299ca86efd4, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 4da1417882e94c94a998bebad8c2ea55, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1.6, y: 2.4}
+  m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
