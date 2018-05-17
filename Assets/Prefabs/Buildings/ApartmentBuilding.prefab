@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4233074062828226}
   - component: {fileID: 212300431234072498}
   - component: {fileID: 60435217319630600}
+  - component: {fileID: 114008650944597184}
   m_Layer: 9
   m_Name: ApartmentBuilding
   m_TagString: Sortable
@@ -37,6 +38,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4362120926860656}
   - component: {fileID: 212584097954831060}
+  - component: {fileID: 114943002611534168}
   m_Layer: 9
   m_Name: ApartmentbuldingHigh_Side
   m_TagString: Sortable
@@ -99,6 +101,34 @@ PolygonCollider2D:
       - {x: 0, y: 0}
       - {x: 4, y: 0}
       - {x: 4.5, y: 0.5}
+--- !u!114 &114008650944597184
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1067968861827880}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ad13220c79e5254f8b013dbbb18ef0a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DefaultMaterial: {fileID: 2100000, guid: 5ef9c963e1b5d6741bd7c38222882faf, type: 2}
+  PlayerIsNear: {fileID: 2100000, guid: cc9cd56a27a24f64f8bb4de18c6df4a2, type: 2}
+  DistanceThreshold: 0.75
+--- !u!114 &114943002611534168
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1095647581730472}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ad13220c79e5254f8b013dbbb18ef0a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DefaultMaterial: {fileID: 2100000, guid: 5ef9c963e1b5d6741bd7c38222882faf, type: 2}
+  PlayerIsNear: {fileID: 2100000, guid: cc9cd56a27a24f64f8bb4de18c6df4a2, type: 2}
+  DistanceThreshold: 0.75
 --- !u!212 &212300431234072498
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -112,7 +142,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 5ef9c963e1b5d6741bd7c38222882faf, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -153,7 +183,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 5ef9c963e1b5d6741bd7c38222882faf, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

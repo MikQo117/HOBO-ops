@@ -198,22 +198,7 @@ public class HoboController : Character
         return hpState == ThresholdState.Satisfied;
     }
 
-    public override void ConsumeItem(int itemID)
-    {
-        if (Inventory.InventoryList.Exists(x => x.BaseItemID == itemID))
-        {
-            if (Inventory.InventoryList.Find(x => x.BaseItemID == itemID).Consumable)
-            {
-                BaseItem ConsumableItem = Inventory.InventoryList.Find(x => x.BaseItemID == itemID);
-
-                base.Health += ConsumableItem.HealthAmount;
-                base.Sanity += ConsumableItem.SanityAmount;
-                Inventory.RemoveItemFromInventory(itemID);
-            }
-        }
-    }
-
-    public void ConsumeItem(BaseItem item)
+    public override void ConsumeItem(BaseItem item)
     {
         if (Inventory.InventoryList.Exists(x => item) && item.Consumable)
         {
@@ -221,6 +206,9 @@ public class HoboController : Character
             base.Sanity += item.SanityAmount;
             Inventory.RemoveItemFromInventory(item.BaseItemID);
         }
+    }
+    protected override void Collision()
+    {
     }
 
     public void ConsumeItem(List<BaseItem> items)

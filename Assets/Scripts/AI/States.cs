@@ -52,7 +52,7 @@ namespace StateStuff
         public override void EnterState(HoboController owner)
         {
             ResetVariables();
-            Debug.Log("Entering scavenge state");
+            //Debug.Log("Entering scavenge state");
             GetTrashCans();
             SendPathRequests(owner.transform.position);
         }
@@ -68,25 +68,25 @@ namespace StateStuff
                     break;
                 case 0:
                     //Paths not received
-                    Debug.Log("Waiting for paths");
+                    //Debug.Log("Waiting for paths");
                     break;
                 case 1:
                     //Paths received
                     //Move
                     if (!owner.MovingToTarget)
                     {
-                        Debug.Log("Movement started");
+                        //Debug.Log("Movement started");
                         owner.Grid.Path = shortestPath;
                         owner.StartMovement(shortestPath);
                     }
                     else
                     {
-                        Debug.Log("Waiting for movement to end");
+                        //Debug.Log("Waiting for movement to end");
                     }
                     break;
                 case 2:
                     //Target reached, stop movement and gather
-                    Debug.Log("Target reached");
+                    //Debug.Log("Target reached");
                     spawns.Remove(spawns.Find(x => x.ActiveTarget == true));
                     owner.tryInteract = true;
                     ResetPaths();
@@ -227,13 +227,13 @@ namespace StateStuff
     {
         public override void EnterState(HoboController owner)
         {
-            Debug.Log("Entering idle state");
+            //Debug.Log("Entering idle state");
             owner.StateMachine.ChangeState(owner.scavengeState);
         }
 
         public override void ExitState(HoboController owner)
         {
-            Debug.Log("Exiting idle state");
+            //Debug.Log("Exiting idle state");
         }
 
         public override void UpdateState(HoboController owner)

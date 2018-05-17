@@ -171,7 +171,7 @@ public abstract class Character : MonoBehaviour
     protected abstract void Beg();
 
     //Interactable Methods
-    public abstract void ConsumeItem(int itemID);
+    public abstract void ConsumeItem(BaseItem item);
     public abstract void Gather(List<BaseItem> items);
     public abstract void ReturnBottle();
     public abstract void Buy(BaseItem item);
@@ -256,7 +256,6 @@ public abstract class Character : MonoBehaviour
         {
             ray = new Ray2D(origin, (movementDirection).normalized);
             RaycastHit2D BuildingHit = Physics2D.Raycast(ray.origin, ray.direction, lengthOfRay, raycastMask);
-
             if (inputDirection.x != 0 && inputDirection.y == 0)
                 origin += new Vector2(0, distanceBetweenRaysY);
             else
@@ -310,24 +309,56 @@ public abstract class Character : MonoBehaviour
 
     protected void AnimationChanger()
     {
-        //sideways movement animator changer
-        if (inputDirection.x != 0 && inputDirection.y == 0) { animator.Play(AnimationClips.WalkSideways.ToString()); currentIdleSprite = idleSprites[3]; SpriteFlip(true); }
+        if (Mathf.Abs(inputDirection.x) + Mathf.Abs(inputDirection.y) != 0)
+        {
+            //sideways movement animator changer
+            if (inputDirection.x != 0 && inputDirection.y == 0)
+            {
+                animator.Play(AnimationClips.WalkSideways.ToString());
+                currentIdleSprite = idleSprites[3];
+                SpriteFlip(true);
+            }
 
-        //walking down animator changer
-        if (inputDirection.x == 0 && inputDirection.y < 0) { animator.Play(AnimationClips.WalkDown.ToString()); currentIdleSprite = idleSprites[0]; SpriteFlip(false); }
+            //walking down animator changer
+            if (inputDirection.x == 0 && inputDirection.y < 0)
+            {
+                animator.Play(AnimationClips.WalkDown.ToString());
+                currentIdleSprite = idleSprites[0];
+                SpriteFlip(false);
+            }
 
-        //walking upwards animation changer
-        if (inputDirection.x == 0 && inputDirection.y > 0) { animator.Play(AnimationClips.WalkUp.ToString()); currentIdleSprite = idleSprites[4]; SpriteFlip(false); }
+            //walking upwards animation changer
+            if (inputDirection.x == 0 && inputDirection.y > 0)
+            {
+                animator.Play(AnimationClips.WalkUp.ToString());
+                currentIdleSprite = idleSprites[4];
+                SpriteFlip(false);
+            }
 
-        //strafing upwards animation changer
-        if (inputDirection.x != 0 && inputDirection.y > 0) { animator.Play(AnimationClips.WalkStrafeUp.ToString()); currentIdleSprite = idleSprites[1]; SpriteFlip(false); }
+            //strafing upwards animation changer
+            if (inputDirection.x != 0 && inputDirection.y > 0)
+            {
+                animator.Play(AnimationClips.WalkStrafeUp.ToString());
+                currentIdleSprite = idleSprites[1];
+                SpriteFlip(false);
+            }
 
-        //strafing downwards animation changer
-        if (inputDirection.x != 0 && inputDirection.y < 0) { animator.Play(AnimationClips.WalkStrafeDown.ToString()); currentIdleSprite = idleSprites[2]; SpriteFlip(false); }
-
-        //Idle
-        if (inputDirection.x == 0 && inputDirection.y == 0) {  /*animator.Play(AnimationClips.Idle.ToString())*/; Sr.sprite = currentIdleSprite; }
-
+            //strafing downwards animation changer
+            if (inputDirection.x != 0 && inputDirection.y < 0)
+            {
+                animator.Play(AnimationClips.WalkStrafeDown.ToString());
+                currentIdleSprite = idleSprites[2];
+                SpriteFlip(false);
+            }
+        }
+        else
+        {
+            if (Sr.sprite != currentIdleSprite)
+            {
+                Sr.sprite = currentIdleSprite;
+            }
+        }
+            
     }
 
     protected virtual void SpriteFlip(bool inverted)
