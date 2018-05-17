@@ -32,20 +32,20 @@ public class BaseItem : ScriptableObject
         get { return drunkAmount; }
     }
 
-    public float MoneyAmount
+    public decimal MoneyAmount
     {
         get
         {
             if (!Consumable)
-                return moneyAmount;
+                return (decimal)moneyAmount;
             else
                 return 0;
         }
     }
 
-    public float ItemCost
+    public decimal ItemCost
     {
-        get { return itemCost; }
+        get { return (decimal)itemCost; }
     }
 
     public int BaseItemID

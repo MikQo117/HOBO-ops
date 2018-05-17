@@ -10,7 +10,7 @@ public abstract class Character : MonoBehaviour
     protected float        drunkAmount;
     protected float        stamina = 100;
     protected float        staminaRecoveryRate = 2;
-    protected float        moneyAmount = 2;
+    protected decimal      moneyAmount = 2M;
 
     //Max stats
     protected int          maxHealth = 100;
@@ -122,7 +122,7 @@ public abstract class Character : MonoBehaviour
             }
         }
     }
-    public virtual float MoneyAmount
+    public virtual decimal MoneyAmount
     {
         get { return moneyAmount; }        
     }

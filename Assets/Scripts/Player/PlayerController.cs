@@ -51,7 +51,7 @@ public class PlayerController : Character
 
     protected override void GetInput()
     {
-        if (!shopping || !Paused)
+        if (!shopping)
         {
             if (InputManager.Instance.AxisDown("Horizontal") || InputManager.Instance.AxisDown("Vertical"))
             {
