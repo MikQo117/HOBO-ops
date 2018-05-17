@@ -634,13 +634,14 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 224600557203926684}
+  - component: {fileID: 114786515445217686}
   m_Layer: 5
   m_Name: InventoryButtons
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1468028107147186
 GameObject:
   m_ObjectHideFlags: 1
@@ -3735,6 +3736,26 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: 1 bottle = 0.10
+--- !u!114 &114786515445217686
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1459679386075428}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0268ff8b5708df43a18db3263c21541, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  InventoryItems:
+  - {fileID: 11400000, guid: e7924ca17f3a5344bbd7ca3e5c175583, type: 2}
+  - {fileID: 11400000, guid: e687583b64bb74c4d8a0ce07dfed2e5d, type: 2}
+  - {fileID: 11400000, guid: cf230b90e3db496449f9a6eb0f4221ca, type: 2}
+  - {fileID: 11400000, guid: 22e4fac2e32de3f42b21b66b556dbf16, type: 2}
+  - {fileID: 11400000, guid: af8632615a535594baf87c4a9d0f87ea, type: 2}
+  - {fileID: 11400000, guid: 0f214d8a890dfb54b961d738fbad197a, type: 2}
+  - {fileID: 11400000, guid: 97bface3fa90f36459103b7acf8a411b, type: 2}
+  - {fileID: 11400000, guid: c0476f5cf6f393d45ad36c97eaf36dc2, type: 2}
 --- !u!114 &114790678316792040
 MonoBehaviour:
   m_ObjectHideFlags: 1

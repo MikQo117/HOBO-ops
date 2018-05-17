@@ -171,7 +171,7 @@ public class HoboController : Character
                 IInteractable temp = item.GetComponent<IInteractable>();
                 if (tryInteract)
                 {
-                    Debug.Log("Try to interact");
+                    //Debug.Log("Try to interact");
                     temp.Interact(this);
                     tryInteract = false;
                 }

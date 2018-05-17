@@ -18,7 +18,7 @@ public abstract class Character : MonoBehaviour
     protected int          maxStamina= 100;
 
     //stat decay variables
-    protected const float healthDecay  = 0.25f;
+    protected const float healthDecay  = 0.5f;
     protected const float sanityDecay  = 0.1f;
     protected const float staminaDecay = 10.0f;
 

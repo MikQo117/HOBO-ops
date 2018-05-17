@@ -107,28 +107,28 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1067968861827880}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0ad13220c79e5254f8b013dbbb18ef0a, type: 3}
+  m_Script: {fileID: 11500000, guid: 4fa9168df4e68d1419a403f48b0d463b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   DefaultMaterial: {fileID: 2100000, guid: 5ef9c963e1b5d6741bd7c38222882faf, type: 2}
   PlayerIsNear: {fileID: 2100000, guid: cc9cd56a27a24f64f8bb4de18c6df4a2, type: 2}
-  DistanceThreshold: 0.75
+  DistanceThreshold: 0.5
 --- !u!114 &114943002611534168
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1095647581730472}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0ad13220c79e5254f8b013dbbb18ef0a, type: 3}
+  m_Script: {fileID: 11500000, guid: 4fa9168df4e68d1419a403f48b0d463b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   DefaultMaterial: {fileID: 2100000, guid: 5ef9c963e1b5d6741bd7c38222882faf, type: 2}
   PlayerIsNear: {fileID: 2100000, guid: cc9cd56a27a24f64f8bb4de18c6df4a2, type: 2}
-  DistanceThreshold: 0.75
+  DistanceThreshold: 0.5
 --- !u!212 &212300431234072498
 SpriteRenderer:
   m_ObjectHideFlags: 1
