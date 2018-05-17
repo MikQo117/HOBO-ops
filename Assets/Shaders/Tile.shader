@@ -2,7 +2,7 @@
 {
 	Properties
 	{
-		[PerRendererData] _MainTex("Sprite Texture", 2D) = "white" {}
+		[PerRendererData] _MainTex("Sprite", 2D) = "white" {}
 	}
 
 	SubShader
@@ -20,6 +20,7 @@
 
 		Cull Back
 		Lighting Off
+		ZTest Less
 		ZWrite Off
 		Blend One OneMinusSrcAlpha
 

@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4661395503361176}
   - component: {fileID: 212727751507529008}
   - component: {fileID: 60341607813161724}
+  - component: {fileID: 114487553134463060}
   m_Layer: 9
   m_Name: LiqourStore
   m_TagString: Sortable
@@ -54,6 +55,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4480783701357444}
   - component: {fileID: 212300354388436828}
+  - component: {fileID: 114258224666186534}
   m_Layer: 9
   m_Name: LiqourStore_Side
   m_TagString: Sortable
@@ -145,6 +147,34 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.87, y: 0.28}
   m_Direction: 1
+--- !u!114 &114258224666186534
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1311156199592486}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ad13220c79e5254f8b013dbbb18ef0a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DefaultMaterial: {fileID: 2100000, guid: 5ef9c963e1b5d6741bd7c38222882faf, type: 2}
+  PlayerIsNear: {fileID: 2100000, guid: cc9cd56a27a24f64f8bb4de18c6df4a2, type: 2}
+  DistanceThreshold: 0.75
+--- !u!114 &114487553134463060
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1154211305993674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ad13220c79e5254f8b013dbbb18ef0a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DefaultMaterial: {fileID: 2100000, guid: 5ef9c963e1b5d6741bd7c38222882faf, type: 2}
+  PlayerIsNear: {fileID: 2100000, guid: cc9cd56a27a24f64f8bb4de18c6df4a2, type: 2}
+  DistanceThreshold: 0.75
 --- !u!114 &114811169951790260
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -172,7 +202,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 5ef9c963e1b5d6741bd7c38222882faf, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -213,7 +243,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 5ef9c963e1b5d6741bd7c38222882faf, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

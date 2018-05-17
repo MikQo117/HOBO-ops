@@ -9,6 +9,25 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    public GameObject Player;
+
+    private SpriteRenderer PlayerSR;
+
+    public int PlayerOrderInLayer
+    {
+        get
+        {
+            return PlayerSR.sortingOrder;
+        }
+    }
+    public Transform PlayerTransform
+    {
+        get
+        {
+            return Player.transform;
+        }
+    }
+
     //Interaction variables
     public List<IInteractable> interactables = new List<IInteractable>();
     private List<TrashSpawn> trashSpawns = new List<TrashSpawn>();
@@ -146,6 +165,9 @@ public class GameManager : MonoBehaviour
         {
             instance = this;
         }
+
+        Player = GameObject.Find("Player");
+        PlayerSR = Player.GetComponent<SpriteRenderer>();
     }
 
     private void Start()
