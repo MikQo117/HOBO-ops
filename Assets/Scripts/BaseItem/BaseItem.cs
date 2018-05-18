@@ -15,7 +15,7 @@ public class BaseItem : ScriptableObject
     [SerializeField] private bool     consumable;
     [SerializeField] private Sprite   objectSprite;
     [SerializeField] private float    itemCost;
-    [SerializeField] private float dropProBability;
+    [SerializeField] private float dropProbability;
     //Get & Set
     public float HealthAmount
     {
@@ -32,20 +32,20 @@ public class BaseItem : ScriptableObject
         get { return drunkAmount; }
     }
 
-    public float MoneyAmount
+    public decimal MoneyAmount
     {
         get
         {
             if (!Consumable)
-                return moneyAmount;
+                return (decimal)moneyAmount;
             else
                 return 0;
         }
     }
 
-    public float ItemCost
+    public decimal ItemCost
     {
-        get { return itemCost; }
+        get { return (decimal)itemCost; }
     }
 
     public int BaseItemID
@@ -72,6 +72,6 @@ public class BaseItem : ScriptableObject
 
     public float DropProBability
     {
-        get { return dropProBability; }
+        get { return dropProbability; }
     }
 }

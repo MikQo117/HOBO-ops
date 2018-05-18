@@ -1,5 +1,5 @@
 ManifestFileVersion: 0
-CRC: 4135382544
+CRC: 202009446
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
@@ -7,10 +7,4 @@ AssetBundleManifest:
       Dependencies: {}
     Info_1:
       Name: settings
-      Dependencies: {}
-    Info_2:
-      Name: tiles.road
-      Dependencies: {}
-    Info_3:
-      Name: tiles.sidewalk
       Dependencies: {}

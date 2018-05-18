@@ -8,18 +8,15 @@ public class PixelPerfect : MonoBehaviour
 {
     private int pixelsPerUnit;
 
-    private Camera c;
-
     private void SetCameraSize(int pixelsPerUnit)
     {
-        c.orthographicSize = Screen.height * 0.5f / pixelsPerUnit;
+        GetComponent<Camera>().orthographicSize = Screen.height * 0.5f / pixelsPerUnit;
     }
 
     private void LateUpdate()
     {
         if (SettingsManager.Instance.Settings)
         {
-            c = GetComponent<Camera>();
             pixelsPerUnit = SettingsManager.Instance.Settings.PixelsPerUnit;
             SetCameraSize(pixelsPerUnit);
             Destroy(this);

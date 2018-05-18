@@ -1,11 +1,19 @@
 fileFormatVersion: 2
 guid: 45a23dd6eb13da440a38b09d0214b622
+<<<<<<< HEAD
 timeCreated: 1525436059
+=======
+timeCreated: 1526282356
+>>>>>>> feature/qa
 licenseType: Pro
 MonoImporter:
   serializedVersion: 2
   defaultReferences: []
+<<<<<<< HEAD
   executionOrder: 50
+=======
+  executionOrder: 100
+>>>>>>> feature/qa
   icon: {instanceID: 0}
   userData: 
   assetBundleName: 

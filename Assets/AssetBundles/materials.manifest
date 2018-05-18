@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 1391389698
+CRC: 1759115388
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: ca2fca7c84d060ccffa70bc5b2f6e9ea
+    Hash: e32e6241d16b6721e7fc4c48192fac21
   TypeTreeHash:
     serializedVersion: 2
     Hash: 60a7cae25bfd71c49bd2c87b5187f6b5
@@ -14,5 +14,6 @@ ClassTypes:
 - Class: 48
   Script: {instanceID: 0}
 Assets:
+- Assets/Materials/Tile.mat
 - Assets/Materials/PixelSnap.mat
 Dependencies: []

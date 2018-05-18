@@ -32,6 +32,7 @@ public class AssetManager : MonoBehaviour
     private void Awake()
     {
         path = Application.dataPath + "/AssetBundles";
+
         AssetBundlesList.Add(AssetBundle.LoadFromFile(path + "/materials"));
         AssetBundlesList.Add(AssetBundle.LoadFromFile(path + "/settings"));
     }

@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using UnityEngine;
+﻿using UnityEngine;
 
 [RequireComponent(typeof(Collider2D))]
 public class Store : MonoBehaviour, IInteractable
@@ -14,7 +13,14 @@ public class Store : MonoBehaviour, IInteractable
 
     public void Interact(Character source)
     {
-        source.ReturnBottle();
+        if (source.GetType() != typeof(PlayerController))
+        {
+            source.ReturnBottle();
+        }
+        else
+        {
+            PlayerController.pl.InterractWithStore();
+        }
     }
 
     private void Start()

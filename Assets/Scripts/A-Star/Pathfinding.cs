@@ -65,7 +65,7 @@ public class Pathfinding : MonoBehaviour
                 {
                     //Path found
                     sw.Stop();
-                    print("Path found: " + sw.ElapsedMilliseconds + " ms");
+                    //print("Path found: " + sw.ElapsedMilliseconds + " ms");
                     pathSuccess = true;
                     break;
                 }

@@ -11,7 +11,7 @@ public class Grid : MonoBehaviour
     public LayerMask  UnwalkableMask;
     public Vector2    GridWorldSize;
     public float      NodeRadius;
-    public Vector2[] Path;
+    public Vector2[]  Path;
     private Node[,]   grid;
 
     private float     nodeDiameter;
@@ -143,13 +143,44 @@ public class Grid : MonoBehaviour
     {
         Gizmos.DrawWireCube(transform.position, new Vector3(GridWorldSize.x, GridWorldSize.y, 1));
 
-        if (Path != null)
+        if (true)
         {
-            foreach (Vector2 position in Path)
+            if (grid != null && DisplayGridGizmos)
             {
-                Gizmos.color = Color.red;
-                Gizmos.DrawCube(position, Vector3.one * (nodeDiameter - .1f));
+                /*foreach (Node n in Path)
+                {
+                    Gizmos.color = Color.red;
+                    Gizmos.DrawCube(n.WorldPosition, Vector3.one * (nodeDiameter - .1f));
+                }*/
+
+                foreach (Node n in grid)
+                {
+                    if(n.Walkable)
+                    {
+                        Gizmos.color = Color.green;
+                    }
+                    else
+                    {
+                        Gizmos.color = Color.red;
+                    }
+                    Gizmos.DrawCube(n.WorldPosition, Vector3.one * (nodeDiameter - .01f));
+                }
             }
+        }
+        else
+        {
+
+            /*if (grid != null)
+            {
+                foreach (Node n in grid)
+                {
+                    Gizmos.color = (n.Walkable) ? Color.white : Color.red;
+                    if (Path != null)
+                        if (Path.Contains(n))
+                            Gizmos.color = Color.black;
+                    Gizmos.DrawCube(n.WorldPosition, Vector3.one * (nodeDiameter - .1f));
+                }
+            }*/
         }
     }
 

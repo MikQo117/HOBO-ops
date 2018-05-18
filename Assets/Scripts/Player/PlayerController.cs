@@ -1,22 +1,28 @@
 ﻿using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
-
+using System;
 
 public class PlayerController : Character
 {
     //Player Variables
     public static PlayerController pl;
-
+    private bool shopping;
+    public bool Gathered;
+    private bool paused;
 
     //Camera Variables
-    public  Camera  mainCamera;
-    private float   lenght = 1000;
-    private Vector3 SprintVelocity;
+    public Camera mainCamera;
+    private Vector2 SprintVelocity;
     private Vector3 CameraZoffset = new Vector3(0, 0, -5);
-    private float   smoothTime = 0.3f;
-
+    private float smoothTime = 0.3f;
     public Bounds bound;
+
+    //Get & Set
+    public bool Paused
+    {
+        get { return paused; }
+    }
 
     //Minigame methods
     protected override void Attack()
@@ -27,124 +33,249 @@ public class PlayerController : Character
     {
     }
 
-    //Interaction Methods
-    public override void ConsumeItem(int itemID)
+    //Player actions 
+    protected void CameraMovement()
     {
-        if (Inventory.InventoryList.Exists(x => x.BaseItemID == itemID))
-        {
-            if (Inventory.InventoryList.Find(x => x.BaseItemID == itemID).Consumable)
-            {
-                BaseItem ConsumableItem = Inventory.InventoryList.Find(x => x.BaseItemID == itemID);
+        mainCamera.transform.position = Vector2.SmoothDamp(mainCamera.transform.position, transform.TransformPoint(movementDirection * 3), ref SprintVelocity, smoothTime, Mathf.Infinity, Time.deltaTime);
+        mainCamera.transform.position = new Vector3(mainCamera.transform.position.x, mainCamera.transform.position.y, CameraZoffset.z);
+    }
 
-                base.Health += ConsumableItem.HealthAmount;
-                base.Sanity += ConsumableItem.SanityAmount;
-                DrunkAmount += ConsumableItem.DrunkAmount;
-                Inventory.RemoveItemFromInventory(itemID);
-            }
+    private void PauseMethod()
+    {
+
+        if (paused)
+        {
+            //UIManager.Instance.PauseMenu(paused);
         }
+    }
+
+    protected override void GetInput()
+    {
+        if (!shopping)
+        {
+            if (InputManager.Instance.AxisDown("Horizontal") || InputManager.Instance.AxisDown("Vertical"))
+            {
+                //Determines wanted direction
+                Vector2 direction = Vector2.right * InputManager.Instance.XAxis + Vector2.up * InputManager.Instance.YAxis;
+
+                float directionMagnitude = direction.magnitude;
+
+                if (directionMagnitude > 1)
+                {
+                    directionMagnitude = 1;
+                }
+
+                //Destination is unit vector * Speed and directions magnitude effects on how much speed is used;
+                inputDirection = direction.normalized * directionMagnitude;
+            }
+            else
+            {
+                inputDirection = Vector3.zero;
+            }
+            movementDirection = inputDirection;
+            //Sprint
+            if (InputManager.Instance.AxisDown("Fire3"))
+                sprinting = true;
+            else
+                sprinting = false;
+        }
+        else
+        {
+            movementDirection = Vector3.zero;
+            sprinting = false;
+        }
+
+        if (InputManager.Instance.AxisDown("Pause"))
+        {
+            paused = !paused;
+        }
+    }
+
+    public override void ConsumeItem(BaseItem item)
+    {
+        
+            if (Inventory.InventoryList.Exists(x => item) && item.Consumable)
+            {
+
+
+                if (item.BaseItemID == 0)
+                {
+                    GameManager.Instance.BeersConsumed++;
+                }
+                else if (item.BaseItemID == 1)
+                {
+                    GameManager.Instance.WhiskeyConsumed++;
+                }
+                else
+                {
+                    GameManager.Instance.FoodConsumed++;
+                }
+
+                base.Health += item.HealthAmount;
+                base.Sanity += item.SanityAmount;
+                Inventory.RemoveItemFromInventory(item);
+            Debug.Log("removed");
+        }
+        
     }
 
     public override void ReturnBottle()
     {
-        List<BaseItem> items = Inventory.InventoryList.FindAll(x => x.BaseItemID == 0);
-        if (items != null && returningBottles)
+        List<BaseItem> items = Inventory.InventoryList.FindAll(x => x.BaseItemID == 8);
+        if (items != null)
         {
             for (int i = 0; i < items.Count; i++)
             {
                 moneyAmount += items.First().MoneyAmount;
                 Inventory.RemoveItemFromInventory(items.First());
             }
+        }
+    }
 
+    public void InterractionWithBench()
+    {
+        if (canSleep)
+        {
+            if (InputManager.Instance.AxisPressed("Use"))
+            {
+                shopping = !shopping;
+                UIManager.Instance.SleepWindow(shopping);
+            }
         }
         else
         {
-            //Display UI stuff that inventory is empty of bottles
-            return;
+            if (InputManager.Instance.AxisPressed("Use"))
+            {
+                StartCoroutine(UIManager.Instance.SleepTextActivator());
+            }
+        }
+
+    }
+
+    protected override void Collision()
+    {
+        base.Collision();
+        
+    }
+
+    public override void Sleep()
+    {
+    }
+
+    public override void Sleep(int hours)
+    {
+        if (hours > 0)
+        {
+            canSleep = false;
+            sleeping = true;
+
+            for (int i = 0; i < hours; i++)
+            {
+                Health += healthGain;
+                Sanity += sanityGain;
+            }
+            float temp = GameManager.Instance.DayTimer;
+            GameManager.Instance.DayTimer += hours * GameManager.Instance.Hour;
+            sleepTimer = 180.0f;
+
+            if (GameManager.Instance.DayTimer > 456.0f)
+            {
+                GameManager.Instance.DayTimeIncreaser(hours * GameManager.Instance.Hour - (456 - temp));
+            }
+            GameManager.Instance.TimesSlept++;
+            sleeping = false;
         }
     }
 
-    public override void Buy(BaseItem item)
+    //Interact Methods
+    public void InterractWithStore()
     {
-            Inventory.AddItemToInventory(item);
-            moneyAmount -= item.ItemCost;
+        if (InputManager.Instance.AxisPressed("Use"))
+        {
+            shopping = !shopping;
+        }
+        UIManager.Instance.ShopWindow(shopping);
     }
 
-    protected override void Death()
+    public void InterractWithLiqourStore()
     {
-
+        if (InputManager.Instance.AxisPressed("Use"))
+        {
+            shopping = !shopping;
+        }
+        UIManager.Instance.LiqourStoreWindow(shopping);
     }
 
     public override void Gather(List<BaseItem> items)
     {
-        if (items != null)
+        if (InputManager.Instance.AxisPressed("Use"))
         {
-            //Some ui thing to show what we gathered
-            pl.Inventory.AddItemToInventory(items);
-        }
-        else
-        {
-            //No items found
-        }
-    }
-
-    protected override void GetInput()
-    {
-        if (InputManager.Instance.AxisDown("Horizontal") || InputManager.Instance.AxisDown("Vertical"))
-        {
-            //Determines wanted direction
-            Vector2 direction = Vector2.right * InputManager.Instance.XAxis + Vector2.up * InputManager.Instance.YAxis;
-
-            float directionMagnitude = direction.magnitude;
-
-            if (directionMagnitude > 1)
+            if (items != null)
             {
-                directionMagnitude = 1;
+                if (!UIManager.Instance.CRisRunning)
+                {
+                    StartCoroutine(UIManager.Instance.PickupIndicator(items));
+                }
+                Inventory.AddItemToInventory(items);
+                items.Clear();
+                Gathered = true;
             }
-
-            //Destination is unit vector * Speed and directions magnitude effects on how much speed is used;
-            movementDirection = direction.normalized *  directionMagnitude;
+            else
+            {
+                UIManager.Instance.NoItemIndicator();
+            }
         }
         else
         {
-            movementDirection = Vector3.zero;
+            Gathered = false;
         }
-
-        //Sprint
-        if (InputManager.Instance.AxisDown("Fire3"))
-            sprinting = true;
-        else
-            sprinting = false;
-        returningBottles = Input.GetKeyDown(KeyCode.E) ? true : false;
 
     }
 
-    protected void CameraMovement()
+    public override void Buy(BaseItem item)
     {
-
-        Vector3 temp = Vector3.SmoothDamp(mainCamera.transform.position, transform.TransformPoint(movementDirection * 3), ref SprintVelocity, smoothTime);
-
-        if (Sprinting && !exhausted)
+        if (MoneyAmount >= item.ItemCost)
         {
-            mainCamera.transform.position = temp + CameraZoffset;
+            if (item.BaseItemID == 0)
+            {
+                GameManager.Instance.BeersBought++;
+            }
+            else if (item.BaseItemID == 1)
+            {
+                GameManager.Instance.WhiskeyBought++;
+            }
+            else
+            {
+                GameManager.Instance.FoodBought++;
+            }
+            Inventory.AddItemToInventory(item);
+            moneyAmount -= item.ItemCost;
         }
-        else
-        {
-            mainCamera.transform.position = Vector3.MoveTowards(temp, transform.position, smoothTime * Time.deltaTime * lenght) + CameraZoffset;
-        }
+    }
+
+    protected override void Death()
+    {
+        UIManager.Instance.DeathScreen();
+    }
+
+    protected override void SpriteFlip(bool inverted)
+    {
+        base.SpriteFlip(false);
     }
 
     //Unity Methods
     protected override void Start()
     {
         base.Start();
+        shopping = false;
         mainCamera = Camera.main;
     }
 
-    // Update is called once per frame
     protected override void Update()
     {
         base.Update();
         CameraMovement();
+        PauseMethod();
     }
 
     protected override void Awake()
@@ -157,6 +288,4 @@ public class PlayerController : Character
             inputManager.name = "InputManager";
         }
     }
-
-
 }
