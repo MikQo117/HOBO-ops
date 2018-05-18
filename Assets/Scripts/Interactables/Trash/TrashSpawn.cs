@@ -13,11 +13,11 @@ public class TrashSpawn : MonoBehaviour, IInteractable
     private new Collider2D         collider;
     //variables
     private double                 diceRoll;
-    private double                 cumulative = 0.0f;
+    private double                 cumulative;
     private int                    numberOfItems;
     //constatnts
     private const int              maxNumberOfItems = 4;
-    private const double           bottleDropChance = 0.7f;
+    private const double           bottleDropChance = 0.7d;
 
     //GET & SET
     public List<BaseItem> Spawnableitems

@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class Building : MonoBehaviour
 {
-    private Material currentMaterial;
     private Material[] materials = new Material[2];
     private SpriteRenderer sr;
 
@@ -13,7 +12,23 @@ public class Building : MonoBehaviour
 
     IEnumerator LoadMaterials()
     {
-        AssetBundle ab = AssetManager.Instance.AssetBundlesList[0];
+        AssetBundle ab = null;
+
+        for (int i = 0; i < AssetManager.Instance.AssetBundlesList.Count; i++)
+        {
+            if(AssetManager.Instance.AssetBundlesList[i].name == "materials")
+            {
+                ab = AssetManager.Instance.AssetBundlesList[i];
+            }
+        }
+
+        if(ab == null)
+        {
+            Debug.LogError("Cannot find materials AssetBundle");
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+#endif
+        }
 
         AssetBundleRequest abr = ab.LoadAllAssetsAsync<Material>();
         yield return abr;
@@ -22,13 +37,11 @@ public class Building : MonoBehaviour
         {
             if (abr.allAssets[i].name == "BuildingDefault")
             {
-                Material defaultMaterial = (Material)abr.allAssets[i];
-                materials[0] = defaultMaterial;
+                materials[0] = (Material)abr.allAssets[i];
             }
             else if (abr.allAssets[i].name == "PlayerIsNear")
             {
-                Material playerIsNear = (Material)abr.allAssets[i];
-                materials[1] = playerIsNear;
+                materials[1] = (Material)abr.allAssets[i];
             }
         }
 
@@ -41,7 +54,6 @@ public class Building : MonoBehaviour
     private void Awake()
     {
         sr = GetComponent<SpriteRenderer>();
-        currentMaterial = GetComponent<Material>();
 
         StartCoroutine(LoadMaterials());
     }
@@ -61,7 +73,7 @@ public class Building : MonoBehaviour
                         if (transform.position.y < GameManager.Instance.PlayerTransform.position.y)
                         {
                             sr.materials[0].color = Vector4.zero;
-                            sr.materials[1].color = Vector4.one;
+                            sr.materials[1].color = new Vector4(0.5f, 0.5f, 0.5f, 1.0f);
                         }
                     }
                 }

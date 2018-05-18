@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System.IO;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -33,8 +34,15 @@ public class AssetManager : MonoBehaviour
     {
         path = Application.dataPath + "/AssetBundles";
 
-        AssetBundlesList.Add(AssetBundle.LoadFromFile(path + "/materials"));
-        AssetBundlesList.Add(AssetBundle.LoadFromFile(path + "/settings"));
+        string[] files = Directory.GetFiles(path);
+
+        for (int i = 0; i < files.Length; i++)
+        {
+            if (Path.GetExtension(files[i]) == "")
+            {
+                AssetBundlesList.Add(AssetBundle.LoadFromFile(files[i]));
+            }
+        }
     }
 
 }

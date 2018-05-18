@@ -33,15 +33,6 @@ public class SettingsManager : MonoBehaviour
 
         AssetBundle ab = AssetManager.Instance.AssetBundlesList.Find(AB => AB.Contains("settings"));
 
-        for (int i = 0; i < abl.Count; i++)
-        {
-            if(abl[i].name == "settings")
-            {
-                ab = abl[i];
-                break;
-            }
-        }
-    
         Settings = ab.LoadAsset<Settings>("Settings.asset");
     }
 

@@ -69,9 +69,9 @@
 			fixed4 frag(v2f IN) : SV_Target
 			{
 				fixed4 c = tex2D(_MainTex, IN.texcoord);
-				c.rgb *= c.a;				
+				c.rgb = 0.5;				
 				c.a *= 0.01;
-				c *= _Color;
+				c *= _Color.a;
 				return c;
 			}
 
