@@ -43,10 +43,11 @@ public class GameManager : MonoBehaviour
     private const float regulartimeDrop = 30.0f;
     private const float rushHourTimeDrop = 15.0f;
     private bool rushHour;
-    private const float hour = 18.75f; 
+    private const float hour = 18.75f;
+    private int  daycount;
 
     private static GameManager instance;
-
+    //Statistic variables
     private float timer;
     public int TrashcansLooted = 0;
     public int BeersBought = 0;
@@ -117,13 +118,23 @@ public class GameManager : MonoBehaviour
                 ResetTimer();
             }
         }
-
+        DayIncreaser();
     }
 
     public void DayTimeIncreaser(float hours)
     {
         DayTimer = 0.0f;
+        DayIncreaser();
         DayTimer += hours;
+    }
+
+    private void DayIncreaser()
+    {
+        if (DayTimer == 0.0f)
+        {
+            daycount++;
+            UIManager.Instance.DayCounterUpdater(daycount);
+        }
     }
 
     private void RushHourChecker()
@@ -181,14 +192,22 @@ public class GameManager : MonoBehaviour
             }
         }
         ResetTimer();
+        daycount = 1;
     }
 
     private void Update()
     {
-        TimeChanger();
-        IntervalChecker();
-        AddItemToTrashCans();
-        timer += Time.deltaTime;
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            DayTimer += 20;
+        }
+        if (!PlayerController.pl.Paused)
+        {
+            TimeChanger();
+            IntervalChecker();
+            AddItemToTrashCans();
+            timer += Time.deltaTime;
+        }
     }
 
     private void LateUpdate()

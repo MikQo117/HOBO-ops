@@ -7,9 +7,11 @@ public class PlayerController : Character
 {
     //Player Variables
     public static PlayerController pl;
-    private bool shopping;
+    private bool interaction;
     public bool Gathered;
+    private bool shopping;
     private bool paused;
+    private bool submit;
 
     //Camera Variables
     public Camera mainCamera;
@@ -22,6 +24,32 @@ public class PlayerController : Character
     public bool Paused
     {
         get { return paused; }
+    }
+
+    public bool Interaction
+    {
+        get
+        {
+            return interaction;
+        }
+
+        set
+        {
+            interaction = value;
+        }
+    }
+
+    public bool Submit
+    {
+        get
+        {
+            return submit;
+        }
+
+        set
+        {
+            submit = value;
+        }
     }
 
     //Minigame methods
@@ -51,72 +79,99 @@ public class PlayerController : Character
 
     protected override void GetInput()
     {
-        if (!shopping)
+        if (!paused)
         {
-            if (InputManager.Instance.AxisDown("Horizontal") || InputManager.Instance.AxisDown("Vertical"))
+            if (!shopping)
             {
-                //Determines wanted direction
-                Vector2 direction = Vector2.right * InputManager.Instance.XAxis + Vector2.up * InputManager.Instance.YAxis;
-
-                float directionMagnitude = direction.magnitude;
-
-                if (directionMagnitude > 1)
+                if (InputManager.Instance.AxisDown("Horizontal") || InputManager.Instance.AxisDown("Vertical"))
                 {
-                    directionMagnitude = 1;
+                    //Determines wanted direction
+                    Vector2 direction = Vector2.right * InputManager.Instance.XAxis + Vector2.up * InputManager.Instance.YAxis;
+
+                    float directionMagnitude = direction.magnitude;
+
+                    if (directionMagnitude > 1)
+                    {
+                        directionMagnitude = 1;
+                    }
+                    //Destination is unit vector * Speed and directions magnitude effects on how much speed is used;
+                    inputDirection = direction.normalized * directionMagnitude;
+                }
+                else
+                {
+                    inputDirection = Vector3.zero;
                 }
 
-                //Destination is unit vector * Speed and directions magnitude effects on how much speed is used;
-                inputDirection = direction.normalized * directionMagnitude;
+                //Apply inputvector to overall movementvector which is calculated in character class
+                movementDirection = inputDirection;
+
+                //Sprint
+                if (InputManager.Instance.AxisDown("Fire3"))
+                    sprinting = true;
+                else
+                    sprinting = false;
             }
             else
             {
-                inputDirection = Vector3.zero;
-            }
-            movementDirection = inputDirection;
-            //Sprint
-            if (InputManager.Instance.AxisDown("Fire3"))
-                sprinting = true;
-            else
+                movementDirection = Vector3.zero;
                 sprinting = false;
-        }
-        else
-        {
-            movementDirection = Vector3.zero;
-            sprinting = false;
+            }
+
+            if (InputManager.Instance.AxisPressed("Submit") && interaction)
+            {
+                Submit = !Submit;
+            }
+
+            if (canInteract)
+            {
+                if (InputManager.Instance.AxisPressed("Use"))
+                {
+                    Interaction = !Interaction;
+                }
+            }
+            else
+            {
+                Interaction = false;
+            }
+
         }
 
-        if (InputManager.Instance.AxisDown("Pause"))
+        if (InputManager.Instance.AxisPressed("Pause"))
         {
-            paused = !paused;
+            if (!interaction)
+            {
+                paused = !paused;
+            }
+            else
+            {
+                interaction = false;
+            }
         }
     }
 
     public override void ConsumeItem(BaseItem item)
     {
-        
-            if (Inventory.InventoryList.Exists(x => item) && item.Consumable)
+
+        if (Inventory.InventoryList.Exists(x => x == item) && item.Consumable)
+        {
+            if (item.BaseItemID == 0)
             {
+                GameManager.Instance.BeersConsumed++;
+            }
+            else if (item.BaseItemID == 1)
+            {
+                GameManager.Instance.WhiskeyConsumed++;
+            }
+            else
+            {
+                GameManager.Instance.FoodConsumed++;
+            }
 
-
-                if (item.BaseItemID == 0)
-                {
-                    GameManager.Instance.BeersConsumed++;
-                }
-                else if (item.BaseItemID == 1)
-                {
-                    GameManager.Instance.WhiskeyConsumed++;
-                }
-                else
-                {
-                    GameManager.Instance.FoodConsumed++;
-                }
-
-                base.Health += item.HealthAmount;
-                base.Sanity += item.SanityAmount;
-                Inventory.RemoveItemFromInventory(item);
-            Debug.Log("removed");
+            base.Health += item.HealthAmount;
+            base.Sanity += item.SanityAmount;
+            Inventory.RemoveItemFromInventory(item);
         }
-        
+
     }
 
     public override void ReturnBottle()
@@ -124,6 +179,7 @@ public class PlayerController : Character
         List<BaseItem> items = Inventory.InventoryList.FindAll(x => x.BaseItemID == 8);
         if (items != null)
         {
+            StartCoroutine(UIManager.Instance.PickupIndicator(items, true));
             for (int i = 0; i < items.Count; i++)
             {
                 moneyAmount += items.First().MoneyAmount;
@@ -132,89 +188,15 @@ public class PlayerController : Character
         }
     }
 
-    public void InterractionWithBench()
-    {
-        if (canSleep)
-        {
-            if (InputManager.Instance.AxisPressed("Use"))
-            {
-                shopping = !shopping;
-                UIManager.Instance.SleepWindow(shopping);
-            }
-        }
-        else
-        {
-            if (InputManager.Instance.AxisPressed("Use"))
-            {
-                StartCoroutine(UIManager.Instance.SleepTextActivator());
-            }
-        }
-
-    }
-
-    protected override void Collision()
-    {
-        base.Collision();
-        
-    }
-
-    public override void Sleep()
-    {
-    }
-
-    public override void Sleep(int hours)
-    {
-        if (hours > 0)
-        {
-            canSleep = false;
-            sleeping = true;
-
-            for (int i = 0; i < hours; i++)
-            {
-                Health += healthGain;
-                Sanity += sanityGain;
-            }
-            float temp = GameManager.Instance.DayTimer;
-            GameManager.Instance.DayTimer += hours * GameManager.Instance.Hour;
-            sleepTimer = 180.0f;
-
-            if (GameManager.Instance.DayTimer > 456.0f)
-            {
-                GameManager.Instance.DayTimeIncreaser(hours * GameManager.Instance.Hour - (456 - temp));
-            }
-            GameManager.Instance.TimesSlept++;
-            sleeping = false;
-        }
-    }
-
-    //Interact Methods
-    public void InterractWithStore()
-    {
-        if (InputManager.Instance.AxisPressed("Use"))
-        {
-            shopping = !shopping;
-        }
-        UIManager.Instance.ShopWindow(shopping);
-    }
-
-    public void InterractWithLiqourStore()
-    {
-        if (InputManager.Instance.AxisPressed("Use"))
-        {
-            shopping = !shopping;
-        }
-        UIManager.Instance.LiqourStoreWindow(shopping);
-    }
-
     public override void Gather(List<BaseItem> items)
     {
-        if (InputManager.Instance.AxisPressed("Use"))
+        if (Interaction)
         {
             if (items != null)
             {
                 if (!UIManager.Instance.CRisRunning)
                 {
-                    StartCoroutine(UIManager.Instance.PickupIndicator(items));
+                    StartCoroutine(UIManager.Instance.PickupIndicator(items, false));
                 }
                 Inventory.AddItemToInventory(items);
                 items.Clear();
@@ -253,6 +235,91 @@ public class PlayerController : Character
         }
     }
 
+    //Interact Methods
+    public void InterractionWithBench()
+    {
+        if (canSleep)
+        {
+            if (Interaction)
+            {
+                UIManager.Instance.SleepWindow(Interaction);
+            }
+        }
+        else
+        {
+            if (Interaction)
+            {
+                StartCoroutine(UIManager.Instance.SleepTextActivator());
+                Interaction = !Interaction;
+            }
+        }
+
+    }
+
+    public void InterractWithStore()
+    {
+        if (Interaction)
+        {
+            shopping = true;
+        }
+        else
+        {
+            shopping = false;
+        }
+        UIManager.Instance.ShopWindow(shopping);
+    }
+
+    public void InterractWithLiqourStore()
+    {
+        if (Interaction)
+        {
+            shopping = true;
+        }
+        else
+        {
+            shopping = false;
+        }
+        UIManager.Instance.LiqourStoreWindow(shopping);
+    }
+
+    //Character overrides
+    protected override void Collision()
+    {
+        base.Collision();
+    }
+
+    public override void Sleep()
+    {
+    }
+
+    public override void Sleep(int hours)
+    {
+        if (hours > 0)
+        {
+            canSleep = false;
+            UIManager.Instance.SleepWindow(false);
+
+            for (int i = 0; i < hours; i++)
+            {
+                Health += healthGain;
+                Sanity += sanityGain;
+                UIManager.Instance.FadetoBlack(true);
+            }
+
+            float temp = GameManager.Instance.DayTimer;
+            GameManager.Instance.DayTimer += hours * GameManager.Instance.Hour;
+            sleepTimer = 180.0f;
+
+            if (GameManager.Instance.DayTimer > 456.0f)
+            {
+                GameManager.Instance.DayTimeIncreaser(hours * GameManager.Instance.Hour - (456 - temp));
+            }
+
+            GameManager.Instance.TimesSlept++;
+            interaction = !interaction;
+        }
+    }
+
     protected override void Death()
     {
         UIManager.Instance.DeathScreen();
@@ -263,11 +330,19 @@ public class PlayerController : Character
         base.SpriteFlip(false);
     }
 
+    protected override void StatsDecay()
+    {
+        if (!interaction)
+        {
+            base.StatsDecay();
+        }
+
+    }
+
     //Unity Methods
     protected override void Start()
     {
         base.Start();
-        shopping = false;
         mainCamera = Camera.main;
     }
 

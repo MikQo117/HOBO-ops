@@ -23,6 +23,7 @@ public class UIManager : MonoBehaviour
     //Daytime indicator variables
     float arrowrotationChanger = 0.0f;
     public GameObject Arrow;
+    private GameObject dayCounter;
 
     //ShopWindow Variables
     private GameObject shopWindow;
@@ -39,9 +40,10 @@ public class UIManager : MonoBehaviour
     private Vector2 Offset = new Vector2(0, 0.1f);
 
     //E-prompt
-    private GameObject prompt;
+    public GameObject prompt;
     public Sprite[] EpromptSprites;
     private bool eCoroutineRunning;
+    private Vector3 ePromptOffset = new Vector3(0.5f, 0.5f, -1);
 
     //Sleeping System
     private GameObject sleepWindow;
@@ -49,9 +51,39 @@ public class UIManager : MonoBehaviour
     private int sleepHours;
     public GameObject SleepText;
     private bool sCoroutineIsRunning;
+    private GameObject fadeWindow;
+    private float sleepTimer;
+    private float interPolationValue;
 
     //Death Screen Variables
     private GameObject deathScreen;
+
+    //get & set
+    public GameObject ShopWindow1
+    {
+        get
+        {
+            return shopWindow;
+        }
+
+        set
+        {
+            shopWindow = value;
+        }
+    }
+
+    public GameObject LiqourStoreWindow1
+    {
+        get
+        {
+            return liqourStoreWindow;
+        }
+
+        set
+        {
+            liqourStoreWindow = value;
+        }
+    }
 
     public int SleepHours
     {
@@ -66,23 +98,45 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    private void StatusBarValueChanger()
+    public float SleepTimer
     {
-        HealthBar.fillAmount = Mathf.Clamp01(PlayerController.pl.Health / maxValue);
-        SanityBar.fillAmount = Mathf.Clamp01(PlayerController.pl.Sanity / maxValue);
-        StaminaBar.fillAmount = Mathf.Clamp01(PlayerController.pl.Stamina / maxValue);
+        get
+        {
+            return sleepTimer;
+        }
+
+        set
+        {
+
+            sleepTimer = Mathf.Clamp(value, 0, 4);
+
+        }
     }
 
+    public float InterPolationValue
+    {
+        get
+        {
+            return interPolationValue;
+        }
+
+        set
+        {
+            interPolationValue = Mathf.Clamp01(value);
+        }
+    }
+
+    //Inventory methods
     private void Inventory()
     {
-        if (!shopWindow.activeInHierarchy || !liqourStoreWindow.activeInHierarchy)
+        if (!ShopWindow1.activeInHierarchy || !LiqourStoreWindow1.activeInHierarchy)
         {
             for (int i = 0; i < transform.childCount - 8; i++)
             {
                 transform.GetChild(i).gameObject.SetActive(showing);
             }
             BottleText.text = PlayerController.pl.Inventory.InventoryList.Count(x => x.BaseItemID == 8).ToString();
-            moneyText.text = "Money count " + System.Environment.NewLine + PlayerController.pl.MoneyAmount.ToString("0.##") + "$";
+            moneyText.text = string.Format("{0:C2}", PlayerController.pl.MoneyAmount);
             for (int i = 0; i < inventoryObjects.Count; i++)
             {
                 inventoryObjects[i].GetComponentInChildren<Text>().text = PlayerController.pl.Inventory.InventoryList.Count(x => x.BaseItemID == i && x != null).ToString();
@@ -90,38 +144,125 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    private void UIInput()
+    //Pick Up methods
+    public IEnumerator PickupIndicator(List<BaseItem> items, bool shop)
     {
-        if (Input.GetKeyDown(KeyCode.Tab))
+        if (CRisRunning) yield break;
+
+        if (items != null)
         {
-            showing = !showing;
+            if (items.Count > 0)
+            {
+                if (!shop)
+                {
+                    PickupObject.SetActive(true);
+                    CRisRunning = true;
+                    List<KeyValuePair<BaseItem, int>> temp = items.GroupBy(x => x).ToDictionary(g => g.Key, g => g.Count()).ToList();
+
+                    foreach (KeyValuePair<BaseItem, int> item in temp)
+                    {
+                        PickupObject.GetComponentInChildren<Image>().sprite = item.Key.ObjectSprite;
+                        PickupObject.GetComponentInChildren<Text>().text = "+ " + item.Value.ToString();
+                        yield return new WaitForSeconds(1.0f);
+                        PickupObject.transform.GetChild(0).GetComponent<RectTransform>().anchorMin = minAnchor;
+                        PickupObject.transform.GetChild(0).GetComponent<RectTransform>().anchorMax = maxAnchor;
+                    }
+                }
+                else
+                {
+                    PickupObject.SetActive(true);
+                    PickupObject.GetComponentInChildren<Image>().sprite = items.Find(x => x.BaseItemID == 8).ObjectSprite;
+                    float value = (items.Count * 0.100f);
+                    PickupObject.GetComponentInChildren<Text>().text = "+   " + string.Format("{0:C2}", value) + " $";
+                    yield return new WaitForSeconds(1.0f);
+                    PickupObject.transform.GetChild(0).GetComponent<RectTransform>().anchorMin = minAnchor;
+                    PickupObject.transform.GetChild(0).GetComponent<RectTransform>().anchorMax = maxAnchor;
+                }
+                CRisRunning = false;
+                PickupObject.SetActive(false);
+            }
+        }
+        else
+        {
+            PickupObject.GetComponentInChildren<Text>().text = "No Items Found";
+            PickupObject.GetComponentInChildren<Image>().color = new Color32(0, 0, 0, 0);
+            PickupObject.SetActive(true);
+            yield return new WaitForSeconds(1.0f);
+            PickupObject.SetActive(false);
+            PickupObject.GetComponentInChildren<Image>().color = new Color32(255, 255, 255, 255);
+
         }
     }
 
-    private void DaytimeIndicator()
+    public void NoItemIndicator()
     {
-        arrowrotationChanger = GameManager.Instance.DayTimer * 0.79f;
-        Arrow.GetComponent<Transform>().rotation = Quaternion.Euler(0, 0, -arrowrotationChanger);
+        StartCoroutine(PickupIndicator(null, false));
     }
 
+    private void StatusBarValueChanger()
+    {
+        HealthBar.fillAmount = Mathf.Clamp01(PlayerController.pl.Health / maxValue);
+        SanityBar.fillAmount = Mathf.Clamp01(PlayerController.pl.Sanity / maxValue);
+        StaminaBar.fillAmount = Mathf.Clamp01(PlayerController.pl.Stamina / maxValue);
+    }
+
+    private void AnchorChanger(bool active)
+    {
+        if (active)
+        {
+            recT.anchorMax += Offset * Time.deltaTime;
+            recT.anchorMin += Offset * Time.deltaTime;
+        }
+
+    }
+
+    //Sleeping methods
     public void SleepWindow(bool active)
     {
         sleepWindow.SetActive(active);
         int temp;
         sleepField.Select();
-        if (int.TryParse(sleepField.text, out temp) && sleepField.text != null)
+        if (PlayerController.pl.Submit)
         {
-            if (temp > 0 && InputManager.Instance.AxisPressed("Use"))
+            if (int.TryParse(sleepField.text, out temp) && sleepField.text != null && active)
             {
-                SleepHours = int.Parse(sleepField.text);
-                PlayerController.pl.Sleep(sleepHours);
+                if (temp > 0)
+                {
+                    SleepHours = int.Parse(sleepField.text);
+                    PlayerController.pl.Sleep(SleepHours);
+                }
             }
         }
+
         if (!active)
         {
             sleepField.text = null;
         }
+    }
 
+    public void FadetoBlack(bool active)
+    {
+        fadeWindow.SetActive(active);
+        SleepTimer = 3;
+    }
+
+    private void FadeToBlackChanger()
+    {
+        Color temp = fadeWindow.GetComponent<Image>().color;
+        if (SleepTimer > 0)
+        {
+            Debug.Log("Called");
+            sleepTimer -= Time.deltaTime;
+            InterPolationValue += Time.deltaTime;
+            temp.a = InterPolationValue;
+            fadeWindow.GetComponent<Image>().color = temp;
+        }
+        else
+        {
+            InterPolationValue -= Time.deltaTime;
+            temp.a = interPolationValue;
+            fadeWindow.GetComponent<Image>().color = temp;
+        }
     }
 
     public IEnumerator SleepTextActivator()
@@ -135,65 +276,38 @@ public class UIManager : MonoBehaviour
         sCoroutineIsRunning = false;
     }
 
-    public void ShopWindow(bool Active)
-    {
-        ReturnBottleText.text = "You have " + PlayerController.pl.Inventory.InventoryList.Count(x => x.BaseItemID == 8 && x != null) + " Bottles and " + PlayerController.pl.MoneyAmount.ToString("0.##") + "  $$$";
-        shopWindow.SetActive(Active);
-    }
-
+    //Shop methods
     public void LiqourStoreWindow(bool Active)
     {
-        liqourStoreText.text = "You have " + PlayerController.pl.MoneyAmount.ToString("0.##") + " $$$";
-        liqourStoreWindow.SetActive(Active);
+        liqourStoreText.text = string.Format("{0:C2}", PlayerController.pl.MoneyAmount);
+        LiqourStoreWindow1.SetActive(Active);
     }
 
-    public IEnumerator PickupIndicator(List<BaseItem> items)
+    public void ShopWindow(bool Active)
     {
-        if (CRisRunning) yield break;
-
-        if (items != null)
-        {
-            PickupObject.SetActive(true);
-            CRisRunning = true;
-            List<KeyValuePair<BaseItem, int>> temp = items.GroupBy(x => x).ToDictionary(g => g.Key, g => g.Count()).ToList();
-
-            foreach (KeyValuePair<BaseItem, int> item in temp)
-            {
-                PickupObject.GetComponentInChildren<Image>().sprite = item.Key.ObjectSprite;
-                PickupObject.GetComponentInChildren<Text>().text = "+ " + item.Value.ToString();
-                yield return new WaitForSeconds(0.5f);
-                PickupObject.transform.GetChild(0).GetComponent<RectTransform>().anchorMin = minAnchor;
-                PickupObject.transform.GetChild(0).GetComponent<RectTransform>().anchorMax = maxAnchor;
-            }
-
-            CRisRunning = false;
-            PickupObject.SetActive(false);
-        }
-        else
-        {
-            PickupObject.GetComponentInChildren<Text>().text = "No Items Found";
-            PickupObject.GetComponentInChildren<Image>().color = new Color32(0, 0, 0, 0);
-            PickupObject.SetActive(true);
-            yield return new WaitForSeconds(0.5f);
-            PickupObject.SetActive(false);
-            PickupObject.GetComponentInChildren<Image>().color = new Color32(255, 255, 255, 255);
-
-        }
+        ReturnBottleText.text = "      " + PlayerController.pl.Inventory.InventoryList.Count(x => x.BaseItemID == 8 && x != null) + System.Environment.NewLine
+                              + string.Format("{0:C2}", PlayerController.pl.MoneyAmount);
+        ShopWindow1.SetActive(Active);
     }
 
-    public void NoItemIndicator()
+    //Eprompt methods
+    private IEnumerator EpromptSpriteChanger()
     {
-        StartCoroutine(PickupIndicator(null));
+        if (eCoroutineRunning) yield break;
+        eCoroutineRunning = true;
+        prompt.GetComponentInChildren<SpriteRenderer>().sprite = EpromptSprites[0];
+        yield return new WaitForSeconds(1.0f);
+        prompt.GetComponentInChildren<SpriteRenderer>().sprite = EpromptSprites[1];
+        yield return new WaitForSeconds(1.0f);
+        eCoroutineRunning = false;
     }
 
-    private void AnchorChanger(bool active)
+    private void TransformChanger()
     {
-        if (active)
+        if (PlayerController.pl.InteractableCollider != null)
         {
-            recT.anchorMax += Offset * Time.deltaTime;
-            recT.anchorMin += Offset * Time.deltaTime;
+            prompt.transform.position = PlayerController.pl.InteractableCollider.bounds.max + ePromptOffset;
         }
-
     }
 
     public void Eprompt(bool active)
@@ -201,14 +315,25 @@ public class UIManager : MonoBehaviour
         prompt.SetActive(active);
     }
 
-    private IEnumerator EpromptSpriteChanger()
+    //Daytime methods
+    private void DaytimeIndicator()
     {
-        eCoroutineRunning = true;
-        prompt.GetComponentInChildren<Image>().sprite = EpromptSprites[0];
-        yield return new WaitForSeconds(1.0f);
-        prompt.GetComponentInChildren<Image>().sprite = EpromptSprites[1];
-        yield return new WaitForSeconds(1.0f);
-        eCoroutineRunning = false;
+        arrowrotationChanger = GameManager.Instance.DayTimer * 0.79f;
+        Arrow.GetComponent<Transform>().rotation = Quaternion.Euler(0, 0, -arrowrotationChanger);
+    }
+
+    public void DayCounterUpdater(int day)
+    {
+        dayCounter.GetComponent<Text>().text = "Day " + day;
+    }
+
+    //Player methods
+    private void UIInput()
+    {
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            showing = !showing;
+        }
     }
 
     public void DeathScreen()
@@ -216,16 +341,18 @@ public class UIManager : MonoBehaviour
         deathScreen.SetActive(true);
     }
 
+    //Unity methods
     private void Awake()
     {
         moneyText = transform.GetChild(0).transform.GetChild(2).GetComponent<Text>();
-        prompt = transform.GetChild(4).transform.gameObject;
-        shopWindow = transform.GetChild(5).gameObject;
-        ReturnBottleText = transform.GetChild(5).transform.GetChild(3).GetComponent<Text>();
-        liqourStoreWindow = transform.GetChild(6).gameObject;
-        liqourStoreText = transform.GetChild(6).transform.GetChild(3).GetComponent<Text>();
-        sleepWindow = transform.GetChild(8).transform.gameObject;
-        sleepField = transform.GetChild(8).transform.GetChild(0).GetComponent<InputField>();
+        dayCounter = transform.GetChild(3).GetChild(2).gameObject;
+        ShopWindow1 = transform.GetChild(4).gameObject;
+        ReturnBottleText = transform.GetChild(4).transform.GetChild(0).GetChild(3).GetComponent<Text>();
+        LiqourStoreWindow1 = transform.GetChild(5).gameObject;
+        liqourStoreText = transform.GetChild(5).GetChild(0).transform.GetChild(3).GetComponent<Text>();
+        sleepWindow = transform.GetChild(7).transform.gameObject;
+        sleepField = transform.GetChild(7).transform.GetChild(0).GetComponent<InputField>();
+        fadeWindow = transform.GetChild(8).gameObject;
         deathScreen = transform.GetChild(9).gameObject;
     }
 
@@ -249,8 +376,11 @@ public class UIManager : MonoBehaviour
     private void Update()
     {
         UIInput();
+        TransformChanger();
         DaytimeIndicator();
         StatusBarValueChanger();
+        SleepTimer -= Time.deltaTime;
+        FadeToBlackChanger();
         if (!eCoroutineRunning)
         {
             StartCoroutine(EpromptSpriteChanger());

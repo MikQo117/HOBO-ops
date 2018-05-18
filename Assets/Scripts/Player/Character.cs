@@ -57,6 +57,8 @@ public abstract class Character : MonoBehaviour
     //Interaction variables
     [SerializeField]
     protected new Collider2D collider;
+    protected bool           canInteract;
+    private Collider2D       interactableCollider;
 
     //Sleeping variables
     protected bool        canSleep;
@@ -146,6 +148,19 @@ public abstract class Character : MonoBehaviour
         get { return sleepTimer; }
     }
 
+    public Collider2D InteractableCollider
+    {
+        get
+        {
+            return interactableCollider;
+        }
+
+        set
+        {
+            interactableCollider = value;
+        }
+    }
+
     //Methods Start Here
 
     protected virtual void ApplyMovement()
@@ -192,13 +207,16 @@ public abstract class Character : MonoBehaviour
             if (collider.bounds.Intersects(item.bounds))
             {
                 UIManager.Instance.Eprompt(true);
+                InteractableCollider = item;
                 //Call Interact and pass this as parameter
                 item.GetComponent<IInteractable>().Interact(this);
+                canInteract = true;
                 break;
             }
             else
             {
                 UIManager.Instance.Eprompt(false);
+                canInteract = false;
             }
         }
     }
@@ -372,13 +390,10 @@ public abstract class Character : MonoBehaviour
         }
     }
 
-    protected void StatsDecay()
-    {
-        if (!sleeping)
-        {
+    protected virtual void StatsDecay()
+    { 
             Health -= healthDecay * Time.deltaTime;
             Sanity -= sanityDecay * Time.deltaTime;
-        }
     }
 
     enum AnimationClips
@@ -418,7 +433,6 @@ public abstract class Character : MonoBehaviour
         ExhaustTimer();
         SleepTimerChecker();
         Collision();
-        //AnimationChanger();
         ApplyMovement();
     }
     protected virtual void LateUpdate()
