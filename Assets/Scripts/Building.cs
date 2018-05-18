@@ -1,79 +1,78 @@
-﻿using UnityEngine;
-using System;
-using System.Diagnostics;
+﻿using System.Collections;
+
+using UnityEngine;
+
 
 public class Building : MonoBehaviour
 {
-    public Material DefaultMaterial;
-    public Material PlayerIsNear;
     private Material currentMaterial;
+    private Material[] materials = new Material[2];
     private SpriteRenderer sr;
-    Stopwatch sw;
-    int numFrames;
-    int joo;
 
     public float DistanceThreshold;
 
-    private int currentLayer;
-    private int previousLayer;
-
-    /*private void Awake()
+    IEnumerator LoadMaterials()
     {
+        AssetBundle ab = AssetManager.Instance.AssetBundlesList[0];
+
+        AssetBundleRequest abr = ab.LoadAllAssetsAsync<Material>();
+        yield return abr;
+
+        for (int i = 0; i < abr.allAssets.Length; i++)
+        {
+            if (abr.allAssets[i].name == "BuildingDefault")
+            {
+                Material defaultMaterial = (Material)abr.allAssets[i];
+                materials[0] = defaultMaterial;
+            }
+            else if (abr.allAssets[i].name == "PlayerIsNear")
+            {
+                Material playerIsNear = (Material)abr.allAssets[i];
+                materials[1] = playerIsNear;
+            }
+        }
+
+        sr.materials = materials;
+        sr.materials[1].color = Vector4.zero;
+        sr.materials[0].color = Vector4.one;
+        yield return null;
+    }
+        
+    private void Awake()
+    {
+        sr = GetComponent<SpriteRenderer>();
         currentMaterial = GetComponent<Material>();
-        sr.material = DefaultMaterial;
-        sw = new Stopwatch();
-        sw.Start();
-        numFrames = 0;
-        joo = 0;
+
+        StartCoroutine(LoadMaterials());
     }
 
     private void Update()
     {
-        numFrames++;
-        if (sw.ElapsedMilliseconds > 1000)
+        if (Time.frameCount % 20 == 0)
         {
-            ++joo;
-            print(joo + " FPS in building.cs: " + (float)numFrames / ((float)sw.ElapsedMilliseconds / 1000.0f));
-            sw.Reset();
-            numFrames = 0;
-        }
-
-        // sw.Stop();
-
-
-
-
-        sw.Start();
-        if (InputManager.Instance.AxisDown("Horizontal") || InputManager.Instance.AxisDown("Vertical"))
-        {
-            float distance = Vector2.Distance(sr.bounds.ClosestPoint(GameManager.Instance.PlayerTransform.position), GameManager.Instance.PlayerTransform.position);
-
-            if (distance < DistanceThreshold)
+            if (InputManager.Instance.AxisDown("Horizontal") || InputManager.Instance.AxisDown("Vertical"))
             {
-                if (GameManager.Instance.PlayerOrderInLayer < sr.sortingOrder)
+                float distance = Vector2.Distance(sr.bounds.ClosestPoint(GameManager.Instance.PlayerTransform.position), GameManager.Instance.PlayerTransform.position);
+
+                if (distance <= DistanceThreshold)
                 {
-                    if (transform.position.y < GameManager.Instance.PlayerTransform.position.y)
+                    if (GameManager.Instance.PlayerOrderInLayer < sr.sortingOrder)
                     {
-                        if (sr.material != PlayerIsNear)
+                        if (transform.position.y < GameManager.Instance.PlayerTransform.position.y)
                         {
-                            sr.material = PlayerIsNear;
-                            return;
+                            sr.materials[0].color = Vector4.zero;
+                            sr.materials[1].color = Vector4.one;
                         }
                     }
                 }
-                else if (sr.material != DefaultMaterial)
+
+                else if(sr.materials[1].color.a != 0)
                 {
-                    sr.material = DefaultMaterial;
-                    return;
+                    sr.materials[1].color = Vector4.zero;
+                    sr.materials[0].color = Vector4.one;
                 }
             }
-            else if (sr.material != DefaultMaterial)
-            {
-                sr.material = DefaultMaterial;
-            }
-            previousLayer = currentLayer;
-            currentLayer = sr.sortingOrder;
         }
-    }*/
-    
+    }
+
 }

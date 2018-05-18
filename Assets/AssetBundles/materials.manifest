@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 1759115388
+CRC: 1578932404
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: e32e6241d16b6721e7fc4c48192fac21
+    Hash: 9b17fc5a44bafea235b2e8fe3f681b53
   TypeTreeHash:
     serializedVersion: 2
     Hash: 60a7cae25bfd71c49bd2c87b5187f6b5
@@ -14,6 +14,8 @@ ClassTypes:
 - Class: 48
   Script: {instanceID: 0}
 Assets:
+- Assets/Materials/BuildingDefault.mat
 - Assets/Materials/Tile.mat
-- Assets/Materials/PixelSnap.mat
+- Assets/Materials/Player.mat
+- Assets/Materials/PlayerIsNear.mat
 Dependencies: []

@@ -3,6 +3,7 @@
 	Properties
 	{
 		[PerRendererData] _MainTex("Sprite", 2D) = "white" {}
+		_Color("Color", Color) = (1.0, 1.0, 1.0, 1.0)
 	}
 
 	SubShader
@@ -47,6 +48,7 @@
 			};
 
 			sampler2D _MainTex;
+			fixed4 _Color;
 
 			v2f vert(appdata IN)
 			{
@@ -69,6 +71,7 @@
 			{
 				fixed4 c = tex2D(_MainTex, IN.texcoord);
 				c.rgb *= c.a;
+				c *= _Color;
 				return c;
 			}
 
