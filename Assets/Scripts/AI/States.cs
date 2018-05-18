@@ -26,7 +26,7 @@ namespace StateStuff
         private void ResetVariables()
         {
             requestsSent = 0;
-            tempIndex = 0;
+            requestIndex = 0;
             subState = 0;
             spawns.Clear();
             shortestPath = new Vector2[0];
@@ -138,14 +138,14 @@ namespace StateStuff
             }
         }
 
-        private int tempIndex = 0;
+        private int requestIndex = 0;
         public void OnPathStuff(Vector2[] newPath, bool pathSuccess, int pathLength)
         {
             if (pathSuccess && stateActive)
             {
-                spawns[tempIndex].Path = newPath;
-                spawns[tempIndex].PathLength = pathLength; 
-                tempIndex++;
+                spawns[requestIndex].Path = newPath;
+                spawns[requestIndex].PathLength = pathLength; 
+                requestIndex++;
 
                 if (PathsPopulated())
                 {
@@ -153,7 +153,7 @@ namespace StateStuff
                     //shortestPath = spawns.Aggregate((l, r) => l.PathLength < r.PathLength ? l : r).SetAsCurrent(); //Vittumikäsäätö
                     //shortestPath = spawns.Where(x => x.PathLength == paths.Select(k => paths[k.Key]).Min());
                     subState = 1;
-                    tempIndex = 0;
+                    requestIndex = 0;
                 }
             }
         }
@@ -178,6 +178,233 @@ namespace StateStuff
 
         }
     }
+
+    public class MovementState : State<PedestrianController>
+    {
+
+        private Vector2[] shortestPath;
+        private TrashSpawn nearestSpawn;
+        private List<LocationData> locations = new List<LocationData>();
+        private int requestsSent = 0;
+        private float waitAtEndTime = 0;
+        private float waitTimer = 0;
+        private float minWaitTime = 3;
+        private float maxWaitTime = 10;
+
+        //Sub-state variables
+        private int subState = 0;
+
+        public void PathEndReached()
+        {
+            // The end of the path has been reached, advance to next sub-state
+            subState = 2;
+        }
+
+        private void ResetVariables()
+        {
+            waitAtEndTime = Random.Range(minWaitTime, maxWaitTime);
+            waitTimer = 0;
+            requestsSent = 0;
+            requestIndex = 0;
+            subState = 0;
+            locations.Clear();
+            shortestPath = new Vector2[0];
+            nearestSpawn = null;
+        }
+
+        private void ResetSubStateVariables()
+        {
+            waitAtEndTime = Random.Range(minWaitTime, maxWaitTime);
+            waitTimer = 0;
+            requestsSent = 0;
+            subState = 0;
+            shortestPath = new Vector2[0];
+            nearestSpawn = null;
+        }
+
+        private void ResetPaths()
+        {
+            foreach (LocationData item in locations)
+            {
+                item.Path = null;
+            }
+        }
+
+        public override void EnterState(PedestrianController owner)
+        {
+            ResetVariables();
+            //Debug.Log("Entering scavenge state");
+            GetLocations();
+            SendPathRequests(owner.transform.position);
+        }
+
+        bool stateActive = false;
+
+        public override void UpdateState(PedestrianController owner)
+        {
+            stateActive = owner.StateMachine.currentState == this;
+            switch (subState)
+            {
+                default:
+                    break;
+                case 0:
+                    //Paths not received
+                    //Debug.Log("Waiting for paths");
+                    break;
+                case 1:
+                    //Paths received
+                    //Move
+                    if (!owner.MovingToTarget)
+                    {
+                        //Debug.Log("Movement started");
+                        owner.StartMovement(shortestPath);
+                    }
+                    else
+                    {
+                        //Debug.Log("Waiting for movement to end");
+                    }
+                    break;
+                case 2:
+                    if (Wait())
+                    {
+                        subState = 3;
+                    }
+                    break;
+                case 3:
+                    //Target reached, stop movement and gather
+                    //Debug.Log("Target reached");
+                    locations.Remove(locations.Find(x => x.ActiveTarget == true));
+                    owner.tryInteract = true;
+                    ResetPaths();
+                    if (locations.Count <= 0)
+                    {
+                        //Go destroy self state?
+                        //owner.StateMachine.ChangeState(owner.idleState);
+                        Debug.Log("End of movement state");
+                    }
+                    ResetSubStateVariables();
+                    SendPathRequests(owner.transform.position);
+                    subState = 0;
+                    break;
+                
+            }
+        }
+
+        private bool Wait()
+        {
+            waitTimer += Time.deltaTime;
+            if (waitTimer >= waitAtEndTime)
+            {
+                waitTimer = 0;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public override void ExitState(PedestrianController owner)
+        {
+            Debug.Log("Exiting scavenge state");
+            //Reset variables
+            ResetVariables();
+            stateActive = false;
+        }
+
+
+        private void GetLocations()
+        {
+            List<PedestrianTarget> targets = GameManager.Instance.GetPedestrianTargets;
+            if (targets.Count > 0)
+            {
+                foreach (PedestrianTarget item in targets)
+                {
+                    locations.Add(new LocationData(item, null, 0));
+                }
+            }
+            else
+            {
+                Debug.Log("Locations not populated");
+            }
+        }
+        private void SendPathRequests(Vector3 startPosition)
+        {
+            foreach (LocationData item in locations)
+            {
+                PathRequestManager.RequestPath(startPosition, item.Target.transform.position, OnPathStuff);
+                requestsSent++;
+            }
+        }
+
+        private int requestIndex = 0;
+        public void OnPathStuff(Vector2[] newPath, bool pathSuccess, int pathLength)
+        {
+            if (pathSuccess && stateActive)
+            {
+                locations[requestIndex].Path = newPath;
+                locations[requestIndex].PathLength = pathLength;
+                requestIndex++;
+
+                if (PathsPopulated())
+                {
+                    //shortestPath = locations.OrderBy(spawn => spawn.PathLength).First().SetAsCurrent(); //Vittumikäsäätö
+                    shortestPath = locations[Random.Range(0, locations.Count-1)].SetAsCurrent();
+                    subState = 1;
+                    requestIndex = 0;
+                }
+            }
+        }
+
+        private bool PathsPopulated()
+        {
+            int count = 0;
+
+            foreach (LocationData item in locations)
+            {
+                if (item.Path != null)
+                {
+                    count++;
+                }
+            }
+
+            if (count >= requestsSent)
+            {
+                return true;
+            }
+            return false;
+
+        }
+    
+        public class LocationData
+        {
+            public PedestrianTarget Target;
+            public Vector2[] Path;
+            public int PathLength;
+            private bool activeTarget;
+
+            public LocationData(PedestrianTarget target, Vector2[] path, int pathLength)
+            {
+                Target = target;
+                Path = path;
+                PathLength = pathLength;
+                activeTarget = false;
+            }
+
+            public bool ActiveTarget
+            {
+                get { return activeTarget; }
+                set { activeTarget = value; }
+            }
+
+            public Vector2[] SetAsCurrent()
+            {
+                activeTarget = true;
+                return Path;
+            }
+        }
+    }
+
 
     public class SpawnData
     {
@@ -208,21 +435,6 @@ namespace StateStuff
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     public class IdleState : State<HoboController>
     {
         public override void EnterState(HoboController owner)
@@ -241,190 +453,23 @@ namespace StateStuff
             
         }
     }
-}
-/*//Pathfinding variables
-private Vector2[] path;
-private int targetIndex;
-private Vector2 currentWaypoint;
 
-//State machine variables
-private ThresholdState hpState;
-private ThresholdState spState;
-private bool scavenging = false;
+    public class BackToMovement : State<PedestrianController>
+    {
+        public override void EnterState(PedestrianController owner)
+        {
+            //Debug.Log("Entering idle state");
+            owner.StateMachine.ChangeState(owner.movementState);
+        }
 
-protected override int Health
-{
-get
-{
-   return base.Health;
-}
+        public override void ExitState(PedestrianController owner)
+        {
+            //Debug.Log("Exiting idle state");
+        }
 
-set
-{
-   base.Health = value;
+        public override void UpdateState(PedestrianController owner)
+        {
 
-   if (value >= 80 && value < 100)
-   {
-       hpState = ThresholdState.Satisfied;
-       AnalyzeStates();
-   }
-   else if (value >= 40 && value < 20)
-   {
-       hpState = ThresholdState.Low;
-       AnalyzeStates();
-   }
-   else
-   {
-       hpState = ThresholdState.Critical;
-       AnalyzeStates();
-   }
+        }
+    }
 }
-}
-
-protected override int Sanity
-{
-get
-{
-   return base.Sanity;
-}
-
-set
-{
-   base.Sanity = value;
-
-   if (value >= 70 && value < 100)
-   {
-       spState = ThresholdState.Satisfied;
-       AnalyzeStates();
-   }
-   else if (value >= 30 && value < 15)
-   {
-       spState = ThresholdState.Low;
-       AnalyzeStates();
-   }
-   else
-   {
-       spState = ThresholdState.Critical;
-       AnalyzeStates();
-   }
-}
-}
-
-private void AnalyzeStates()
-{
-if (hpState == ThresholdState.Satisfied && spState == ThresholdState.Satisfied)
-{
-   //Idle actions
-   //Debug.Log("Hobo AI idle");
-}
-else if (hpState == ThresholdState.Low)
-{
-   //Scavenge
-   StartScavenge();
-   //Debug.Log("Hobo AI scavenging");
-}
-else
-{
-   //Beg?!?
-   //Debug.Log("Hobo AI critical action");
-}
-}
-
-protected override void CheckForInteraction()
-{
-//For through all interactable colliders, and see if intersects
-foreach (Collider2D item in GameManager.Instance.interactablesColliders)
-{
-   //Debug.Log("Closest point from player: " + item.bounds.ClosestPoint(transform.position));
-   //If contains, get component from collider, typeof IInteractable
-   if (collider.bounds.Intersects(item.bounds))
-   {
-       Debug.Log("Hit interactable");
-       //Call Interact and pass this as parameter
-       IInteractable temp = item.GetComponent<IInteractable>();
-       temp.Interact(this);
-       if (temp is TrashSpawn)
-       {
-           if (spawnsToSearch.Count <= 0)
-           {
-               requestsSent = 0; 
-           }
-           spawnsToSearch.Remove(temp as TrashSpawn);
-           Debug.Log(spawnsToSearch.Count);
-           paths.Clear();
-       }
-   }
-}
-}
-
-protected override void ApplyMovement()
-{
-if (movingToTarget)
-{
-   if (sprinting)
-   {
-       transform.position = Vector3.MoveTowards(transform.position, currentWaypoint, movementSpeed * Time.deltaTime);
-   }
-   else
-   {
-       transform.position = Vector3.MoveTowards(transform.position, currentWaypoint, sprintSpeed * Time.deltaTime);
-   } 
-}
-}
-
-
-public override void ConsumeItem(int itemID)
-{
-//Think this over later
-}
-
-protected override void Attack()
-{
-}
-
-protected override void Beg()
-{
-}
-
-protected override void Death()
-{
-}
-
-public override void Gather(List<BaseItem> items)
-{
-/*foreach (BaseItem item in items)
-{
-   if (item.Consumable)
-   {
-       //Does nothing right now
-       ConsumeItem(item.BaseItemID);
-       items.Remove(item);
-   }
-}
-
-//characterInventory.AddItemToInventory(items);
-}
-
-protected override void GetInput()
-{
-}
-
-// Use this for initialization
-protected override void Start()
-{
-base.Start();
-StartScavenge();
-}
-
-// Update is called once per frame
-protected override void Update()
-{
-base.Update();
-GetInput();
-RecoverStamina();
-ExhaustTimer();
-Collision();
-AnimationChanger();
-ApplyMovement();
-}
-*/

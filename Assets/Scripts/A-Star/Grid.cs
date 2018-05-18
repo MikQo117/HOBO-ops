@@ -157,7 +157,8 @@ public class Grid : MonoBehaviour
                 {
                     if(n.Walkable)
                     {
-                        Gizmos.color = Color.green;
+                        //Transparent green
+                        Gizmos.color = new Color(0, 1, 0, 0.4f);
                     }
                     else
                     {

@@ -31,6 +31,7 @@ public class GameManager : MonoBehaviour
     //Interaction variables
     public List<IInteractable> interactables = new List<IInteractable>();
     private List<TrashSpawn> trashSpawns = new List<TrashSpawn>();
+    private List<PedestrianTarget> pedestrianTargets = new List<PedestrianTarget>();
     public List<Collider2D> interactablesColliders;
     private float spawnableItemIndex;
     [SerializeField]
@@ -57,6 +58,10 @@ public class GameManager : MonoBehaviour
     public int WhiskeyConsumed = 0;
     public int FoodConsumed = 0;
 
+    public List<PedestrianTarget> GetPedestrianTargets
+    {
+        get { return pedestrianTargets; }
+    }
 
     public List<TrashSpawn> GetTrashSpawns
     {
@@ -66,6 +71,11 @@ public class GameManager : MonoBehaviour
     static public GameManager Instance
     {
         get { return instance; }
+    }
+
+    public bool RushHour
+    {
+        get { return rushHour; }
     }
 
     public float DayTimer
