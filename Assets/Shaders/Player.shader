@@ -2,7 +2,8 @@
 {
 	Properties
 	{
-		[PerRendererData] _MainTex("Sprite", 2D) = "white" {}
+		[PerRendererData] _MainTex("Sprite", 2D) = "_Color" {}
+		_Color ("Tint", Color) = (1.0, 0.6, 0.6, 1.0)
 	}
 
 
@@ -18,17 +19,28 @@
 			"ForceNoShadowCasting" = "True"
 		}
 
+
 		Cull Off
 		Lighting Off
 		ZWrite Off
 		Blend One OneMinusSrcAlpha
+
 		
+
 		Pass
 		{
 			CGPROGRAM
 			#pragma vertex vert
 			#pragma fragment frag
 			#pragma target 2.0
+
+			struct Input
+			{
+				float2 uv_MainTex;
+			};
+
+			fixed4 _ColorTint;
+			sampler2D _MainTex;
 
 			struct appdata
 			{
@@ -40,11 +52,10 @@
 			struct v2f
 			{
 				float4 vertex	: SV_POSITION;
-				fixed4 color	: COLOR;
+				fixed4 color	: _ColorTint;
 				float2 texcoord : TEXCOORD0;
 			};
 
-			sampler2D _MainTex;
 
 			v2f vert(appdata IN)
 			{
@@ -71,7 +82,6 @@
 
 			ENDCG
 		}
-
 
 	}
 

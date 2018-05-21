@@ -3,7 +3,6 @@ using System.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
-
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -32,13 +31,12 @@ public class GameManager : MonoBehaviour
     public List<IInteractable> interactables = new List<IInteractable>();
     private List<TrashSpawn> trashSpawns = new List<TrashSpawn>();
     public List<Collider2D> interactablesColliders;
-    private float spawnableItemIndex;
     [SerializeField]
     private float originalSpawnTimer = 30.0f;
     float spawntimer;
 
     //Daysystem variables
-    private float[] intervals = { 0.0f, 150.0f, 300.0f, 375.0f, 430.5f, 456.0f };
+    private float[] intervals = { 0.0f, 114.0f, 228.0f, 342.0f,456.0f };
     private float dayTimer = 250.0f;
     private const float regulartimeDrop = 30.0f;
     private const float rushHourTimeDrop = 15.0f;
@@ -106,16 +104,18 @@ public class GameManager : MonoBehaviour
             if (DayTimer > intervals[1])
             {
                 originalSpawnTimer = regulartimeDrop;
+                UIManager.Instance.DaytimeColorTintChanger(1);
             }
 
-            if (DayTimer >= intervals[5])
+            if (DayTimer >= intervals[4])
             {
                 DayTimer = 0.0f;
             }
 
-            if (DayTimer > intervals[4] || DayTimer < intervals[1])
+            if (DayTimer > intervals[3])
             {
                 ResetTimer();
+                UIManager.Instance.DaytimeColorTintChanger(3);
             }
         }
         DayIncreaser();
@@ -139,10 +139,11 @@ public class GameManager : MonoBehaviour
 
     private void RushHourChecker()
     {
-        if (DayTimer > intervals[2] && DayTimer < intervals[3])
+        if (DayTimer > intervals[1] && DayTimer < intervals[2])
         {
             rushHour = true;
             originalSpawnTimer = rushHourTimeDrop;
+            UIManager.Instance.DaytimeColorTintChanger(2);
         }
         else
         {

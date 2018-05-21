@@ -10,6 +10,8 @@ public class UIManager : MonoBehaviour
 
     //StatusBars variables
     private const float maxValue = 100;
+    private float       alphaValue = 0.2f;
+    private bool        increase;
     public Image HealthBar;
     public Image SanityBar;
     public Image StaminaBar;
@@ -21,9 +23,10 @@ public class UIManager : MonoBehaviour
     private Text moneyText;
 
     //Daytime indicator variables
-    float arrowrotationChanger = 0.0f;
-    public GameObject Arrow;
+    float              arrowrotationChanger = 0.0f;
+    public  GameObject Arrow;
     private GameObject dayCounter;
+    public  GameObject ColorTint;
 
     //ShopWindow Variables
     private GameObject shopWindow;
@@ -199,13 +202,6 @@ public class UIManager : MonoBehaviour
         StartCoroutine(PickupIndicator(null, false));
     }
 
-    private void StatusBarValueChanger()
-    {
-        HealthBar.fillAmount = Mathf.Clamp01(PlayerController.pl.Health / maxValue);
-        SanityBar.fillAmount = Mathf.Clamp01(PlayerController.pl.Sanity / maxValue);
-        StaminaBar.fillAmount = Mathf.Clamp01(PlayerController.pl.Stamina / maxValue);
-    }
-
     private void AnchorChanger(bool active)
     {
         if (active)
@@ -214,6 +210,60 @@ public class UIManager : MonoBehaviour
             recT.anchorMin += Offset * Time.deltaTime;
         }
 
+    }
+
+    //StatusBar methods
+
+    private void StatusBarValueChanger()
+    {
+        HealthBar.fillAmount = Mathf.Clamp01(PlayerController.pl.Health / maxValue);
+        SanityBar.fillAmount = Mathf.Clamp01(PlayerController.pl.Sanity / maxValue);
+        StaminaBar.fillAmount = Mathf.Clamp01(PlayerController.pl.Stamina / maxValue);
+    }
+
+    public void StatusBarLowIndicator(int StatusID)
+    {
+        if(StatusID == 1)
+        {
+            Color HealthAlpha = HealthBar.color;
+            HealthAlpha.a = alphaValue;
+            HealthBar.color = HealthAlpha;
+        }
+        else if(StatusID == 2)
+        {
+            Color SanityAlpha = SanityBar.color;
+            SanityAlpha.a = alphaValue;
+            SanityBar.color = SanityAlpha;
+        }
+        else if(StatusID == 3)
+        {
+            Color StaminaAlpha = StaminaBar.color;
+            StaminaAlpha.a = alphaValue;
+            StaminaBar.color = StaminaAlpha;
+        }
+        
+    }
+
+    private void AlphaValueChanger()
+    {
+
+        if(alphaValue <= 0)
+        {
+            increase = true;
+        }
+        else if(alphaValue >= 1)
+        {
+            increase = false;
+        }
+
+        if(increase)
+        {
+            alphaValue += Time.deltaTime;
+        }
+        else
+        {
+            alphaValue -= Time.deltaTime;
+        }
     }
 
     //Sleeping methods
@@ -251,7 +301,6 @@ public class UIManager : MonoBehaviour
         Color temp = fadeWindow.GetComponent<Image>().color;
         if (SleepTimer > 0)
         {
-            Debug.Log("Called");
             sleepTimer -= Time.deltaTime;
             InterPolationValue += Time.deltaTime;
             temp.a = InterPolationValue;
@@ -327,6 +376,28 @@ public class UIManager : MonoBehaviour
         dayCounter.GetComponent<Text>().text = "Day " + day;
     }
 
+    public void DaytimeColorTintChanger(int StatusID)
+    {
+        Color temp;
+        if (StatusID == 1) // morning
+        {
+            temp = new Color(0xFF, 0xFF, 0xFF, 0x00);
+            ColorTint.GetComponent<SpriteRenderer>().material.color = temp;
+        }
+
+        if (StatusID == 2) // rushHour
+        {
+            temp = new Color(0x93, 0xB4, 0x20, 0x0A);
+            ColorTint.GetComponent<SpriteRenderer>().material.color = temp;
+        }
+
+        if (StatusID == 3) // NightTime
+        {
+            temp = new Color(0x00, 0x00, 0x00, 0x54);
+            ColorTint.GetComponent<SpriteRenderer>().material.color = temp;
+        }
+    }
+
     //Player methods
     private void UIInput()
     {
@@ -371,6 +442,8 @@ public class UIManager : MonoBehaviour
         recT = PickupObject.transform.GetChild(0).GetComponent<RectTransform>();
         minAnchor = PickupObject.transform.GetChild(0).GetComponent<RectTransform>().anchorMin;
         maxAnchor = PickupObject.transform.GetChild(0).GetComponent<RectTransform>().anchorMax;
+        Color temp = new Color(0xFF, 0xFF, 0xFF, 0x00);
+        ColorTint.GetComponent<SpriteRenderer>().material.color = temp;
     }
 
     private void Update()
@@ -378,6 +451,7 @@ public class UIManager : MonoBehaviour
         UIInput();
         TransformChanger();
         DaytimeIndicator();
+        AlphaValueChanger();
         StatusBarValueChanger();
         SleepTimer -= Time.deltaTime;
         FadeToBlackChanger();

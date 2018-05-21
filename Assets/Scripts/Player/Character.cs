@@ -43,7 +43,7 @@ public abstract class Character : MonoBehaviour
     private Sprite         currentIdleSprite;
     [SerializeField]
     private Sprite[]       idleSprites;
-    protected SpriteRenderer Sr;
+    private SpriteRenderer sr;
 
     //Exhaust variables
     [SerializeField]
@@ -158,6 +158,19 @@ public abstract class Character : MonoBehaviour
         set
         {
             interactableCollider = value;
+        }
+    }
+
+    public SpriteRenderer Sr
+    {
+        get
+        {
+            return sr;
+        }
+
+        set
+        {
+            sr = value;
         }
     }
 

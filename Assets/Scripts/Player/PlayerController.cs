@@ -339,6 +339,24 @@ public class PlayerController : Character
 
     }
 
+    //Indicator methods
+    private void StatusChecker()
+    {
+        if (Health <= 20.0f)
+        {
+            UIManager.Instance.StatusBarLowIndicator(1);
+        }
+        if (Sanity <= 15.0f)
+        {
+            UIManager.Instance.StatusBarLowIndicator(2);
+        }
+
+        if (Stamina <= 20.0f)
+        {
+            UIManager.Instance.StatusBarLowIndicator(3);
+        }
+    }
+
     //Unity Methods
     protected override void Start()
     {
@@ -351,6 +369,7 @@ public class PlayerController : Character
         base.Update();
         CameraMovement();
         PauseMethod();
+        StatusChecker();
     }
 
     protected override void Awake()
