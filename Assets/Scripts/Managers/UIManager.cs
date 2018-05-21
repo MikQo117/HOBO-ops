@@ -381,21 +381,23 @@ public class UIManager : MonoBehaviour
         Color temp;
         if (StatusID == 1) // morning
         {
-            temp = new Color(0xFF, 0xFF, 0xFF, 0x00);
-            ColorTint.GetComponent<SpriteRenderer>().material.color = temp;
+            temp = new Color(0x94, 0x00, 0x00, 0xFF); //940000FF
+            ColorTint.GetComponent<MeshRenderer>().material.color = temp;
+            //ColorTint.GetComponent<SpriteRenderer>().material.color = temp;
         }
 
         if (StatusID == 2) // rushHour
         {
             temp = new Color(0x93, 0xB4, 0x20, 0x0A);
-            ColorTint.GetComponent<SpriteRenderer>().material.color = temp;
+           // ColorTint.GetComponent<SpriteRenderer>().material.color = temp;
         }
 
         if (StatusID == 3) // NightTime
         {
             temp = new Color(0x00, 0x00, 0x00, 0x54);
-            ColorTint.GetComponent<SpriteRenderer>().material.color = temp;
+            //ColorTint.GetComponent<SpriteRenderer>().material.color = temp;
         }
+
     }
 
     //Player methods
