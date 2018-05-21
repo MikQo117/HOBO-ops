@@ -5,6 +5,9 @@ using UnityEngine;
 public class PedestrianSpawner : MonoBehaviour
 {
     private bool oldRushHourState, currentRushHourState;
+    public List<Vector2> SpawnLocations = new List<Vector2>();
+    public int SpawnAmt = 0;
+
 
     // Use this for initialization
     void Start()
