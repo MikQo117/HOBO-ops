@@ -381,21 +381,20 @@ public class UIManager : MonoBehaviour
         Color temp;
         if (StatusID == 1) // morning
         {
-            temp = new Color(0x94, 0x00, 0x00, 0xFF); //940000FF
-            ColorTint.GetComponent<MeshRenderer>().material.color = temp;
-            //ColorTint.GetComponent<SpriteRenderer>().material.color = temp;
+            ColorTint.GetComponent<MeshRenderer>().material.SetColor(Shader.PropertyToID("_Color"), new Color(1.0f, 1.0f, 1.0f, 1.0f));
         }
 
         if (StatusID == 2) // rushHour
         {
-            temp = new Color(0x93, 0xB4, 0x20, 0x0A);
-           // ColorTint.GetComponent<SpriteRenderer>().material.color = temp;
+
+            ColorTint.GetComponent<MeshRenderer>().material.SetColor(Shader.PropertyToID("_Color"), new Color(0.99f,1.0f,0.855f,1));
         }
 
         if (StatusID == 3) // NightTime
         {
-            temp = new Color(0x00, 0x00, 0x00, 0x54);
-            //ColorTint.GetComponent<SpriteRenderer>().material.color = temp;
+            temp = new Color(0xBA, 0xBA, 0xBA, 0xFF); //253,255,212
+            ColorTint.GetComponent<MeshRenderer>().material.SetColor(Shader.PropertyToID("_Color"), new Color(0.7f,0.7f,0.7f,1));
+
         }
 
     }
@@ -444,8 +443,8 @@ public class UIManager : MonoBehaviour
         recT = PickupObject.transform.GetChild(0).GetComponent<RectTransform>();
         minAnchor = PickupObject.transform.GetChild(0).GetComponent<RectTransform>().anchorMin;
         maxAnchor = PickupObject.transform.GetChild(0).GetComponent<RectTransform>().anchorMax;
-        Color temp = new Color(0xFF, 0xFF, 0xFF, 0x00);
-        ColorTint.GetComponent<SpriteRenderer>().material.color = temp;
+        Color temp = new Color(0x00, 0x00, 0x00, 0xFF);
+       // ColorTint.GetComponent<MeshRenderer>().material.SetColor(Shader.PropertyToID("_Color"), temp); 
     }
 
     private void Update()
