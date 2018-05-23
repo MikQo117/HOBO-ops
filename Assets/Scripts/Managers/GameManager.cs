@@ -46,16 +46,6 @@ public class GameManager : MonoBehaviour
     private int  daycount;
 
     private static GameManager instance;
-    //Statistic variables
-    private float timer;
-    public int TrashcansLooted = 0;
-    public int BeersBought = 0;
-    public int WhiskeyBought = 0;
-    public int FoodBought = 0;
-    public int TimesSlept = 0;
-    public int BeersConsumed = 0;
-    public int WhiskeyConsumed = 0;
-    public int FoodConsumed = 0;
 
     public List<PedestrianTarget> GetPedestrianTargets
     {
@@ -176,13 +166,6 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        timer = 0;
-        TrashcansLooted = 0;
-        BeersBought = 0;
-        WhiskeyBought = 0;
-        FoodBought = 0;
-        TimesSlept = 0;
-
         if (instance == null)
         {
             instance = this;
@@ -217,40 +200,6 @@ public class GameManager : MonoBehaviour
             TimeChanger();
             IntervalChecker();
             AddItemToTrashCans();
-            timer += Time.deltaTime;
-        }
-    }
-
-    private void LateUpdate()
-    {
-        if(Input.GetKey(KeyCode.R))
-        {
-            for (int i = 0; i < AssetManager.Instance.AssetBundlesList.Count; i++)
-            {
-                AssetManager.Instance.AssetBundlesList[i].Unload(true);
-            }
-
-            string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            string name = "/Hobo-Ops QA " + DateTime.Now.ToString().Replace("/", "-").Replace(":", "-") + ".txt";
-
-            if(!File.Exists(path + name))
-            {
-                using (StreamWriter sw = File.CreateText(path + name))
-                {
-                    Debug.Log("Write session data to desktop");
-                    sw.WriteLine("Elapsed time in seconds: " + (int)timer);
-                    sw.WriteLine("Trashcans looted:  " + TrashcansLooted);
-                    sw.WriteLine("Beers purchased:   " + BeersBought);
-                    sw.WriteLine("Whiskey purchased: " + WhiskeyBought);
-                    sw.WriteLine("Food purchased:    " + FoodBought);
-                    sw.WriteLine("Times slept:       " + TimesSlept);
-                    sw.WriteLine("Whiskey consumed:  " + WhiskeyConsumed);
-                    sw.WriteLine("Beer consumed:     " + BeersConsumed);
-                    sw.WriteLine("Food consumed:     " + FoodConsumed);
-                }
-            }
-            int index = SceneManager.GetActiveScene().buildIndex;
-            SceneManager.LoadScene(index);
         }
     }
 }

@@ -45,6 +45,13 @@ public abstract class Character : MonoBehaviour
     private Sprite[]       idleSprites;
     private SpriteRenderer sr;
 
+    //Audio variables
+    protected AudioSource  audioSource;
+    [SerializeField]
+    private int            minVoiceLineInterval, maxVoiceLineInterval;
+    private float          randomAudioTimer = 0f;
+    private float          currentAudioInterval;
+
     //Exhaust variables
     [SerializeField]
     protected bool         exhausted; //Must disable sprinting
@@ -419,6 +426,31 @@ public abstract class Character : MonoBehaviour
         WalkUp
     }
 
+    protected virtual void PlayClip(AudioClip clip)
+    {
+        if (clip != audioSource.clip)
+        {
+            audioSource.clip = clip;
+        }
+        audioSource.Play();
+    }
+
+    protected virtual void RandomSounds()
+    {
+        randomAudioTimer += Time.deltaTime;
+        if (randomAudioTimer >= currentAudioInterval)
+        {
+            randomAudioTimer = 0;
+            currentAudioInterval = (int)Random.Range(minVoiceLineInterval, maxVoiceLineInterval);
+            //Play clip
+        }
+    }
+
+    protected virtual void LoadAudio()
+    {
+
+    }
+
     protected virtual void Awake()
     {
 
@@ -447,6 +479,7 @@ public abstract class Character : MonoBehaviour
         SleepTimerChecker();
         Collision();
         ApplyMovement();
+        RandomSounds();
     }
     protected virtual void LateUpdate()
     {

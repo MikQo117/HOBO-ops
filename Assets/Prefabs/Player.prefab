@@ -98,6 +98,8 @@ MonoBehaviour:
   - {fileID: 21300018, guid: 87fb079c94d585d4c8772ba9300fc33b, type: 3}
   - {fileID: 21300012, guid: 87fb079c94d585d4c8772ba9300fc33b, type: 3}
   - {fileID: 21300006, guid: 87fb079c94d585d4c8772ba9300fc33b, type: 3}
+  minVoiceLineInterval: 25
+  maxVoiceLineInterval: 40
   exhausted: 0
   collider: {fileID: 70423724229080694}
   Gathered: 0
@@ -105,6 +107,7 @@ MonoBehaviour:
   bound:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0, y: 0, z: 0}
+  characterName: 
 --- !u!212 &212084755443256844
 SpriteRenderer:
   m_ObjectHideFlags: 1

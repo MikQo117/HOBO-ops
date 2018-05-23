@@ -94,6 +94,11 @@ public class PedestrianController : Character
         }
     }
 
+    protected override void RandomSounds()
+    {
+        //Overwritten for no sounds
+    }
+
     protected override void CheckForInteraction()
     {
         //For through all interactable colliders, and see if intersects
