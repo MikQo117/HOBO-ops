@@ -57,6 +57,9 @@ public class UIManager : MonoBehaviour
     private float sleepTimer;
     private float interPolationValue;
 
+    //PauseMenu Variables
+    public GameObject PauseMenuCanvas;
+
     //Death Screen Variables
     private GameObject deathScreen;
 
@@ -299,6 +302,7 @@ public class UIManager : MonoBehaviour
         Color temp = fadeWindow.GetComponent<Image>().color;
         if (SleepTimer > 0)
         {
+            temp = new Color(0.3f, 0.3f, 0.3f);
             sleepTimer -= Time.deltaTime;
             InterPolationValue += Time.deltaTime;
             temp.a = InterPolationValue;
@@ -378,20 +382,32 @@ public class UIManager : MonoBehaviour
     {
         if (StatusID == 1) // morning
         {
-            ColorTint.GetComponent<MeshRenderer>().material.SetColor(Shader.PropertyToID("_Color"), new Color(1.0f, 1.0f, 1.0f, 1.0f));
+            fadeWindow.GetComponent<Image>().color = new Color(0.99f, 1.0f, 0.855f, 0);
+
+            //ColorTint.GetComponent<MeshRenderer>().material.SetColor(Shader.PropertyToID("_Color"), new Color(1.0f, 1.0f, 1.0f, 1.0f));
         }
 
         if (StatusID == 2) // rushHour
         {
             //253,255,212
-            ColorTint.GetComponent<MeshRenderer>().material.SetColor(Shader.PropertyToID("_Color"), new Color(0.99f,1.0f,0.855f,1));
+            fadeWindow.GetComponent<Image>().color = new Color(0.99f, 1.0f, 0.855f, 0.05f);
+            //ColorTint.GetComponent<MeshRenderer>().material.SetColor(Shader.PropertyToID("_Color"), new Color(0.99f,1.0f,0.855f,1));
         }
 
         if (StatusID == 3) // NightTime
         {
-            ColorTint.GetComponent<MeshRenderer>().material.SetColor(Shader.PropertyToID("_Color"), new Color(0.7f,0.7f,0.7f,1));
+            fadeWindow.GetComponent<Image>().color = new Color(0f, 0f, 0f, 0.7f);
+
+            //ColorTint.GetComponent<MeshRenderer>().material.SetColor(Shader.PropertyToID("_Color"), new Color(0.7f,0.7f,0.7f,1));
         }
 
+    }
+
+    //Pausemenu methdos
+
+    public void PausemenuActive(bool active)
+    {
+        PauseMenuCanvas.SetActive(active);
     }
 
     //Sets deathscreen to active
@@ -404,14 +420,14 @@ public class UIManager : MonoBehaviour
     private void Awake()
     {
         moneyText = transform.GetChild(0).transform.GetChild(2).GetComponent<Text>();
-        dayCounter = transform.GetChild(3).GetChild(2).gameObject;
-        ShopWindow1 = transform.GetChild(4).gameObject;
-        ReturnBottleText = transform.GetChild(4).transform.GetChild(0).GetChild(3).GetComponent<Text>();
-        LiqourStoreWindow1 = transform.GetChild(5).gameObject;
-        liqourStoreText = transform.GetChild(5).GetChild(0).transform.GetChild(3).GetComponent<Text>();
-        sleepWindow = transform.GetChild(7).transform.gameObject;
-        sleepField = transform.GetChild(7).transform.GetChild(0).GetComponent<InputField>();
-        fadeWindow = transform.GetChild(8).gameObject;
+        fadeWindow = transform.GetChild(2).gameObject;
+        dayCounter = transform.GetChild(4).GetChild(2).gameObject;
+        ShopWindow1 = transform.GetChild(5).gameObject;
+        ReturnBottleText = transform.GetChild(5).transform.GetChild(0).GetChild(3).GetComponent<Text>();
+        LiqourStoreWindow1 = transform.GetChild(6).gameObject;
+        liqourStoreText = transform.GetChild(6).GetChild(0).transform.GetChild(3).GetComponent<Text>();
+        sleepWindow = transform.GetChild(8).transform.gameObject;
+        sleepField = transform.GetChild(8).transform.GetChild(0).GetComponent<InputField>();
         deathScreen = transform.GetChild(9).gameObject;
     }
 

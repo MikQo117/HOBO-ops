@@ -439,14 +439,15 @@ public abstract class Character : MonoBehaviour
     // Update is called once per frame
     protected virtual void Update()
     {
-        GetInput();
-        CheckForInteraction();
-        StatsDecay();
-        RecoverStamina();
-        ExhaustTimer();
-        SleepTimerChecker();
-        Collision();
-        ApplyMovement();
+
+            GetInput();
+            CheckForInteraction();
+            StatsDecay();
+            RecoverStamina();
+            ExhaustTimer();
+            SleepTimerChecker();
+            Collision();
+            ApplyMovement();
     }
     protected virtual void LateUpdate()
     {

@@ -24,7 +24,14 @@ public class PlayerController : Character
     //Get & Set
     public bool Paused
     {
-        get { return paused; }
+        get
+        {
+            return paused;
+        }
+        set
+        {
+            paused = value;
+        }
     }
 
     public bool Interaction
@@ -135,13 +142,30 @@ public class PlayerController : Character
                 Interaction = false;
             }
 
+            if (Input.GetKeyDown(KeyCode.Tab))
+            {
+                inventoryAccess = !inventoryAccess;
+            }
+
+
         }
+        else
+        {
+            inputDirection = Vector3.zero;
+            movementDirection = Vector3.zero;
+        }
+
+        UIManager.Instance.Inventory(inventoryAccess);
 
         if (InputManager.Instance.AxisPressed("Pause"))
         {
-            if (!interaction)
+            if (!interaction && !inventoryAccess)
             {
                 paused = !paused;
+
+                Time.timeScale = paused ? 0 : 1;
+
+                UIManager.Instance.PausemenuActive(paused);
             }
             else
             {
@@ -149,10 +173,12 @@ public class PlayerController : Character
             }
         }
 
-        if(Input.GetKeyDown(KeyCode.Tab))
+        if (UIManager.Instance.transform.GetChild(1).gameObject.activeInHierarchy)
         {
-            inventoryAccess = !inventoryAccess;
-            UIManager.Instance.Inventory(inventoryAccess);
+            if (InputManager.Instance.AxisPressed("Pause"))
+            {
+                inventoryAccess = !inventoryAccess;
+            }
         }
     }
 
@@ -375,10 +401,10 @@ public class PlayerController : Character
 
     protected override void Update()
     {
-        base.Update();
-        CameraMovement();
-        PauseMethod();
-        StatusChecker();
+            base.Update();
+            CameraMovement();
+            PauseMethod();
+            StatusChecker();
     }
 
     protected override void Awake()

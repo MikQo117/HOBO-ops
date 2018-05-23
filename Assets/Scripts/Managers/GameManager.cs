@@ -212,13 +212,10 @@ public class GameManager : MonoBehaviour
         {
             DayTimer += 20;
         }
-        if (!PlayerController.pl.Paused)
-        {
             TimeChanger();
             IntervalChecker();
             AddItemToTrashCans();
             timer += Time.deltaTime;
-        }
     }
 
     private void LateUpdate()
