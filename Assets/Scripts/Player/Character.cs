@@ -5,8 +5,8 @@ using UnityEngine;
 public abstract class Character : MonoBehaviour
 {
     //Character stats
-    protected float        health = 30;
-    protected float        sanity = 30;
+    protected float        health = 50;
+    protected float        sanity = 50;
     protected float        drunkAmount;
     protected float        stamina = 100;
     protected float        staminaRecoveryRate = 2;

@@ -13,11 +13,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectname: Pain Killer
   healthAmount: 0
-  sanityAmount: 35
+  sanityAmount: 30
   drunkAmount: 0
   moneyAmount: 6
   baseItemID: 1
   consumable: 1
   objectSprite: {fileID: 21300002, guid: 3ad9b29c532af97439f9dcc700372a8a, type: 3}
-  itemCost: 6
+  itemCost: 4.5
   dropProbability: 0
