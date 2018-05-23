@@ -8,15 +8,11 @@ public class RenderTextureScaler : MonoBehaviour
 
     void Update()
     {
+        float verticalSize = Cam.orthographicSize * 2.0f;
+        float horizontalSize = verticalSize * Screen.width / Screen.height;
 
 
-        float pos = (Cam.nearClipPlane + 0.01f);
-
-        transform.position = Cam.transform.position + Cam.transform.forward * pos;
-
-        float h = Mathf.Tan(Cam.fieldOfView * Mathf.Deg2Rad * 0.5f) * pos * 2f;
-
-        transform.localScale = new Vector3(h * Cam.aspect, h, 0f);
+        transform.localScale = new Vector3(verticalSize, horizontalSize, 1);
     }
 
 }
