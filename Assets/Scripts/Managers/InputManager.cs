@@ -7,13 +7,15 @@ public class InputManager : MonoBehaviour
 {
     public static InputManager Instance;
 
-    public float XAxis, YAxis, LeftShift, E;
+    public float XAxis, YAxis, LeftShift, E, esc, enter;
 
     //Axis states
     private float previousXAxis, currentXAxis;
     private float previousYAxis, currentYAxis;
     private float previousLeftShift, currentLeftShift;
     private float previousE, currentE;
+    private float previousEsc, currentEsc;
+    private float previousEnter, currentEnter;
 
     /// <summary>
     /// Check if axis is pressed
@@ -46,6 +48,20 @@ public class InputManager : MonoBehaviour
         else if(axis == "Use")
         {
             if(currentE != 0 && previousE == 0)
+            {
+                return true;
+            }
+        }
+        else if(axis == "Submit")
+        {
+            if(currentEnter != 0 && previousEnter == 0)
+            {
+                return true;
+            }
+        }
+        else if( axis == "Pause")
+        {
+            if(currentEsc != 0 && previousEsc == 0)
             {
                 return true;
             }
@@ -88,6 +104,20 @@ public class InputManager : MonoBehaviour
                 return true;
             }
         }
+        else if( axis == "Submit")
+        {
+            if(currentEnter == 0 && previousEnter != 0)
+            {
+                return true;
+            }
+        }
+        else if( axis == "Pause")
+        {
+            if(currentEsc == 0 && previousEsc != 0)
+            {
+                return true;
+            }
+        }
         return false;
     }
 
@@ -126,6 +156,20 @@ public class InputManager : MonoBehaviour
                 return true;
             }
         }
+        else if(axis == "Submit")
+        {
+            if(currentEnter != 0)
+            {
+                return true;
+            }
+        }
+        else if(axis == "Pause")
+        {
+            if(currentEsc != 0)
+            {
+                return true;
+            }
+        }
 
         return false;
     }
@@ -152,7 +196,8 @@ public class InputManager : MonoBehaviour
         YAxis = Input.GetAxisRaw("Vertical");
         LeftShift = Input.GetAxisRaw("Fire3");
         E = Input.GetAxisRaw("Use");
-
+        esc = Input.GetAxisRaw("Pause");
+        enter = Input.GetAxisRaw("Submit");
         previousXAxis = currentXAxis;
         currentXAxis = XAxis;
         previousYAxis = currentYAxis;
@@ -161,5 +206,9 @@ public class InputManager : MonoBehaviour
         currentLeftShift = LeftShift;
         previousE = currentE;
         currentE = E;
+        previousEnter = currentEnter;
+        currentEnter = enter;
+        previousEsc = currentEsc;
+        currentEsc = esc;
     }
 }

@@ -111,9 +111,12 @@ public class HoboController : Character
 
     protected override void Update()
     {
-        //AnalyzeStatus();
-        StateMachine.Update();
-        base.Update();
+        if (!PlayerController.pl.Paused)
+        {
+            //AnalyzeStatus();
+            StateMachine.Update();
+            base.Update();
+        }
     }
 
     public void StartMovement(Vector2[] newPath)
