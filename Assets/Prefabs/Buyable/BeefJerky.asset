@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Name: BeefJerky
   m_EditorClassIdentifier: 
   objectname: Beefy Jerk
-  healthAmount: 30
-  sanityAmount: 10
+  healthAmount: 22
+  sanityAmount: 8
   drunkAmount: 0
   moneyAmount: 0
   baseItemID: 6
