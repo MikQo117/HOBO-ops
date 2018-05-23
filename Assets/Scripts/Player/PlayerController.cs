@@ -12,6 +12,7 @@ public class PlayerController : Character
     private bool shopping;
     private bool paused;
     private bool submit;
+    private bool inventoryAccess;
 
     //Camera Variables
     public Camera mainCamera;
@@ -147,6 +148,12 @@ public class PlayerController : Character
                 interaction = false;
             }
         }
+
+        if(Input.GetKeyDown(KeyCode.Tab))
+        {
+            inventoryAccess = !inventoryAccess;
+            UIManager.Instance.Inventory(inventoryAccess);
+        }
     }
 
     public override void ConsumeItem(BaseItem item)
@@ -192,6 +199,8 @@ public class PlayerController : Character
     {
         if (Interaction)
         {
+            canInteract = false;
+            interaction = false;
             if (items != null)
             {
                 if (!UIManager.Instance.CRisRunning)
@@ -211,7 +220,7 @@ public class PlayerController : Character
         {
             Gathered = false;
         }
-
+        canInteract = true;
     }
 
     public override void Buy(BaseItem item)

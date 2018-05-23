@@ -2,8 +2,8 @@
 {
 	Properties
 	{
-		[PerRendererData] _MainTex("Sprite", 2D) = "_Color" {}
-		_Color ("Tint", Color) = (1.0, 0.6, 0.6, 1.0)
+		[PerRendererData] _MainTex("Sprite", 2D) = "white" {}
+
 	}
 
 
@@ -25,7 +25,7 @@
 		ZWrite Off
 		Blend One OneMinusSrcAlpha
 
-		
+
 
 		Pass
 		{
@@ -40,7 +40,7 @@
 			};
 
 			fixed4 _ColorTint;
-			sampler2D _MainTex;
+			
 
 			struct appdata
 			{
@@ -52,9 +52,12 @@
 			struct v2f
 			{
 				float4 vertex	: SV_POSITION;
-				fixed4 color	: _ColorTint;
+				fixed4 color	: COLOR;
 				float2 texcoord : TEXCOORD0;
 			};
+
+
+			sampler2D _MainTex;
 
 
 			v2f vert(appdata IN)

@@ -19,7 +19,6 @@ public class UIManager : MonoBehaviour
 
     //Inventory variables
     private List<Transform> inventoryObjects = new List<Transform>();
-    private bool showing = false;
     private Text moneyText;
 
     //Daytime indicator variables
@@ -130,9 +129,9 @@ public class UIManager : MonoBehaviour
     }
 
     //Inventory methods
-    private void Inventory()
+    public void Inventory(bool showing)
     {
-        if (!ShopWindow1.activeInHierarchy || !LiqourStoreWindow1.activeInHierarchy)
+        if (!ShopWindow1.activeInHierarchy && !LiqourStoreWindow1.activeInHierarchy)
         {
             for (int i = 0; i < transform.childCount - 8; i++)
             {
@@ -156,7 +155,7 @@ public class UIManager : MonoBehaviour
         {
             if (items.Count > 0)
             {
-                if (!shop)
+                if (!shop)  //Item drop display
                 {
                     PickupObject.SetActive(true);
                     CRisRunning = true;
@@ -171,12 +170,12 @@ public class UIManager : MonoBehaviour
                         PickupObject.transform.GetChild(0).GetComponent<RectTransform>().anchorMax = maxAnchor;
                     }
                 }
-                else
+                else // used to display the money amount player is given when he/she return bottles
                 {
                     PickupObject.SetActive(true);
                     PickupObject.GetComponentInChildren<Image>().sprite = items.Find(x => x.BaseItemID == 8).ObjectSprite;
                     float value = (items.Count * 0.100f);
-                    PickupObject.GetComponentInChildren<Text>().text = "+   " + string.Format("{0:C2}", value) + " $";
+                    PickupObject.GetComponentInChildren<Text>().text = "+   " + string.Format("{0:C2}", value);
                     yield return new WaitForSeconds(1.0f);
                     PickupObject.transform.GetChild(0).GetComponent<RectTransform>().anchorMin = minAnchor;
                     PickupObject.transform.GetChild(0).GetComponent<RectTransform>().anchorMax = maxAnchor;
@@ -193,7 +192,6 @@ public class UIManager : MonoBehaviour
             yield return new WaitForSeconds(1.0f);
             PickupObject.SetActive(false);
             PickupObject.GetComponentInChildren<Image>().color = new Color32(255, 255, 255, 255);
-
         }
     }
 
@@ -378,7 +376,6 @@ public class UIManager : MonoBehaviour
 
     public void DaytimeColorTintChanger(int StatusID)
     {
-        Color temp;
         if (StatusID == 1) // morning
         {
             ColorTint.GetComponent<MeshRenderer>().material.SetColor(Shader.PropertyToID("_Color"), new Color(1.0f, 1.0f, 1.0f, 1.0f));
@@ -386,28 +383,18 @@ public class UIManager : MonoBehaviour
 
         if (StatusID == 2) // rushHour
         {
-
+            //253,255,212
             ColorTint.GetComponent<MeshRenderer>().material.SetColor(Shader.PropertyToID("_Color"), new Color(0.99f,1.0f,0.855f,1));
         }
 
         if (StatusID == 3) // NightTime
         {
-            temp = new Color(0xBA, 0xBA, 0xBA, 0xFF); //253,255,212
             ColorTint.GetComponent<MeshRenderer>().material.SetColor(Shader.PropertyToID("_Color"), new Color(0.7f,0.7f,0.7f,1));
-
         }
 
     }
 
-    //Player methods
-    private void UIInput()
-    {
-        if (Input.GetKeyDown(KeyCode.Tab))
-        {
-            showing = !showing;
-        }
-    }
-
+    //Sets deathscreen to active
     public void DeathScreen()
     {
         deathScreen.SetActive(true);
@@ -443,13 +430,11 @@ public class UIManager : MonoBehaviour
         recT = PickupObject.transform.GetChild(0).GetComponent<RectTransform>();
         minAnchor = PickupObject.transform.GetChild(0).GetComponent<RectTransform>().anchorMin;
         maxAnchor = PickupObject.transform.GetChild(0).GetComponent<RectTransform>().anchorMax;
-        Color temp = new Color(0x00, 0x00, 0x00, 0xFF);
-       // ColorTint.GetComponent<MeshRenderer>().material.SetColor(Shader.PropertyToID("_Color"), temp); 
+        Cursor.lockState = CursorLockMode.None;
     }
 
     private void Update()
     {
-        UIInput();
         TransformChanger();
         DaytimeIndicator();
         AlphaValueChanger();
@@ -461,6 +446,5 @@ public class UIManager : MonoBehaviour
             StartCoroutine(EpromptSpriteChanger());
         }
         AnchorChanger(CRisRunning);
-        Inventory();
     }
 }
