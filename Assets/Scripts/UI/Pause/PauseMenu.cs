@@ -8,23 +8,26 @@ public class PauseMenu : MonoBehaviour
     public GameObject buttons;
     public GameObject instruction;
     public GameObject pausetext;
+    public GameObject Return;
 
-    private void Awake()
+    public void PauseMenuActive()
     {
-        Instance = this;
+        buttons.SetActive(true);
+        pausetext.SetActive(true);
+        Return.SetActive(false);
+        instruction.SetActive(false);
     }
 
-    private void Update()
+    public void InstructionScreenActive()
     {
-        if(instruction.activeInHierarchy)
-        {
-            buttons.SetActive(false);
-            pausetext.SetActive(false);
-        }
-        else
-        {
-            buttons.SetActive(true);
-            pausetext.SetActive(true);
-        }
+        buttons.SetActive(false);
+        pausetext.SetActive(false);
+        Return.SetActive(true);
+        instruction.SetActive(true);
+    }
+
+    public void Awake()
+    {
+        Instance = this;
     }
 }

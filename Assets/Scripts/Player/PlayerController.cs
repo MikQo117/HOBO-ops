@@ -163,8 +163,6 @@ public class PlayerController : Character
             {
                 paused = !paused;
 
-                Time.timeScale = paused ? 0 : 1;
-
                 UIManager.Instance.PausemenuActive(paused);
             }
             else
@@ -396,6 +394,7 @@ public class PlayerController : Character
     protected override void Start()
     {
         base.Start();
+        UIManager.Instance.PausemenuActive(false);
         mainCamera = Camera.main;
     }
 
@@ -405,11 +404,13 @@ public class PlayerController : Character
             CameraMovement();
             PauseMethod();
             StatusChecker();
+            Time.timeScale = paused ? 0 : 1;
     }
 
     protected override void Awake()
     {
         pl = this;
+
         if (InputManager.Instance == null)
         {
             GameObject inputManager = new GameObject();

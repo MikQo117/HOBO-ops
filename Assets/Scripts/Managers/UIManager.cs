@@ -57,11 +57,11 @@ public class UIManager : MonoBehaviour
     private float sleepTimer;
     private float interPolationValue;
 
-    //PauseMenu Variables
-    public GameObject PauseMenuCanvas;
-
     //Death Screen Variables
     private GameObject deathScreen;
+
+    //Pausemenu Variables
+    public GameObject Pausemenu;
 
     //get & set
     public GameObject ShopWindow1
@@ -407,7 +407,9 @@ public class UIManager : MonoBehaviour
 
     public void PausemenuActive(bool active)
     {
-        PauseMenuCanvas.SetActive(active);
+        this.gameObject.SetActive(!active);
+        PauseMenu.Instance.transform.gameObject.SetActive(active);
+        PauseMenu.Instance.PauseMenuActive();   
     }
 
     //Sets deathscreen to active

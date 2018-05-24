@@ -18,6 +18,7 @@ public class PauseMenuButtonAction : ButtonAction
                 UIManager.Instance.PausemenuActive(false);
                 break;
             case 1:
+                PauseMenu.Instance.InstructionScreenActive();
                 break;
             case 2:
                 //Insert main menu call here
@@ -26,9 +27,7 @@ public class PauseMenuButtonAction : ButtonAction
                 Application.Quit();
                 break;
             case 4:
-                PauseMenu.Instance.instruction.SetActive(false);
-                PauseMenu.Instance.buttons.SetActive(true);
-                PauseMenu.Instance.buttons.SetActive(true);
+                PauseMenu.Instance.PauseMenuActive();
                 break;
             default:
                 Debug.Log("u dun guufd");

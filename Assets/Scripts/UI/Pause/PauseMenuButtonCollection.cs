@@ -6,6 +6,14 @@ using UnityEngine.UI;
 public class PauseMenuButtonCollection : ButtonCollection
 {
     public Button InstructionButton;
+
+    protected override void OnEnable()
+    {
+        Debug.Log("Active");
+        transform.GetComponentInParent<PauseMenu>().PauseMenuActive();
+    }
+
+
     protected override void AssignButtonClicks()
     {
         base.AssignButtonClicks();
