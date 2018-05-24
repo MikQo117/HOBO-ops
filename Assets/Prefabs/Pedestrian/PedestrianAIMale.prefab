@@ -98,8 +98,10 @@ MonoBehaviour:
   - {fileID: 21300018, guid: 4f1942ceb0780ea46a7bfad35659ffa5, type: 3}
   - {fileID: 21300024, guid: 4f1942ceb0780ea46a7bfad35659ffa5, type: 3}
   - {fileID: 21300006, guid: 4f1942ceb0780ea46a7bfad35659ffa5, type: 3}
+  minVoiceLineInterval: 0
+  maxVoiceLineInterval: 0
   exhausted: 0
-  collider: {fileID: 0}
+  collider: {fileID: 70232039775801034}
   tryInteract: 0
 --- !u!212 &212165308707151660
 SpriteRenderer:

@@ -101,7 +101,7 @@ MonoBehaviour:
   minVoiceLineInterval: 0
   maxVoiceLineInterval: 0
   exhausted: 0
-  collider: {fileID: 0}
+  collider: {fileID: 70248228263080770}
   tryInteract: 0
 --- !u!212 &212258254654767674
 SpriteRenderer:

@@ -347,6 +347,10 @@ public abstract class Character : MonoBehaviour
 
     protected void AnimationChanger()
     {
+        if (sr == null)
+        {
+            sr = GetComponent<SpriteRenderer>();
+        }
         if (Mathf.Abs(inputDirection.x) + Mathf.Abs(inputDirection.y) != 0)
         {
             //sideways movement animator changer
