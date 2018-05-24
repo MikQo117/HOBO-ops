@@ -8,22 +8,41 @@ public class MainMenu : MonoBehaviour
     public static MainMenu Instance;
     public GameObject Buttons;
     public GameObject Instruction;
-    public GameObject Text;
+    public GameObject Exit;
     public GameObject Return;
+    public GameObject Credits;
+
+
 
     public void MainMenuActive()
     {
-        Buttons.SetActive(true);
         Instruction.SetActive(false);
         Return.SetActive(false);
-        Text.SetActive(true);
+        Credits.SetActive(false);
+        Buttons.SetActive(true);
+        Exit.SetActive(true);
     }
     public void InstructionsActive()
     {
         Buttons.SetActive(false);
-        Text.SetActive(false);
+        Exit.SetActive(false);
+        Credits.SetActive(false);
         Instruction.SetActive(true);
         Return.SetActive(true);
+    }
 
+    public void CreditsActive()
+    {
+        Buttons.SetActive(false);
+        Exit.SetActive(false);
+        Instruction.SetActive(false);
+        Return.SetActive(true);
+        Credits.SetActive(true);
+    }
+
+    public void Awake()
+    {
+        Instance = this;
+        MainMenuActive();
     }
 }

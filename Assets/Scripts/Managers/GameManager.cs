@@ -191,15 +191,8 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            DayTimer += 20;
-        }
-        if (!PlayerController.pl.Paused)
-        {
-            TimeChanger();
-            IntervalChecker();
-            AddItemToTrashCans();
-        }
+        TimeChanger();
+        IntervalChecker();
+        AddItemToTrashCans();
     }
 }
