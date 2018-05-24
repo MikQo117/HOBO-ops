@@ -10,7 +10,7 @@ public class UIManager : MonoBehaviour
 
     //StatusBars variables
     private const float maxValue = 100;
-    private float       alphaValue = 0.2f;
+    private float       alphaValue = 0f;
     private bool        increase;
     public Image HealthBar;
     public Image SanityBar;
@@ -55,7 +55,6 @@ public class UIManager : MonoBehaviour
     private bool sCoroutineIsRunning;
     private GameObject fadeWindow;
     private float sleepTimer;
-    private float interPolationValue;
 
     //Death Screen Variables
     private GameObject deathScreen;
@@ -118,18 +117,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public float InterPolationValue
-    {
-        get
-        {
-            return interPolationValue;
-        }
 
-        set
-        {
-            interPolationValue = Mathf.Clamp01(value);
-        }
-    }
 
     //Inventory methods
     public void Inventory(bool showing)
@@ -224,6 +212,7 @@ public class UIManager : MonoBehaviour
 
     public void StatusBarLowIndicator(int StatusID)
     {
+        return;
         if(StatusID == 1)
         {
             Color HealthAlpha = HealthBar.color;
@@ -247,23 +236,30 @@ public class UIManager : MonoBehaviour
 
     private void AlphaValueChanger()
     {
+        if (sleepTimer > 0)
+        {
+            if (alphaValue <= 0)
+            {
+                increase = true;
+            }
 
-        if(alphaValue <= 0)
-        {
-            increase = true;
-        }
-        else if(alphaValue >= 1)
-        {
-            increase = false;
-        }
+            if (alphaValue >= 1)
+            {
+                increase = false;
+            }
 
-        if(increase)
-        {
-            alphaValue += Time.deltaTime;
+            if (increase)
+            {
+                alphaValue += Time.deltaTime;
+            }
+            else
+            {
+                alphaValue -= Time.deltaTime;
+            }
         }
         else
         {
-            alphaValue -= Time.deltaTime;
+            alphaValue = 0;
         }
     }
 
@@ -277,7 +273,7 @@ public class UIManager : MonoBehaviour
         {
             if (int.TryParse(sleepField.text, out temp) && sleepField.text != null && active)
             {
-                if (temp > 0)
+                if (temp > 0 && temp < 9)
                 {
                     SleepHours = int.Parse(sleepField.text);
                     PlayerController.pl.Sleep(SleepHours);
@@ -294,7 +290,7 @@ public class UIManager : MonoBehaviour
     public void FadetoBlack(bool active)
     {
         fadeWindow.SetActive(active);
-        SleepTimer = 3;
+        SleepTimer = 3.5f;
     }
 
     private void FadeToBlackChanger()
@@ -302,16 +298,14 @@ public class UIManager : MonoBehaviour
         Color temp = fadeWindow.GetComponent<Image>().color;
         if (SleepTimer > 0)
         {
-            temp = new Color(0.3f, 0.3f, 0.3f);
+            temp = new Color(0f, 0f, 0f);
             sleepTimer -= Time.deltaTime;
-            InterPolationValue += Time.deltaTime;
-            temp.a = InterPolationValue;
+            temp.a = alphaValue;
             fadeWindow.GetComponent<Image>().color = temp;
         }
         else
         {
-            InterPolationValue -= Time.deltaTime;
-            temp.a = interPolationValue;
+            temp.a = alphaValue;
             fadeWindow.GetComponent<Image>().color = temp;
         }
     }
@@ -380,27 +374,29 @@ public class UIManager : MonoBehaviour
 
     public void DaytimeColorTintChanger(int StatusID)
     {
-        if (StatusID == 1) // morning
+        if (sleepTimer <= 0)
         {
-            fadeWindow.GetComponent<Image>().color = new Color(0.99f, 1.0f, 0.855f, 0);
+            if (StatusID == 1) // morning
+            {
+                fadeWindow.GetComponent<Image>().color = new Color(0.99f, 1.0f, 0.855f, 0);
 
-            //ColorTint.GetComponent<MeshRenderer>().material.SetColor(Shader.PropertyToID("_Color"), new Color(1.0f, 1.0f, 1.0f, 1.0f));
+                //ColorTint.GetComponent<MeshRenderer>().material.SetColor(Shader.PropertyToID("_Color"), new Color(1.0f, 1.0f, 1.0f, 1.0f));
+            }
+
+            if (StatusID == 2) // rushHour
+            {
+                //253,255,212
+                fadeWindow.GetComponent<Image>().color = new Color(0.99f, 1.0f, 0.855f, 0.05f);
+                //ColorTint.GetComponent<MeshRenderer>().material.SetColor(Shader.PropertyToID("_Color"), new Color(0.99f,1.0f,0.855f,1));
+            }
+
+            if (StatusID == 3) // NightTime
+            {
+                fadeWindow.GetComponent<Image>().color = new Color(0f, 0f, 0f, 0.7f);
+
+                //ColorTint.GetComponent<MeshRenderer>().material.SetColor(Shader.PropertyToID("_Color"), new Color(0.7f,0.7f,0.7f,1));
+            }
         }
-
-        if (StatusID == 2) // rushHour
-        {
-            //253,255,212
-            fadeWindow.GetComponent<Image>().color = new Color(0.99f, 1.0f, 0.855f, 0.05f);
-            //ColorTint.GetComponent<MeshRenderer>().material.SetColor(Shader.PropertyToID("_Color"), new Color(0.99f,1.0f,0.855f,1));
-        }
-
-        if (StatusID == 3) // NightTime
-        {
-            fadeWindow.GetComponent<Image>().color = new Color(0f, 0f, 0f, 0.7f);
-
-            //ColorTint.GetComponent<MeshRenderer>().material.SetColor(Shader.PropertyToID("_Color"), new Color(0.7f,0.7f,0.7f,1));
-        }
-
     }
 
     //Pausemenu methdos
