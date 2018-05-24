@@ -275,6 +275,12 @@ public class PlayerController : Character
         {
             if (Interaction)
             {
+                shopping = true;
+                UIManager.Instance.SleepWindow(Interaction);
+            }
+            else
+            {
+                shopping = false;
                 UIManager.Instance.SleepWindow(Interaction);
             }
         }
@@ -283,7 +289,7 @@ public class PlayerController : Character
             if (Interaction)
             {
                 StartCoroutine(UIManager.Instance.SleepTextActivator());
-                Interaction = !Interaction;
+                Interaction = false;
             }
         }
 
@@ -349,7 +355,8 @@ public class PlayerController : Character
             }
 
             GameManager.Instance.TimesSlept++;
-            interaction = !interaction;
+            interaction = false;
+            shopping = false;
         }
     }
 
