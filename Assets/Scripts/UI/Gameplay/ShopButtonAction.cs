@@ -8,4 +8,9 @@ public class ShopButtonAction : ButtonAction
     {
         PlayerController.pl.Buy(item);
     }
+
+    public override void ReturnBottle()
+    {
+        PlayerController.pl.ReturnBottle();
+    }
 }

@@ -219,7 +219,7 @@ public abstract class Character : MonoBehaviour
             //If contains, get component from collider, typeof IInteractable
             if (collider.bounds.Intersects(item.bounds))
             {
-                /UIManager.Instance.Eprompt(true);
+                UIManager.Instance.Eprompt(true);
                 InteractableCollider = item;
                 //Call Interact and pass this as parameter
                 item.GetComponent<IInteractable>().Interact(this);

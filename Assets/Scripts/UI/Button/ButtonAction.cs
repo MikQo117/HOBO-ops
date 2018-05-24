@@ -13,4 +13,9 @@ public abstract class ButtonAction
     {
 
     }
+
+    public virtual void ReturnBottle()
+    {
+
+    }
 }

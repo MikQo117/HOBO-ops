@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class ShopButtonCollection : ButtonCollection
 {
     public List<BaseItem> ItemsToSell;
+    public Button ReturnBottleButton;
 
     protected override void Awake()
     {
@@ -25,5 +26,8 @@ public class ShopButtonCollection : ButtonCollection
                 buttons[i].onClick.AddListener(buyAction);
             }
         }
+        UnityEngine.Events.UnityAction returnAction = () => ActionToAssign.ReturnBottle();
+        ReturnBottleButton.onClick.AddListener(returnAction);
     }
+
 }
