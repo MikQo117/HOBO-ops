@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -30,9 +31,9 @@ public class AudioManager : MonoBehaviour
     {
         List<AssetBundle> abl = AssetManager.Instance.AssetBundlesList;
 
-        AssetBundle ab = AssetManager.Instance.AssetBundlesList.Find(AB => AB.Contains("audios"));
+        AssetBundle ab = AssetManager.Instance.AssetBundlesList.Find(AB => AB.name == "audios");
 
-        audioClips = new AudioClip[ab.GetAllAssetNames().Length];
+        audioClips = ab.LoadAllAssets<AudioClip>();
     }
 
     /// <summary>
@@ -44,11 +45,12 @@ public class AudioManager : MonoBehaviour
     {
         if(audioClips == null)
         {
-            Debug.LogError("AudioClips array is empty. Find AssetBundle first!");
-#if UNITY_EDITOR
-            UnityEditor.EditorApplication.isPlaying = false;
-#endif        
-            return null;
+            FindAssetBundle();
+//            Debug.LogError("AudioClips array is empty. Find AssetBundle first!");
+//#if UNITY_EDITOR
+//            UnityEditor.EditorApplication.isPlaying = false;
+//#endif        
+            //return null;
         }
 
         AudioClip result = null;
@@ -71,6 +73,39 @@ public class AudioManager : MonoBehaviour
         }
 
         return result;
+    }
+
+    public AudioClip[] GetAudioClips(string match)
+    {
+        if (audioClips == null)
+        {
+            FindAssetBundle();
+//            Debug.LogError("AudioClips array is empty. Find AssetBundle first!");
+//#if UNITY_EDITOR
+//            UnityEditor.EditorApplication.isPlaying = false;
+//#endif        
+//            return null;
+        }
+
+        List<AudioClip> result = new List<AudioClip>();
+
+        for (int i = 0; i < audioClips.Length; i++)
+        {
+            if (audioClips[i].name.ToLower().Contains(match.ToLower()))
+            {
+                result.Add(audioClips[i]);
+            }
+        }
+
+        if (result == null)
+        {
+            Debug.LogError("Could not find AudioClip that contains: " + match);
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+#endif  
+        }
+
+        return result.ToArray();
     }
 
 

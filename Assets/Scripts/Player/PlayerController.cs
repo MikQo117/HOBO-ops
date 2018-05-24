@@ -21,6 +21,18 @@ public class PlayerController : Character
     private float smoothTime = 0.3f;
     public Bounds bound;
 
+    //Audio variables
+    private AudioClip[] itemFoundClips, whiskeyDrinkClips, eatBJClips,
+        randomSoundsClips, lowHPClips, lowSPClips, outOfStaminaClips,
+        wakeUpClips;
+    private AudioClip buyClip;
+    private bool oldHealthLow = false;
+    private bool currentHealthLow = false;
+    private bool oldSanityLow = false;
+    private bool currentSanityLow = false;
+    private bool oldStaminaLow = false;
+    private bool currentStaminaLow = false;
+
     //Get & Set
     public bool Paused
     {
@@ -187,15 +199,18 @@ public class PlayerController : Character
         {
             if (item.BaseItemID == 0)
             {
-                GameManager.Instance.BeersConsumed++;
+                if (UnityEngine.Random.Range(0,4) == 0) //i guess?
+                {
+                    PlayClip(lowHPClips);
+                }
             }
             else if (item.BaseItemID == 1)
             {
-                GameManager.Instance.WhiskeyConsumed++;
+                PlayClip(whiskeyDrinkClips);
             }
-            else
+            else if (item.BaseItemID == 6)
             {
-                GameManager.Instance.FoodConsumed++;
+                PlayClip(eatBJClips);
             }
 
             base.Health += item.HealthAmount;
@@ -234,6 +249,10 @@ public class PlayerController : Character
                 Inventory.AddItemToInventory(items);
                 items.Clear();
                 Gathered = true;
+                if (items.Count >= 3)
+                {
+                    PlayClip(itemFoundClips[0]); 
+                }
             }
             else
             {
@@ -251,20 +270,9 @@ public class PlayerController : Character
     {
         if (MoneyAmount >= item.ItemCost)
         {
-            if (item.BaseItemID == 0)
-            {
-                GameManager.Instance.BeersBought++;
-            }
-            else if (item.BaseItemID == 1)
-            {
-                GameManager.Instance.WhiskeyBought++;
-            }
-            else
-            {
-                GameManager.Instance.FoodBought++;
-            }
             Inventory.AddItemToInventory(item);
             moneyAmount -= item.ItemCost;
+            PlayClip(buyClip);
         }
     }
 
@@ -348,8 +356,8 @@ public class PlayerController : Character
                 GameManager.Instance.DayTimeIncreaser(hours * GameManager.Instance.Hour - (456 - temp));
             }
 
-            GameManager.Instance.TimesSlept++;
             interaction = !interaction;
+            PlayClip(wakeUpClips);
         }
     }
 
@@ -375,18 +383,83 @@ public class PlayerController : Character
     //Indicator methods
     private void StatusChecker()
     {
+        //Old values
+        oldHealthLow = currentHealthLow;
+        oldSanityLow = currentSanityLow;
+        oldStaminaLow = currentStaminaLow;
+
+        //Health
         if (Health <= 20.0f)
         {
+            currentHealthLow = true;
             UIManager.Instance.StatusBarLowIndicator(1);
+            if (currentHealthLow != oldHealthLow)
+            {
+                PlayClip(lowHPClips);
+            }
+            
         }
+        else
+        {
+            currentHealthLow = false;
+        }
+        //Sanity
         if (Sanity <= 15.0f)
         {
+            currentSanityLow = true;
             UIManager.Instance.StatusBarLowIndicator(2);
+            if (currentSanityLow != oldSanityLow)
+            {
+                PlayClip(lowSPClips);
+            }
+        }
+        else
+        {
+            currentSanityLow = false;
         }
 
+        //Stamina
         if (Stamina <= 20.0f)
         {
+            currentStaminaLow = true;
             UIManager.Instance.StatusBarLowIndicator(3);
+            if (currentStaminaLow != oldStaminaLow)
+            {
+                //PlayClip(outOfStaminaClips);
+            }
+        }
+        else
+        {
+            currentStaminaLow = false;
+        }
+    }
+
+    protected override void LoadAudio()
+    {
+        buyClip           = AudioManager.Instance.GetAudioClip("pc_buy_01");
+        itemFoundClips    = AudioManager.Instance.GetAudioClips(characterName.ToLower() + "_found");
+        whiskeyDrinkClips = AudioManager.Instance.GetAudioClips(characterName.ToLower() + "_hickup");
+        eatBJClips        = AudioManager.Instance.GetAudioClips(characterName.ToLower() + "_ah");
+        randomSoundsClips = AudioManager.Instance.GetAudioClips(characterName.ToLower() + "_random");
+        lowHPClips        = AudioManager.Instance.GetAudioClips(characterName.ToLower() + "_lowhp");
+        lowSPClips        = AudioManager.Instance.GetAudioClips(characterName.ToLower() + "_lowsp");
+        //outOfStaminaClips = AudioManager.Instance.GetAudioClips(characterName.ToLower() + "_");
+        wakeUpClips       = AudioManager.Instance.GetAudioClips(characterName.ToLower() + "_wakeup");
+    }
+
+    protected virtual void PlayClip(AudioClip[] collection)
+    {
+        PlayClip(collection[UnityEngine.Random.Range(0, collection.Length - 1)]);
+    }
+
+    protected override void RandomSounds()
+    {
+        randomAudioTimer += Time.deltaTime;
+        if (randomAudioTimer >= currentAudioInterval)
+        {
+            randomAudioTimer = 0;
+            currentAudioInterval = UnityEngine.Random.Range(minVoiceLineInterval, maxVoiceLineInterval);
+            PlayClip(randomSoundsClips);
         }
     }
 
@@ -396,6 +469,8 @@ public class PlayerController : Character
         base.Start();
         UIManager.Instance.PausemenuActive(false);
         mainCamera = Camera.main;
+        audioSource = GetComponent<AudioSource>();
+        LoadAudio();
     }
 
     protected override void Update()

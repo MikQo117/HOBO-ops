@@ -14,7 +14,7 @@ public class PedestrianController : Character
     //States                                  Do these need getters?
     public StateMachine<PedestrianController> StateMachine { get; set; }
     public MovementState                      movementState;
-    public IdleState                          idleState;
+    public BackToMovement                     backToMovement;
 
     //Treshold stuff
     public bool                               tryInteract = false;
@@ -35,7 +35,7 @@ public class PedestrianController : Character
         base.Start();
         StateMachine = new StateMachine<PedestrianController>(this);
         movementState = new MovementState();
-        idleState = new IdleState();
+        backToMovement = new BackToMovement();
 
 
         StateMachine.ChangeState(movementState);
@@ -44,7 +44,14 @@ public class PedestrianController : Character
     protected override void Update()
     {
         AnalyzeStatus();
-        StateMachine.Update();
+        if (StateMachine != null)
+        {
+            StateMachine.Update(); 
+        }
+        else
+        {
+            StateMachine = new StateMachine<PedestrianController>(this);
+        }
     }
 
     protected override void LateUpdate()
@@ -92,6 +99,11 @@ public class PedestrianController : Character
             transform.position = Vector3.MoveTowards(transform.position, currentWaypoint, movementSpeed * Time.deltaTime);
             yield return null;
         }
+    }
+
+    protected override void RandomSounds()
+    {
+        //Overwritten for no sounds
     }
 
     protected override void CheckForInteraction()

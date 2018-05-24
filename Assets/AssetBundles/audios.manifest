@@ -1,0 +1,127 @@
+ManifestFileVersion: 0
+CRC: 855323840
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 1ccdc1677d457cb170d8910e3be3d9f3
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: c516f2a3b2b6b67ef759f6410a790acd
+HashAppended: 0
+ClassTypes:
+- Class: 83
+  Script: {instanceID: 0}
+Assets:
+- Assets/Audio/VoiceLines/PlayerCharacter/Wake up/pc_wakeup_03.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/General Random Vocalization/pc_random_13.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/General Random Vocalization/pc_random_17.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/General Random Vocalization/pc_random_04.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/3 or more items found/pc_found_05.ogg
+- Assets/Audio/VoiceLines/Finn/finn_line_10.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/Eating BJ/pc_ah_03.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/General Random Vocalization/pc_random_12.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/General Random Vocalization/pc_random_28.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/General Random Vocalization/pc_random_07.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/General Random Vocalization/pc_random_30.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/Eating BJ/pc_ah_01.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/General Random Vocalization/pc_random_46.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/Wake up/pc_wakeup_02.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/General Random Vocalization/pc_random_48.ogg
+- Assets/Audio/VoiceLines/Finn/finn_line_12.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/3 or more items found/pc_found_02.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/General Random Vocalization/pc_random_11.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/General Random Vocalization/pc_random_16.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/General Random Vocalization/pc_random_19.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/General Random Vocalization/pc_random_21.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/Drinking whiskey/pc_hickup_03.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/Wake up/pc_wakeup_05.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/General Random Vocalization/pc_random_29.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/Low HP/pc_lowhp_03.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/General Random Vocalization/pc_random_33.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/General Random Vocalization/pc_random_36.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/Low HP/pc_lowhp_04.ogg
+- Assets/Audio/VoiceLines/Finn/finn_ah_02.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/Wake up/pc_wakeup_07.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/General Random Vocalization/pc_random_05.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/General Random Vocalization/pc_random_24.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/General Random Vocalization/pc_random_22.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/General Random Vocalization/pc_random_38.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/Buying items/pc_buy_01.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/General Random Vocalization/pc_random_39.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/3 or more items found/pc_found_01.ogg
+- Assets/Audio/VoiceLines/Finn/finn_curse_02.ogg
+- Assets/Audio/VoiceLines/Finn/finn_line_08.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/Drinking whiskey/pc_hickup_02.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/3 or more items found/pc_found_04.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/General Random Vocalization/pc_random_01.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/General Random Vocalization/pc_random_41.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/General Random Vocalization/pc_random_35.ogg
+- Assets/Audio/VoiceLines/Finn/finn_growl_07.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/General Random Vocalization/pc_random_06.ogg
+- Assets/Audio/VoiceLines/Finn/finn_line_07.ogg
+- Assets/Audio/VoiceLines/Finn/finn_line_03.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/General Random Vocalization/pc_random_31.ogg
+- Assets/Audio/VoiceLines/Finn/finn_line_02.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/General Random Vocalization/pc_random_44.ogg
+- Assets/Audio/VoiceLines/Finn/finn_haha_01.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/General Random Vocalization/pc_random_03.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/General Random Vocalization/pc_random_23.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/General Random Vocalization/pc_random_02.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/General Random Vocalization/pc_random_15.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/General Random Vocalization/pc_random_18.ogg
+- Assets/Audio/VoiceLines/Finn/finn_line_11.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/General Random Vocalization/pc_random_09.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/General Random Vocalization/pc_random_43.ogg
+- Assets/Audio/VoiceLines/Finn/finn_ah_01.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/General Random Vocalization/pc_random_27.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/Low HP/pc_lowhp_06.ogg
+- Assets/Audio/VoiceLines/Finn/finn_line_16.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/Drinking whiskey/pc_hickup_01.ogg
+- Assets/Audio/VoiceLines/Finn/finn_growl_05.ogg
+- Assets/Audio/VoiceLines/Finn/finn_nothing_03.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/Eating BJ/pc_ah_02.ogg
+- Assets/Audio/VoiceLines/Finn/finn_found_01.ogg
+- Assets/Audio/VoiceLines/Finn/finn_line_05.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/General Random Vocalization/pc_random_47.ogg
+- Assets/Audio/VoiceLines/Finn/finn_growl_03.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/General Random Vocalization/pc_random_25.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/Low HP/pc_lowhp_01.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/General Random Vocalization/pc_random_42.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/Wake up/pc_wakeup_09.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/3 or more items found/pc_found_03.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/General Random Vocalization/pc_random_26.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/General Random Vocalization/pc_random_34.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/Low SP/pc_lowsp_01.ogg
+- Assets/Audio/VoiceLines/Finn/finn_growl_02.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/Wake up/pc_wakeup_06.ogg
+- Assets/Audio/VoiceLines/Finn/finn_curse_01.ogg
+- Assets/Audio/VoiceLines/Finn/finn_growl_08.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/General Random Vocalization/pc_random_32.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/General Random Vocalization/pc_random_14.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/Low SP/pc_lowsp_02.ogg
+- Assets/Audio/VoiceLines/Finn/finn_nothing_01.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/Low HP/pc_lowhp_02.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/General Random Vocalization/pc_random_40.ogg
+- Assets/Audio/VoiceLines/Finn/finn_growl_06.ogg
+- Assets/Audio/VoiceLines/Finn/finn_growl_01.ogg
+- Assets/Audio/VoiceLines/Finn/finn_line_13.ogg
+- Assets/Audio/VoiceLines/Finn/finn_cough_01.ogg
+- Assets/Audio/VoiceLines/Finn/finn_nothing_02.ogg
+- Assets/Audio/VoiceLines/Finn/finn_line_06.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/General Random Vocalization/pc_random_37.ogg
+- Assets/Audio/VoiceLines/Finn/finn_line_14.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/General Random Vocalization/pc_random_10.ogg
+- Assets/Audio/VoiceLines/Finn/finn_line_15.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/Low HP/pc_lowhp_05.ogg
+- Assets/Audio/VoiceLines/Finn/finn_line_09.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/General Random Vocalization/pc_random_45.ogg
+- Assets/Audio/VoiceLines/Finn/finn_haha_02.ogg
+- Assets/Audio/VoiceLines/Finn/finn_line_04.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/General Random Vocalization/pc_random_08.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/Wake up/pc_wakeup_08.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/General Random Vocalization/pc_random_20.ogg
+- Assets/Audio/VoiceLines/Finn/finn_line_01.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/Wake up/pc_wakeup_04.ogg
+- Assets/Audio/VoiceLines/Finn/finn_growl_04.ogg
+- Assets/Audio/VoiceLines/PlayerCharacter/Wake up/pc_wakeup_01.ogg
+Dependencies: []

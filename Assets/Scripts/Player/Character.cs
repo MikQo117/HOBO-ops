@@ -45,6 +45,15 @@ public abstract class Character : MonoBehaviour
     private Sprite[]       idleSprites;
     private SpriteRenderer sr;
 
+    //Audio variables
+    protected AudioSource  audioSource;
+    [SerializeField]       
+    protected string       characterName = "";
+    [SerializeField]       
+    protected int          minVoiceLineInterval, maxVoiceLineInterval;
+    protected float        randomAudioTimer = 0f;
+    protected float        currentAudioInterval = 25f;
+
     //Exhaust variables
     [SerializeField]
     protected bool         exhausted; //Must disable sprinting
@@ -340,6 +349,10 @@ public abstract class Character : MonoBehaviour
 
     protected void AnimationChanger()
     {
+        if (sr == null)
+        {
+            sr = GetComponent<SpriteRenderer>();
+        }
         if (Mathf.Abs(inputDirection.x) + Mathf.Abs(inputDirection.y) != 0)
         {
             //sideways movement animator changer
@@ -419,6 +432,31 @@ public abstract class Character : MonoBehaviour
         WalkUp
     }
 
+    protected virtual void PlayClip(AudioClip clip)
+    {
+        if (clip != audioSource.clip)
+        {
+            audioSource.clip = clip;
+        }
+        audioSource.Play();
+    }
+
+    protected virtual void RandomSounds()
+    {
+        randomAudioTimer += Time.deltaTime;
+        if (randomAudioTimer >= currentAudioInterval)
+        {
+            randomAudioTimer = 0;
+            currentAudioInterval = (int)Random.Range(minVoiceLineInterval, maxVoiceLineInterval);
+            //Play clip
+        }
+    }
+
+    protected virtual void LoadAudio()
+    {
+
+    }
+
     protected virtual void Awake()
     {
 
@@ -426,6 +464,7 @@ public abstract class Character : MonoBehaviour
     // Use this for initialization
     protected virtual void Start()
     {
+        randomAudioTimer = 0f;
         exhaustTimer = exhaustDuration;
         lengthOfRay = collider.bounds.extents.magnitude;
         Sr = GetComponent<SpriteRenderer>();
@@ -439,7 +478,6 @@ public abstract class Character : MonoBehaviour
     // Update is called once per frame
     protected virtual void Update()
     {
-
             GetInput();
             CheckForInteraction();
             StatsDecay();
@@ -448,6 +486,7 @@ public abstract class Character : MonoBehaviour
             SleepTimerChecker();
             Collision();
             ApplyMovement();
+        RandomSounds();
     }
     protected virtual void LateUpdate()
     {

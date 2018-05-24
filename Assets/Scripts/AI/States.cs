@@ -76,7 +76,7 @@ namespace StateStuff
                     if (!owner.MovingToTarget)
                     {
                         //Debug.Log("Movement started");
-                        owner.Grid.Path = shortestPath;
+                        //owner.Grid.Path = shortestPath;
                         owner.StartMovement(shortestPath);
                     }
                     else
@@ -279,7 +279,7 @@ namespace StateStuff
                     if (locations.Count <= 0)
                     {
                         //Go destroy self state?
-                        //owner.StateMachine.ChangeState(owner.idleState);
+                        owner.StateMachine.ChangeState(owner.backToMovement);
                         Debug.Log("End of movement state");
                     }
                     ResetSubStateVariables();
