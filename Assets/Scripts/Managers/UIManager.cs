@@ -414,6 +414,11 @@ public class UIManager : MonoBehaviour
         deathScreen.SetActive(true);
     }
 
+    public void ReturnToMainMenu()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
+    }
+
     //Unity methods
     private void Awake()
     {

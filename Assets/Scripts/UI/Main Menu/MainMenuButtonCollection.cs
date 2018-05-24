@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class MainMenuButtonCollection : ButtonCollection
 {
     public Button InstructionButton;
+    public Button CreditsButton;
 
     protected override void AssignButtonClicks()
     {
@@ -21,5 +22,6 @@ public class MainMenuButtonCollection : ButtonCollection
 
         UnityEngine.Events.UnityAction returnaction = () => ActionToAssign.Action(4);
         InstructionButton.onClick.AddListener(returnaction);
+        CreditsButton.onClick.AddListener(returnaction);
     }
 }
