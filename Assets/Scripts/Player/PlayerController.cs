@@ -22,8 +22,6 @@ public class PlayerController : Character
     public Bounds bound;
 
     //Audio variables
-    [SerializeField]
-    private string characterName = "";
     private AudioClip[] itemFoundClips, whiskeyDrinkClips, eatBJClips,
         randomSoundsClips, lowHPClips, lowSPClips, outOfStaminaClips,
         wakeUpClips;
@@ -403,7 +401,7 @@ public class PlayerController : Character
             UIManager.Instance.StatusBarLowIndicator(3);
             if (currentStaminaLow != oldStaminaLow)
             {
-                PlayClip(outOfStaminaClips);
+                //PlayClip(outOfStaminaClips);
             }
         }
         else
@@ -428,6 +426,17 @@ public class PlayerController : Character
     protected virtual void PlayClip(AudioClip[] collection)
     {
         PlayClip(collection[UnityEngine.Random.Range(0, collection.Length - 1)]);
+    }
+
+    protected override void RandomSounds()
+    {
+        randomAudioTimer += Time.deltaTime;
+        if (randomAudioTimer >= currentAudioInterval)
+        {
+            randomAudioTimer = 0;
+            currentAudioInterval = UnityEngine.Random.Range(minVoiceLineInterval, maxVoiceLineInterval);
+            PlayClip(randomSoundsClips);
+        }
     }
 
     //Unity Methods

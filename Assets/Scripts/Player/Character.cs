@@ -47,10 +47,12 @@ public abstract class Character : MonoBehaviour
 
     //Audio variables
     protected AudioSource  audioSource;
-    [SerializeField]
-    private int            minVoiceLineInterval, maxVoiceLineInterval;
-    private float          randomAudioTimer = 0f;
-    private float          currentAudioInterval;
+    [SerializeField]       
+    protected string       characterName = "";
+    [SerializeField]       
+    protected int          minVoiceLineInterval, maxVoiceLineInterval;
+    protected float        randomAudioTimer = 0f;
+    protected float        currentAudioInterval = 25f;
 
     //Exhaust variables
     [SerializeField]
@@ -462,6 +464,7 @@ public abstract class Character : MonoBehaviour
     // Use this for initialization
     protected virtual void Start()
     {
+        randomAudioTimer = 0f;
         exhaustTimer = exhaustDuration;
         lengthOfRay = collider.bounds.extents.magnitude;
         Sr = GetComponent<SpriteRenderer>();
